@@ -72,7 +72,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)SDL3\include;$(ProjectDir)include;$(ProjectDir)include\FileFormat;$(ProjectDir)include\Utils;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)SDL3\include;$(ProjectDir)include;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)SDL3\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -112,8 +112,6 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp23</LanguageStandard>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,6 +138,7 @@
   <ItemGroup>
     <ClCompile Include="include\Utils\SdlUtils.h" />
     <ClCompile Include="source\FileFormat\Compression\Huffman.cpp" />
+    <ClCompile Include="source\FileFormat\Compression\RLE.cpp" />
     <ClCompile Include="source\FileFormat\Conversion\BG.cpp" />
     <ClCompile Include="source\FileFormat\Conversion\Converter.cpp" />
     <ClCompile Include="source\Game.cpp" />
@@ -152,6 +151,7 @@
     <ClCompile Include="source\Utils\StringUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\FileFormat\Compression\RLE.h" />
     <ClInclude Include="include\FileFormat\Conversion\BG.h" />
     <ClInclude Include="include\FileFormat\Compression\Huffman.h" />
     <ClInclude Include="include\FileFormat\Conversion\Converter.h" />

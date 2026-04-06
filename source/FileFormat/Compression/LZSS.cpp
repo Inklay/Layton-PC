@@ -1,10 +1,9 @@
 #include "FileFormat/Compression/LZSS.h"
 
 fileUtils::buffer LZSS::decompress(const fileUtils::path& filePath, size_t offset) {
-	fileUtils::buffer buffer = fileUtils::readBin(filePath, offset);
-
+	const fileUtils::buffer buffer = fileUtils::readBin(filePath, offset);
 	char versionByte = buffer.at(0);
-	size_t decompressedSize = 0 | (buffer.at(3) << 16) | (buffer.at(2) << 8) | buffer.at(1);
+	const size_t decompressedSize = 0 | (buffer.at(3) << 16) | (buffer.at(2) << 8) | buffer.at(1);
 
 	switch (versionByte) {
 		case 0x10:

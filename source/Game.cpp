@@ -25,7 +25,7 @@ void Game::convertData() const {
 		exit(1);
 	}
 
-	convertTextData();
+	//convertTextData();
 	covertImgData();
 
 	fileUtils::writeText("", m_gameFolder / "extracted");

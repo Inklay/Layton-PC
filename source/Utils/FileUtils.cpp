@@ -4,6 +4,7 @@
 #include <filesystem>
 #include "FileFormat/Compression/Huffman.h"
 #include "FileFormat/Compression/LZSS.h"
+#include "FileFormat/Compression/RLE.h"
 
 fileUtils::buffer fileUtils::readBin(const path& filePath, size_t offset, size_t lenght) {
 	if (lenght == 0) {
@@ -57,14 +58,15 @@ fileUtils::buffer fileUtils::decompress(const path& inputFile, size_t offset, Co
 	}
 	switch (method) {
 	case HUFFMAN:
-		std::cout << "Huffman compression is not supported yet" << std::endl;
-		//return Huffman::decompress(inputFile, offset);
+		//std::cout << "Huffman compression is not supported yet" << std::endl;
+		return Huffman::decompress(inputFile, offset);
 		break;
-	case LZSS:
-		return LZSS::decompress(inputFile, offset);
+	/*case LZSS:
+		return LZSS::decompress(inputFile, offset);*/
 	case RLE:
-		std::cout << "RLE compression is not supported yet" << std::endl;
-		break;
+		return RLE::decompress(inputFile, offset);
+	default:
+		return fileUtils::buffer(0);
 	}
 }
 
