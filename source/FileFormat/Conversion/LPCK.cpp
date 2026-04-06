@@ -6,7 +6,7 @@ void LPCK::convert(const fileUtils::path& folderPath, const fileUtils::path& out
 	convertFileFromFolder(folderPath, outputFolder, ".pcm", createFilesFromLZSS);
 }
 
-void LPCK::createFilesFromLZSS(const fileUtils::path& filePath, const fileUtils::path& outputFolder) {
+void LPCK::createFilesFromLZSS(const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool isCompressed) {
 	fileUtils::buffer buffer = fileUtils::decompress(filePath, 0, fileUtils::CompressionMethod::LZSS);
 
 #if _DEBUG

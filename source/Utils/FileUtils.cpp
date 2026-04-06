@@ -56,17 +56,17 @@ fileUtils::buffer fileUtils::decompress(const path& inputFile, size_t offset, Co
 	if (method == UNKNOWN) {
 		method = getCompressionMethod(inputFile, offset);
 	}
+
 	switch (method) {
-	case HUFFMAN:
-		//std::cout << "Huffman compression is not supported yet" << std::endl;
-		return Huffman::decompress(inputFile, offset);
-		break;
-	/*case LZSS:
-		return LZSS::decompress(inputFile, offset);*/
-	case RLE:
-		return RLE::decompress(inputFile, offset);
-	default:
-		return fileUtils::buffer(0);
+		case HUFFMAN:
+			return Huffman::decompress(inputFile, offset);
+		case LZSS:
+			return LZSS::decompress(inputFile, offset);
+		case RLE:
+			return RLE::decompress(inputFile, offset);
+		default:
+			std::cerr << "Unknown compression method for " << inputFile << std::endl;
+			return fileUtils::buffer(0);
 	}
 }
 

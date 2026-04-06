@@ -1,20 +1,27 @@
-#include "FileFormat/Conversion/BG.h"
+#include "FileFormat/Conversion/BGX.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "Utils/stb_image_write.h"
 
-void BG::convert(const fileUtils::path& folderPath, const fileUtils::path& outputFolder) {
+void BGX::convert(const fileUtils::path& folderPath, const fileUtils::path& outputFolder) {
 	convertFileFromFolder(folderPath, outputFolder, ".arc", convertToPng);
+	convertFileFromFolder(folderPath, outputFolder, ".bgx", convertToPng);
 }
 
-void BG::convertToPng(const fileUtils::path& filePath, const fileUtils::path& outputFolder) {
-	fileUtils::buffer buffer = fileUtils::decompress(filePath, 4);
+void BGX::convertToPng(const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool isCompressed) {
+	fileUtils::buffer buffer;
+
+	if (isCompressed) {
+		buffer = fileUtils::decompress(filePath, 4);
+	} else {
+		buffer = fileUtils::readBin(filePath);
+	}
 
 	if (buffer.size() == 0) {
 		return;
 	}
 
 #if _DEBUG
-	fileUtils::writeBin(buffer, outputFolder / filePath.filename().replace_extension("bg"));
+	fileUtils::writeBin(buffer, outputFolder / filePath.filename().replace_extension("bgx"));
 #endif
 
 	size_t offset = 0;

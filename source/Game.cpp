@@ -2,7 +2,7 @@
 #include "FileFormat/Conversion/LPCK.h"
 #include "Utils/folderUtils.h"
 #include "Utils/fileUtils.h"
-#include "FileFormat/Conversion/BG.h"
+#include "FileFormat/Conversion/BGX.h"
 #include <array>
 #include <algorithm>
 #include <execution>
@@ -50,9 +50,9 @@ void Game::convertTextData() const {
 }
 
 void Game::covertImgData() const {
-	BG::convert(m_assetsPath / "bg", m_gameFolder / "bg");
+	BGX::convert(m_assetsPath / "bg", m_gameFolder / "bg");
 }
 
 void Game::run() const {
-	while (1);
+	//while (1);
 }

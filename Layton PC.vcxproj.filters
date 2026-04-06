@@ -42,7 +42,7 @@
     <ClCompile Include="source\Utils\SdlUtils.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="source\FileFormat\Conversion\BG.cpp">
+    <ClCompile Include="source\FileFormat\Conversion\BGX.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="source\FileFormat\Conversion\Converter.cpp">
@@ -335,7 +335,7 @@
     <ClInclude Include="include\Utils\stb_image_write.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="include\FileFormat\Conversion\BG.h">
+    <ClInclude Include="include\FileFormat\Conversion\BGX.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="include\FileFormat\Compression\Huffman.h">

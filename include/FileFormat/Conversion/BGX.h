@@ -2,10 +2,10 @@
 
 #include "FileFormat/Conversion/Converter.h"
 
-class BG : public Converter {
+class BGX : public Converter {
 public:
 	static void convert(const fileUtils::path& folderPath, const fileUtils::path& outputFolder);
 
 private:
-	static void convertToPng(const fileUtils::path& filePath, const fileUtils::path& outputFolder);
+	static void convertToPng(const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool isCompressed);
 };
