@@ -20,10 +20,6 @@ void BGX::convertToPng(const fileUtils::path& filePath, const fileUtils::path& o
 		return;
 	}
 
-#if _DEBUG
-	fileUtils::writeBin(buffer, outputFolder / filePath.filename().replace_extension("bgx"));
-#endif
-
 	size_t offset = 0;
 	const unsigned int colorPaletteCount = (buffer.at(offset + 3) << 24) | (buffer.at(offset + 2) << 16) | (buffer.at(offset + 1) << 8) | buffer.at(offset);
 	std::vector<unsigned int> colorPalettes;

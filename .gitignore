@@ -2,5 +2,6 @@ games/
 .vs/
 x64/
 SDL3/
+SDL3_image/
 *.user
 Layton PC/

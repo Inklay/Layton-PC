@@ -9,10 +9,6 @@ void LPCK::convert(const fileUtils::path& folderPath, const fileUtils::path& out
 void LPCK::createFilesFromLZSS(const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool isCompressed) {
 	fileUtils::buffer buffer = fileUtils::decompress(filePath, 0, fileUtils::CompressionMethod::LZSS);
 
-#if _DEBUG
-	fileUtils::writeBin(buffer, outputFolder / filePath.filename().replace_extension("lpck"));
-#endif
-
 	if (buffer.at(m_magicNumberOffset) != 'L' || buffer.at(m_magicNumberOffset + 1) != 'P' || buffer.at(m_magicNumberOffset + 2) != 'C' || buffer.at(m_magicNumberOffset + 3) != 'K') {
 		std::cerr << "'" << filePath << "' contains an invalid LPCK file" << std::endl;
 		exit(1);

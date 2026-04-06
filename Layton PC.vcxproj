@@ -72,8 +72,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)SDL3\include;$(ProjectDir)include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)SDL3\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)SDL3\include;$(ProjectDir)include;$(ProjectDir)SDL3_image\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)SDL3\lib\x64;$(ProjectDir)SDL3_image\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -116,7 +116,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL3.lib;SDL3_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -136,13 +136,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="include\Utils\SdlUtils.h" />
     <ClCompile Include="source\FileFormat\Compression\Huffman.cpp" />
     <ClCompile Include="source\FileFormat\Compression\RLE.cpp" />
     <ClCompile Include="source\FileFormat\Conversion\BGX.cpp" />
     <ClCompile Include="source\FileFormat\Conversion\Converter.cpp" />
-    <ClCompile Include="source\Game.cpp" />
-    <ClCompile Include="source\Utils\SdlUtils.cpp" />
+    <ClCompile Include="source\Game\Game.cpp" />
+    <ClCompile Include="source\Game\Layton1.cpp" />
+    <ClCompile Include="source\Game\Scene\Layton1\TitleScreen.cpp" />
+    <ClCompile Include="source\Game\Scene\Scene.cpp" />
+    <ClCompile Include="source\Game\Sprite.cpp" />
     <ClCompile Include="source\Utils\FileUtils.cpp" />
     <ClCompile Include="source\FileFormat\Conversion\LPCK.cpp" />
     <ClCompile Include="source\LaytonPC.cpp" />
@@ -155,7 +157,11 @@
     <ClInclude Include="include\FileFormat\Conversion\BGX.h" />
     <ClInclude Include="include\FileFormat\Compression\Huffman.h" />
     <ClInclude Include="include\FileFormat\Conversion\Converter.h" />
-    <ClInclude Include="include\Game.h" />
+    <ClInclude Include="include\Game\Game.h" />
+    <ClInclude Include="include\Game\Layton1.h" />
+    <ClInclude Include="include\Game\Scene.h" />
+    <ClInclude Include="include\Game\Scene\Layton1\TitleScreen.h" />
+    <ClInclude Include="include\Game\Sprite.h" />
     <ClInclude Include="include\Utils\FileUtils.h" />
     <ClInclude Include="include\FileFormat\Conversion\LPCK.h" />
     <ClInclude Include="include\Utils\FolderUtils.h" />
