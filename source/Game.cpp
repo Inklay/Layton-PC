@@ -1,9 +1,8 @@
 #include "Game.h"
-#include "LPCK.h"
-#include "ARC.h"
-#include "folderUtils.h"
-#include "fileUtils.h"
-#include "BG.h"
+#include "FileFormat/Conversion/LPCK.h"
+#include "Utils/folderUtils.h"
+#include "Utils/fileUtils.h"
+#include "FileFormat/Conversion/BG.h"
 #include <array>
 #include <algorithm>
 #include <execution>
@@ -26,7 +25,7 @@ void Game::convertData() const {
 		exit(1);
 	}
 
-	//extractTextData();
+	convertTextData();
 	covertImgData();
 
 	fileUtils::writeText("", m_gameFolder / "extracted");
@@ -46,13 +45,12 @@ void Game::convertTextData() const {
 	};
 
 	std::for_each(std::execution::par, textFolders.begin(), textFolders.end(),[this](const fileUtils::path& dir) {
-		LPCK::extractFileFromFolder(m_assetsPath / dir, m_gameFolder / dir);
+		LPCK::convert(m_assetsPath / dir, m_gameFolder / dir);
 	});
 }
 
 void Game::covertImgData() const {
-	folderUtils::createFolderIfDontExists(m_gameFolder / "bg");
-	ARC::extractFileFromFolder(m_assetsPath / "bg", m_gameFolder / "bg", BG::convertToPng);
+	BG::convert(m_assetsPath / "bg", m_gameFolder / "bg");
 }
 
 void Game::run() const {

@@ -1,7 +1,5 @@
-#include "LPCK.h"
 #include "Game.h"
 #include <iostream>
-#include <memory>
 
 sdlUtils::SDL_WindowPtr initSdl() {
 	if (!SDL_Init(SDL_INIT_VIDEO)) {

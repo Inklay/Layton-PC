@@ -2,3 +2,5 @@ games/
 .vs/
 x64/
 SDL3/
+*.user
+Layton PC/

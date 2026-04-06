@@ -1,75 +1,89 @@
 #include <fstream>
-#include "FileUtils.h"
-#include "FolderUtils.h"
+#include "Utils/FileUtils.h"
+#include "Utils/FolderUtils.h"
 #include <filesystem>
+#include "FileFormat/Compression/Huffman.h"
+#include "FileFormat/Compression/LZSS.h"
 
-namespace fileUtils {
-	buffer readBin(const path& filePath, size_t offset) {
-		const size_t file_size = std::filesystem::file_size(filePath) - offset;
-		buffer buffer(file_size);
-		std::ifstream file(filePath, std::ios_base::binary);
-
-		if (!file.good()) {
-			std::cerr << "Can't open file '" << filePath << "'" << std::endl;
-			exit(1);
-		}
-
-		file.seekg(offset);
-		file.read(reinterpret_cast<char*>(buffer.data()), file_size);
-		file.close();
-		return buffer;
+fileUtils::buffer fileUtils::readBin(const path& filePath, size_t offset, size_t lenght) {
+	if (lenght == 0) {
+		lenght = std::filesystem::file_size(filePath) - offset;
 	}
 
-	void writeBin(const buffer& buffer, const path& filePath) {
-		folderUtils::createFolderIfDontExists(filePath.parent_path());
+	buffer buffer(lenght);
+	std::ifstream file(filePath, std::ios_base::binary);
 
-		std::ofstream file(filePath, std::ios_base::binary);
-
-		if (!file.good()) {
-			std::cerr << "Can't open file '" << filePath << "'" << std::endl;
-			exit(1);
-		}
-
-		file.write(reinterpret_cast<const char*>(buffer.data()), buffer.size());
-		file.close();
+	if (!file.good()) {
+		std::cerr << "Can't open file '" << filePath << "'" << std::endl;
+		exit(1);
 	}
 
-	void writeText(const std::string& str, const path& filePath) {
-		folderUtils::createFolderIfDontExists(filePath.parent_path());
+	file.seekg(offset);
+	file.read(reinterpret_cast<char*>(buffer.data()), lenght);
+	file.close();
+	return buffer;
+}
 
-		std::ofstream file(filePath, std::ios_base::out);
+void fileUtils::writeBin(const buffer& buffer, const path& filePath) {
+	folderUtils::createFolderIfDontExists(filePath.parent_path());
 
-		if (!file.good()) {
-			std::cerr << "Can't open file '" << filePath << "'" << std::endl;
-			exit(1);
-		}
-		file.write(str.c_str(), str.length());
-		file.close();
+	std::ofstream file(filePath, std::ios_base::binary);
+
+	if (!file.good()) {
+		std::cerr << "Can't open file '" << filePath << "'" << std::endl;
+		exit(1);
 	}
 
-	CompressionMethod getCompressionMethod(const path& filePath, size_t offset) {
-		std::ifstream file(filePath, std::ios_base::binary);
+	file.write(reinterpret_cast<const char*>(buffer.data()), buffer.size());
+	file.close();
+}
 
-		if (!file.good()) {
-			std::cerr << "Can't open file '" << filePath << "'" << std::endl;
-			exit(1);
-		}
+void fileUtils::writeText(const std::string& str, const path& filePath) {
+	folderUtils::createFolderIfDontExists(filePath.parent_path());
 
-		file.seekg(offset);
-		const unsigned char identificationByte = file.get();
-		file.close();
-		
-		switch (identificationByte) {
-			case 0x24:
-			case 0x28:
-				return CompressionMethod::HUFFMAN;
-			case 0x30:
-				return CompressionMethod::RLE;
-			case 0x10:
-			case 0x11:
-				return CompressionMethod::LZSS;
-			default:
-				return CompressionMethod::UNKNOWN;
-		}
+	std::ofstream file(filePath, std::ios_base::out);
+
+	if (!file.good()) {
+		std::cerr << "Can't open file '" << filePath << "'" << std::endl;
+		exit(1);
 	}
-};
+	file.write(str.c_str(), str.length());
+	file.close();
+}
+
+fileUtils::buffer fileUtils::decompress(const path& inputFile, size_t offset, CompressionMethod method) {
+	if (method == UNKNOWN) {
+		method = getCompressionMethod(inputFile, offset);
+	}
+	switch (method) {
+	case HUFFMAN:
+		std::cout << "Huffman compression is not supported yet" << std::endl;
+		//return Huffman::decompress(inputFile, offset);
+		break;
+	case LZSS:
+		return LZSS::decompress(inputFile, offset);
+	case RLE:
+		std::cout << "RLE compression is not supported yet" << std::endl;
+		break;
+	}
+}
+
+fileUtils::CompressionMethod fileUtils::getCompressionMethod(const path& inputFile, size_t offset) {
+	const buffer readBuffer = readBin(inputFile, offset, 1);
+	if (readBuffer.size() == 0) {
+		return UNKNOWN;
+	}
+
+	switch (readBuffer.at(0)) {
+	case 0x24:
+	case 0x28:
+		return HUFFMAN;
+	case 0x30:
+		return RLE;
+	case 0x10:
+	case 0x11:
+		return LZSS;
+	default:
+		return UNKNOWN;
+	}
+}

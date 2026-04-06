@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
-#include "FileUtils.h"
-#include "SdlUtils.h"
+#include "Utils/FileUtils.h"
+#include "Utils/SdlUtils.h"
 
 class Game {
 public:

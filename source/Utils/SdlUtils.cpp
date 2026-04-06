@@ -1,4 +1,4 @@
-#include "SdlUtils.h"
+#include "Utils/SdlUtils.h"
 
 namespace sdlUtils {
 	void SDL_Deleter::operator()(SDL_Window* ptr) {

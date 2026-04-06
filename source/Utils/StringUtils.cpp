@@ -1,4 +1,4 @@
-#include "StringUtils.h"
+#include "Utils/StringUtils.h"
 
 void replace(std::string& str, const std::string& toReplace, const std::string& replaceWith) {
 	size_t pos = str.find(toReplace);
