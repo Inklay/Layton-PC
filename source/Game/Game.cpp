@@ -3,6 +3,7 @@
 #include "Utils/folderUtils.h"
 #include "Utils/fileUtils.h"
 #include "FileFormat/Conversion/BGX.h"
+#include "FileFormat/Conversion/ARJ.h"
 #include <array>
 #include <algorithm>
 #include <execution>
@@ -20,16 +21,17 @@ Game::Game(const fileUtils::path& assetsPath, const std::string& name, SDL_Windo
 }
 
 void Game::convertData() const {
-	if (std::filesystem::exists(m_gameFolder / "extracted")) {
+	/*if (std::filesystem::exists(m_gameFolder / "extracted")) {
 		return;
-	}
+	}*/
 
 	if (!std::filesystem::exists(m_assetsPath)) {
 		exit(1);
 	}
 
-	convertTextData();
-	covertImgData();
+	/*convertTextData();
+	covertImgData();*/
+	covertAnimData();
 
 	fileUtils::writeText("", m_gameFolder / "extracted");
 	std::cout << "Data conversion done !" << std::endl;
@@ -54,6 +56,10 @@ void Game::convertTextData() const {
 
 void Game::covertImgData() const {
 	BGX::convert(m_assetsPath / "bg", m_gameFolder / "bg");
+}
+
+void Game::covertAnimData() const {
+	ARJ::convert(m_assetsPath / "ani", m_gameFolder / "ani");
 }
 
 void Game::run() {

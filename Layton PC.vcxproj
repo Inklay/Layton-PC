@@ -138,6 +138,7 @@
   <ItemGroup>
     <ClCompile Include="source\FileFormat\Compression\Huffman.cpp" />
     <ClCompile Include="source\FileFormat\Compression\RLE.cpp" />
+    <ClCompile Include="source\FileFormat\Conversion\ARJ.cpp" />
     <ClCompile Include="source\FileFormat\Conversion\BGX.cpp" />
     <ClCompile Include="source\FileFormat\Conversion\Converter.cpp" />
     <ClCompile Include="source\Game\Game.cpp" />
@@ -154,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\FileFormat\Compression\RLE.h" />
+    <ClInclude Include="include\FileFormat\Conversion\ARJ.h" />
     <ClInclude Include="include\FileFormat\Conversion\BGX.h" />
     <ClInclude Include="include\FileFormat\Compression\Huffman.h" />
     <ClInclude Include="include\FileFormat\Conversion\Converter.h" />

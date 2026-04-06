@@ -25,6 +25,7 @@ private:
 	void convertData() const;
 	void convertTextData() const;
 	void covertImgData() const;
+	void covertAnimData() const;
 
 	const fileUtils::path& m_assetsPath;
 	const std::string& m_name;
