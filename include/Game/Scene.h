@@ -21,4 +21,5 @@ public:
 protected:
 	Type m_type;
 	std::map<std::string, Sprite> m_sprites;
+	uint64_t m_lastTick;
 };
