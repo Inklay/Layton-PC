@@ -22,22 +22,27 @@ Game::Game(const fileUtils::path& assetsPath, const std::string& name, SDL_Windo
 
 	convertData();
 	m_windowMultiplier = sdlUtils::scaleWindow(&window);
+	m_audioStream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &sdlUtils::audioSpec, NULL, nullptr);
+
+	if (m_audioStream == NULL) {
+		std::cerr << SDL_GetError() << std::endl;
+	}
 }
 
 void Game::convertData() const {
-	//if (std::filesystem::exists(m_gameFolder / "extracted")) {
-	//	return;
-	//}
+	if (std::filesystem::exists(m_gameFolder / "extracted")) {
+		return;
+	}
 
 	if (!std::filesystem::exists(m_assetsPath)) {
 		std::cerr << "can't open " << std::filesystem::absolute(m_assetsPath) << std::endl;
 		exit(1);
 	}
 
-	//convertTextData();
-	//convertImgData();
-	//convertAnimData();
-	//convertVideoData();
+	convertTextData();
+	convertImgData();
+	convertAnimData();
+	convertVideoData();
 	convertAudioData();
 
 	fileUtils::writeText("", m_gameFolder / "extracted");
@@ -111,12 +116,13 @@ void Game::run() {
 	}
 
 	SDL_DestroyRenderer(m_renderer);
+	SDL_DestroyAudioStream(m_audioStream);
 }
 
 void Game::changeScene(Scene::Type newScene) {
 	currentScene()->unload();
 	Scene* scene = m_scenes.at(newScene).get();
-	scene->load(m_gameFolder, m_renderer, m_windowMultiplier);
+	scene->load(m_gameFolder, m_renderer, m_audioStream, m_windowMultiplier);
 	m_sceneType = scene->type();
 }
 

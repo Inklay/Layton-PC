@@ -21,6 +21,7 @@ protected:
 	Scene* currentScene();
 	std::map<Scene::Type, std::unique_ptr<Scene>> m_scenes;
 	float m_windowMultiplier;
+	SDL_AudioStream* m_audioStream;
 
 private:
 	void convertData() const;

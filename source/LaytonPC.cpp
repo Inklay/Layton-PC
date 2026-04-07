@@ -3,7 +3,7 @@
 #include "Utils/sdlUtils.h"
 
 SDL_Window* initSdl() {
-	if (!SDL_Init(SDL_INIT_VIDEO)) {
+	if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
 		std::cerr << "SDL could not initialize! error: " << SDL_GetError() << std::endl;
 		return nullptr;
 	}

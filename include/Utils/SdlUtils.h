@@ -17,6 +17,8 @@ namespace sdlUtils {
 	const int POS_CENTER_TOP = 0xFFFFFF01;
 	const int POS_CENTER_BOTTOM = 0xFFFFFF02;
 
+	const SDL_AudioSpec audioSpec{ SDL_AUDIO_S16LE, 2, 16364 };
+
 	float scaleWindow(SDL_Window* window);
 	void multiply(SDL_FRect& rect, float multiplier);
 }
