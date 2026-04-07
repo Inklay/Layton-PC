@@ -5,9 +5,7 @@
 #include "Utils/StringUtils.h"
 
 void GFX::convert(const fileUtils::path& folderPath, const fileUtils::path& outputFolder) {
-	//convertFileFromFolder(folderPath, outputFolder, ".arj", convertToPngs);
 	convertFileFromFolder(folderPath, outputFolder, ".arc", convertToPngs);
-	//convertToPngs(folderPath / "clock_numbers.arc", outputFolder, true);
 }
 
 void GFX::convertToPngs(const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool isCompressed) {
@@ -36,7 +34,9 @@ void GFX::convertToPngs(const fileUtils::path& filePath, const fileUtils::path& 
 	offset += 4 + paletteCount * 2 + 0x1E;
 
 	createPng(imageCount, colorDepth, colors, images, filePath, outputFolder);
-	createAnim(buffer, offset, filePath, outputFolder);
+	if (images.size() > 1) {
+		createAnim(buffer, offset, filePath, outputFolder);
+	}
 }
 
 std::vector<GFX::Image> GFX::getImages(unsigned int imageCount, unsigned int colorDepth, const fileUtils::buffer& buffer, unsigned int& offset) {
@@ -87,7 +87,7 @@ std::vector<GFX::Image> GFX::getImages(unsigned int imageCount, unsigned int col
 void GFX::createPng(unsigned int imageCount, unsigned int colorDepth, const std::vector<uint16_t>& colors, std::vector<GFX::Image>& images, const fileUtils::path& filePath, const fileUtils::path& outputFolder) {
 	for (unsigned int i = 0; i < imageCount; i++) {
 		std::pair<uint16_t, uint16_t> size = fixImageSize(images.at(i));
-		std::vector<unsigned char> bmpBuffer(size.first * size.second * 4);
+		std::vector<unsigned char> pixelBuffer(size.first * size.second * 4);
 
 		for (GFX::Part& part : images.at(i).m_parts) {
 			if (colorDepth == 4) {
@@ -105,25 +105,29 @@ void GFX::createPng(unsigned int imageCount, unsigned int colorDepth, const std:
 
 			for (int h = 0; h < part.m_height; h++) {
 				for (int w = 0; w < part.m_width; w++) {
-					uint16_t color = colors[part.m_data.at(h * part.m_width + w)];
+					uint16_t colorIdx = part.m_data.at(h * part.m_width + w);
+
+					if (colorIdx == 0) {
+						continue;
+					}
+
+					uint16_t color = colors[colorIdx];
 					int posX = part.m_posX + w;
 					int posY = part.m_posY + h;
 					size_t pixelOffset = posY * size.first + posX;
 
-					if (color == 0x03E0) continue;
-
-					bmpBuffer[pixelOffset * 4 + 0] = (color & 0x001F) * 0x08;
-					bmpBuffer[pixelOffset * 4 + 1] = ((color & 0x03E0) >> 5) * 0x08;
-					bmpBuffer[pixelOffset * 4 + 2] = ((color & 0x7C00) >> 10) * 0x08;
-					bmpBuffer[pixelOffset * 4 + 3] = 255;
+					pixelBuffer[pixelOffset * 4 + 0] = (color & 0x001F) * 0x08;
+					pixelBuffer[pixelOffset * 4 + 1] = ((color & 0x03E0) >> 5) * 0x08;
+					pixelBuffer[pixelOffset * 4 + 2] = ((color & 0x7C00) >> 10) * 0x08;
+					pixelBuffer[pixelOffset * 4 + 3] = 255;
 				}
 			}
 		}
 
-		std::string outputFile = (outputFolder / filePath.filename().replace_extension(std::to_string(i) + ".png")).string();
+		std::string outputFile = (outputFolder / filePath.filename().replace_extension((images.size() > 1 ? std::to_string(i) + "." : "") + "png")).string();
 		stringUtils::replace(outputFile, "*", "");
 		stringUtils::replace(outputFile, "?", "");
-		stbi_write_png(outputFile.c_str(), images.at(i).m_width, images.at(i).m_height, 4, bmpBuffer.data(), size.first * 4);
+		stbi_write_png(outputFile.c_str(), images.at(i).m_width, images.at(i).m_height, 4, pixelBuffer.data(), size.first * 4);
 	}
 }
 

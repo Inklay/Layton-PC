@@ -23,16 +23,16 @@ Game::Game(const fileUtils::path& assetsPath, const std::string& name, SDL_Windo
 }
 
 void Game::convertData() const {
-	if (std::filesystem::exists(m_gameFolder / "extracted")) {
-		return;
-	}
+	//if (std::filesystem::exists(m_gameFolder / "extracted")) {
+	//	return;
+	//}
 
 	if (!std::filesystem::exists(m_assetsPath)) {
 		exit(1);
 	}
 
-	convertTextData();
-	convertImgData();
+	//convertTextData();
+	//convertImgData();
 	convertAnimData();
 
 	fileUtils::writeText("", m_gameFolder / "extracted");

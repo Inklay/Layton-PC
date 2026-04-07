@@ -8,7 +8,7 @@ namespace Layton1Scene {
 		m_windowMultiplier = windowMultiplier;
 
 		m_sprites.insert({ "topBackground", Sprite(assetFolder / "bg/select_title.png", this, { 0, 0, 512, 384 }) });
-		m_sprites.insert({ "gameLogo", Sprite(assetFolder / "ani/fr/title_logo.0.png", this, { 86, 116, 340, 148 }) });
+		m_sprites.insert({ "gameLogo", Sprite(assetFolder / "ani/fr/title_logo.png", this, { 86, 116, 340, 148 }) });
 	}
 
 	void TitleScreen::render() {
