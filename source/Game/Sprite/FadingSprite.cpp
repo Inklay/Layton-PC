@@ -1,0 +1,24 @@
+#include "Game/Sprite/FadingSprite.h"
+#include "Game/Scene.h"
+
+FadingSprite::FadingSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, int duration, int timer, SDL_FRect subTexture) :
+	Sprite(file, scene, transform, subTexture)
+{
+	m_duration = duration;
+	m_timer = timer;
+}
+
+void FadingSprite::draw() {
+	if (m_timer < m_duration) {
+		m_timer += (SDL_GetTicks() - m_scene->m_lastTick);
+		uint16_t opacity = m_timer < 0 ? 0 : (m_timer * 255) / m_duration;
+
+		if (opacity > 255) {
+			opacity = 255;
+		}
+		SDL_SetTextureAlphaMod(m_texture, opacity);
+	}
+
+	const SDL_FRect* subTexture = m_subTexture.h < 0 || m_subTexture.w < 0 ? nullptr : reinterpret_cast<const SDL_FRect*>(&m_subTexture);
+	SDL_RenderTexture(m_scene->m_renderer, m_texture, subTexture, reinterpret_cast<const SDL_FRect*>(&m_transform));
+}
