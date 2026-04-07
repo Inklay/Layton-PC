@@ -20,6 +20,7 @@ protected:
 	fileUtils::path m_gameFolder;
 	Scene* currentScene();
 	std::map<Scene::Type, std::unique_ptr<Scene>> m_scenes;
+	float m_windowMultiplier;
 
 private:
 	void convertData() const;

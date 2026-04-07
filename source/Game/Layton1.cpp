@@ -5,7 +5,7 @@ Layton1::Layton1(const fileUtils::path& assetsPath, SDL_Window& window) :
 	Game(assetsPath, "Curious Village", window)
 {
 	createScenes();
-	m_scenes.at(Scene::TITLE_SCREEN).get()->load(m_gameFolder, m_renderer);
+	m_scenes.at(Scene::TITLE_SCREEN).get()->load(m_gameFolder, m_renderer, m_windowMultiplier);
 }
 
 void Layton1::createScenes() {

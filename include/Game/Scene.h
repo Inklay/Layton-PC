@@ -13,10 +13,13 @@ public:
 	};
 
 	Scene(Type type);
-	virtual void load(const fileUtils::path& assetFolder, SDL_Renderer* renderer) = 0;
-	virtual void render(SDL_Renderer* renderer) = 0;
+	virtual void load(const fileUtils::path& assetFolder, SDL_Renderer* renderer, float windowMultiplier) = 0;
+	virtual void render() = 0;
 	void unload() ;
 	Type type() const;
+
+	SDL_Renderer* m_renderer;
+	float m_windowMultiplier;
 
 protected:
 	Type m_type;

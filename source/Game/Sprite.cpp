@@ -1,11 +1,17 @@
 #include "Game/Sprite.h"
 #include "SDL3_image/SDL_image.h"
+#include "Utils/sdlUtils.h"
+#include "Game/Scene.h"
 
-Sprite::Sprite(const fileUtils::path& file, SDL_Renderer* renderer, SDL_FRect transform, SDL_FRect subTexture) {
+Sprite::Sprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, SDL_FRect subTexture) {
 	m_surface = IMG_Load(file.string().c_str());
-	m_texture = SDL_CreateTextureFromSurface(renderer, m_surface);
+	m_texture = SDL_CreateTextureFromSurface(scene->m_renderer, m_surface);
 	m_transform = transform;
 	m_subTexture = subTexture;
+	m_scene = scene;
+
+	sdlUtils::multiply(m_transform, scene->m_windowMultiplier);
+	sdlUtils::multiply(m_subTexture, scene->m_windowMultiplier);
 }
 
 void Sprite::draw(SDL_Renderer* renderer) const {

@@ -4,6 +4,7 @@
 #include "Utils/fileUtils.h"
 #include "FileFormat/Conversion/BGX.h"
 #include "FileFormat/Conversion/GFX.h"
+#include "Utils/sdlutils.h"
 #include <array>
 #include <algorithm>
 #include <execution>
@@ -18,6 +19,7 @@ Game::Game(const fileUtils::path& assetsPath, const std::string& name, SDL_Windo
 	m_sceneType = Scene::TITLE_SCREEN;
 
 	convertData();
+	m_windowMultiplier = sdlUtils::scaleWindow(&window);
 }
 
 void Game::convertData() const {
@@ -78,7 +80,7 @@ void Game::run() {
 		SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
 		SDL_RenderClear(m_renderer);
 
-		currentScene()->render(m_renderer);
+		currentScene()->render();
 
 		SDL_RenderPresent(m_renderer);
 		SDL_Delay(16);
@@ -89,9 +91,8 @@ void Game::run() {
 
 void Game::changeScene(Scene::Type newScene) {
 	currentScene()->unload();
-	std::cout << m_scenes.count(newScene) << std::endl;
 	Scene* scene = m_scenes.at(newScene).get();
-	scene->load(m_gameFolder, m_renderer);
+	scene->load(m_gameFolder, m_renderer, m_windowMultiplier);
 	m_sceneType = scene->type();
 }
 

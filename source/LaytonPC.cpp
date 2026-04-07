@@ -1,5 +1,6 @@
 #include "Game/Layton1.h"
 #include <iostream>
+#include "Utils/sdlUtils.h"
 
 SDL_Window* initSdl() {
 	if (!SDL_Init(SDL_INIT_VIDEO)) {
@@ -7,7 +8,7 @@ SDL_Window* initSdl() {
 		return nullptr;
 	}
 
-	SDL_Window* window = SDL_CreateWindow("Layton PC rewrite", 512, 768, 0);
+	SDL_Window* window = SDL_CreateWindow("Layton PC rewrite", sdlUtils::baseWidth, sdlUtils::baseHeight, 0);
 	if (window == nullptr) {
 		std::cerr << "SDL could not created window! error: " << SDL_GetError() << std::endl;
 	}

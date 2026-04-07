@@ -152,6 +152,7 @@
     <ClCompile Include="source\LaytonPC.cpp" />
     <ClCompile Include="source\FileFormat\Compression\LZSS.cpp" />
     <ClCompile Include="source\Utils\FolderUtils.cpp" />
+    <ClCompile Include="source\Utils\sdlUtils.cpp" />
     <ClCompile Include="source\Utils\StringUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +170,7 @@
     <ClInclude Include="include\Utils\FileUtils.h" />
     <ClInclude Include="include\FileFormat\Conversion\LPCK.h" />
     <ClInclude Include="include\Utils\FolderUtils.h" />
+    <ClInclude Include="include\Utils\SdlUtils.h" />
     <ClInclude Include="include\Utils\stb_image_write.h" />
     <ClInclude Include="include\Utils\StringUtils.h" />
     <ClInclude Include="include\FileFormat\Compression\LZSS.h" />
