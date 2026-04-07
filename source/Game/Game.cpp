@@ -43,6 +43,8 @@ void Game::convertData() const {
 }
 
 void Game::convertTextData() const {
+	std::cout << "Converting text data..." << std::endl;
+
 	std::array<const fileUtils::path, 8> textFolders = {
 		"etext",
 		"htext",
@@ -60,15 +62,21 @@ void Game::convertTextData() const {
 }
 
 void Game::convertImgData() const {
+	std::cout << "Converting image data..." << std::endl;
+
 	BGX::convert(m_assetsPath / "bg", m_gameFolder / "bg");
 }
 
 void Game::convertAnimData() const {
+	std::cout << "Converting animation data..." << std::endl;
+
 	GFX::convert(m_assetsPath / "ani", m_gameFolder / "ani");
 }
 
 
 void Game::convertVideoData() const {
+	std::cout << "Converting video data..." << std::endl;
+
 	MODS::convert(m_assetsPath / "video", m_gameFolder / "video");
 }
 

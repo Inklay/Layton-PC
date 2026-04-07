@@ -23,9 +23,18 @@ void ParallaxSprite::draw() {
 	float advancement = (timeElapsed / m_duration) * m_transform.w;
 
 	if (m_dir == sdlUtils::LEFT) {
-		m_transform.x -= advancement;
-		m_transform2.x -= advancement;
+		advancement *= -1;
+	}
 
+	if (m_transform.x > m_transform2.x) {
+		m_transform.x += advancement;
+		m_transform2.x = m_transform.x - m_transform.w;
+	} else {
+		m_transform2.x += advancement;
+		m_transform.x = m_transform2.x - m_transform2.w;
+	}
+
+	if (m_dir == sdlUtils::LEFT) {
 		if (m_transform.x >= m_transform.w * -1) {
 			m_transform.x += m_transform.w * 2;
 		}
@@ -33,9 +42,6 @@ void ParallaxSprite::draw() {
 			m_transform2.x += m_transform2.w * 2;
 		}
 	} else if (m_dir == sdlUtils::RIGHT) {
-		m_transform.x += advancement;
-		m_transform2.x += advancement;
-
 		if (m_transform.x >= m_transform.w) {
 			m_transform.x -= m_transform.w * 2;
 		}

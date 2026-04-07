@@ -11,6 +11,7 @@ AnimatedSprite::AnimatedSprite(const fileUtils::path& file, Scene* scene, SDL_FR
 		if (m_surfaces.count(imageIdx) == 0) {
 			m_surfaces.insert({ imageIdx, IMG_Load(((file.parent_path() / file.stem().stem()).string() + "." + std::to_string(imageIdx) + ".png").c_str()) });
 			m_textures.insert({ imageIdx, SDL_CreateTextureFromSurface(scene->m_renderer, m_surfaces.at(imageIdx)) });
+			SDL_SetTextureScaleMode(m_textures.at(imageIdx), SDL_SCALEMODE_NEAREST);
 		}
 	}
 }
@@ -40,4 +41,7 @@ void AnimatedSprite::unload() {
 	for (auto& surface : m_surfaces) {
 		SDL_DestroySurface(surface.second);
 	}
+
+	m_surfaces.clear();
+	m_textures.clear();
 }

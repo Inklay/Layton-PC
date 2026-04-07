@@ -24,8 +24,14 @@ public:
 
 private:
 	static void convertToPngs(const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool isCompressed);
-	static std::vector<Image> getImages(unsigned int imageCount, unsigned int colorDepth, const fileUtils::buffer& buffer, unsigned int& offset);
+	static std::vector<Image> getImages(unsigned int imageCount, unsigned int colorDepth, const fileUtils::buffer& buffer, unsigned int& offset, bool isArj);
 	static std::pair<uint16_t, uint16_t> fixImageSize(Image image);
-	static void createPng(unsigned int imageCount, unsigned int colorDepth, const std::vector<uint16_t>& colors, std::vector<GFX::Image>& images, const fileUtils::path& filePath, const fileUtils::path& outputFolder);
+	static void createPngs(unsigned int imageCount, unsigned int colorDepth, const std::vector<uint16_t>& colors, std::vector<GFX::Image>& images, const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool isArj);
 	static void createAnim(const fileUtils::buffer& buffer, unsigned int offset, const fileUtils::path& filePath, const fileUtils::path& outputFolder);
+	static void createArcPng(GFX::Part& part, const std::vector<uint16_t>& colors, std::pair<uint16_t, uint16_t> size, fileUtils::buffer& pixelBuffer);
+	static void createArjPng(GFX::Part& part, const std::vector<uint16_t>& colors, std::pair<uint16_t, uint16_t> size, fileUtils::buffer& pixelBuffer);
+
+	static const uint8_t bgR = 0x00;
+	static const uint8_t bgG = 0xF8;
+	static const uint8_t bgB = 0x00;
 };
