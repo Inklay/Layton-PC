@@ -1,9 +1,14 @@
 #include "Game/Scene.h"
 
 Scene::Scene(Type type) :
+	m_lastTick(0),
+	m_renderer(nullptr),
+	m_audioStream(nullptr),
+	m_windowMultiplier(1),
+	m_bgmBuffer(nullptr),
+	m_bgmBufferLen(0),
 	m_type(type)
 {
-	m_bgmBuffer = nullptr;
 }
 
 void Scene::load(const fileUtils::path& assetFolder, SDL_Renderer* renderer, SDL_AudioStream* audioStream, float windowMultiplier) {
@@ -41,7 +46,7 @@ void Scene::playBGM(const fileUtils::path& inputFile) {
 
 	m_bgmBuffer = (uint8_t*)SDL_malloc(m_bgmBufferLen);
 	memset(m_bgmBuffer, 0, m_bgmBufferLen);
-	SDL_MixAudio(m_bgmBuffer, buffer, spec.format, m_bgmBufferLen, 0.2);
+	SDL_MixAudio(m_bgmBuffer, buffer, spec.format, m_bgmBufferLen, 0.2f);
 
 	if (!SDL_PutAudioStreamData(m_audioStream, m_bgmBuffer, m_bgmBufferLen)) {
 		std::cerr << SDL_GetError() << std::endl;
@@ -56,7 +61,7 @@ void Scene::loopBGM() {
 		return;
 	}
 
-	if (SDL_GetAudioStreamQueued(m_audioStream) < m_bgmBufferLen / 2) {
+	if ((uint32_t)SDL_GetAudioStreamQueued(m_audioStream) < m_bgmBufferLen / 2) {
 		SDL_PutAudioStreamData(m_audioStream, m_bgmBuffer, m_bgmBufferLen);
 	}
 }

@@ -2,7 +2,9 @@
 #include "Game/Scene.h"
 
 ParallaxSprite::ParallaxSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, int duration, sdlUtils::Dir dir, SDL_FRect subTexture) :
-	Sprite(file, scene, transform, subTexture)
+	Sprite(file, scene, transform, subTexture),
+	m_surface2(nullptr),
+	m_texture2(nullptr)
 {
 	m_duration = duration;
 	m_dir = dir;
@@ -19,8 +21,8 @@ ParallaxSprite::ParallaxSprite(const fileUtils::path& file, Scene* scene, SDL_FR
 }
 
 void ParallaxSprite::draw() {
-	float timeElapsed = SDL_GetTicks() - m_scene->m_lastTick;
-	float advancement = (timeElapsed / m_duration) * m_transform.w;
+	uint64_t timeElapsed = SDL_GetTicks() - m_scene->m_lastTick;
+	uint64_t advancement = static_cast<uint64_t>(((double)timeElapsed / m_duration) * m_transform.w);
 
 	if (m_dir == sdlUtils::LEFT) {
 		advancement *= -1;

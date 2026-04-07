@@ -1,4 +1,4 @@
-#include "Game/Layton1.h"
+#include "Game/Layton1/Layton1.h"
 #include <iostream>
 #include "Utils/sdlUtils.h"
 

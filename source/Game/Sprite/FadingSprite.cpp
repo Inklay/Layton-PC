@@ -11,7 +11,7 @@ FadingSprite::FadingSprite(const fileUtils::path& file, Scene* scene, SDL_FRect 
 void FadingSprite::draw() {
 	if (m_timer < m_duration) {
 		m_timer += (SDL_GetTicks() - m_scene->m_lastTick);
-		uint16_t opacity = m_timer < 0 ? 0 : (m_timer * 255) / m_duration;
+		uint8_t opacity = (uint8_t)(m_timer < 0 ? 0 : (m_timer * 255) / m_duration);
 
 		if (opacity > 255) {
 			opacity = 255;

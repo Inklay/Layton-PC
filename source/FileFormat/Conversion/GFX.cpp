@@ -23,7 +23,7 @@ void GFX::convertToPngs(const fileUtils::path& filePath, const fileUtils::path& 
 
 	unsigned int imageCount = (buffer.at(1) << 8) | buffer.at(0);
 	unsigned int colorDepth = ((buffer.at(3) << 8) | buffer.at(2)) == 3 ? 4 : 8;
-	unsigned int offset = 4;
+	uint64_t offset = 4;
 	unsigned int paletteCount;
 	
 	if (isArj) {
@@ -57,7 +57,7 @@ void GFX::convertToPngs(const fileUtils::path& filePath, const fileUtils::path& 
 	}
 }
 
-std::vector<GFX::Image> GFX::getImages(unsigned int imageCount, unsigned int colorDepth, const fileUtils::buffer& buffer, unsigned int& offset, bool isArj) {
+std::vector<GFX::Image> GFX::getImages(unsigned int imageCount, unsigned int colorDepth, const fileUtils::buffer& buffer, uint64_t& offset, bool isArj) {
 	std::vector<GFX::Image> images;
 	images.reserve(imageCount);
 	
@@ -76,9 +76,11 @@ std::vector<GFX::Image> GFX::getImages(unsigned int imageCount, unsigned int col
 			}
 			uint16_t posX = (buffer.at(offset + 1) << 8) | buffer.at(offset);
 			uint16_t posY = (buffer.at(offset + 3) << 8) | buffer.at(offset + 2);
-			uint16_t width = std::pow(2, ((buffer.at(offset + 5) << 8) | buffer.at(offset + 4)) + 3);
-			uint16_t height = std::pow(2, ((buffer.at(offset + 7) << 8) | buffer.at(offset + 6)) + 3);
-			uint16_t size = width * height;
+			uint64_t hExpo = (uint64_t)((buffer.at(offset + 5) << 8) | buffer.at(offset + 4)) + 3;
+			uint64_t wExpo = (uint64_t)((buffer.at(offset + 7) << 8) | buffer.at(offset + 6)) + 3;
+			uint64_t width = (uint64_t)std::pow(2, hExpo);
+			uint64_t height = (uint64_t)std::pow(2, wExpo);
+			uint64_t size = width * height;
 
 			if (colorDepth == 4) {
 				size /= 2;
@@ -106,8 +108,8 @@ std::vector<GFX::Image> GFX::getImages(unsigned int imageCount, unsigned int col
 }
 
 void GFX::createPngs(unsigned int imageCount, unsigned int colorDepth, const std::vector<uint16_t>& colors, std::vector<GFX::Image>& images, const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool isArj) {
-	for (unsigned int i = 0; i < imageCount; i++) {
-		std::pair<uint16_t, uint16_t> size = fixImageSize(images.at(i));
+	for (size_t i = 0; i < imageCount; i++) {
+		std::pair<uint64_t, uint64_t> size = fixImageSize(images.at(i));
 		fileUtils::buffer pixelBuffer(size.first * size.second * 4);
 
 		for (GFX::Part& part : images.at(i).m_parts) {
@@ -134,11 +136,11 @@ void GFX::createPngs(unsigned int imageCount, unsigned int colorDepth, const std
 		std::string outputFile = (outputFolder / filePath.filename().replace_extension((images.size() > 1 ? std::to_string(i) + "." : "") + "png")).string();
 		stringUtils::replace(outputFile, "*", "");
 		stringUtils::replace(outputFile, "?", "");
-		stbi_write_png(outputFile.c_str(), images.at(i).m_width, images.at(i).m_height, 4, pixelBuffer.data(), size.first * 4);
+		stbi_write_png(outputFile.c_str(), images.at(i).m_width, images.at(i).m_height, 4, pixelBuffer.data(), (int)size.first * 4);
 	}
 }
 
-void GFX::createArcPng(GFX::Part& part, const std::vector<uint16_t>& colors, std::pair<uint16_t, uint16_t> size, fileUtils::buffer& pixelBuffer) {
+void GFX::createArcPng(GFX::Part& part, const std::vector<uint16_t>& colors, std::pair<uint64_t, uint64_t> size, fileUtils::buffer& pixelBuffer) {
 	for (int h = 0; h < part.m_height; h++) {
 		for (int w = 0; w < part.m_width; w++) {
 			uint16_t colorIdx = part.m_data.at(h * part.m_width + w);
@@ -160,7 +162,7 @@ void GFX::createArcPng(GFX::Part& part, const std::vector<uint16_t>& colors, std
 	}
 }
 
-void GFX::createArjPng(GFX::Part& part, const std::vector<uint16_t>& colors, std::pair<uint16_t, uint16_t> size, fileUtils::buffer& pixelBuffer) {
+void GFX::createArjPng(GFX::Part& part, const std::vector<uint16_t>& colors, std::pair<uint64_t, uint64_t> size, fileUtils::buffer& pixelBuffer) {
 	int offset = 0;
 
 	for (int h = 0; h < part.m_height / 8; h++) {
@@ -189,9 +191,9 @@ void GFX::createArjPng(GFX::Part& part, const std::vector<uint16_t>& colors, std
 	}
 }
 
-std::pair<uint16_t, uint16_t> GFX::fixImageSize(GFX::Image image) {
-	uint16_t width = image.m_width;
-	uint16_t height = image.m_height;
+std::pair<uint64_t, uint64_t> GFX::fixImageSize(GFX::Image image) {
+	uint64_t width = image.m_width;
+	uint64_t height = image.m_height;
 
 	for (const Part& part : image.m_parts) {
 		if (part.m_posX + part.m_width > width) {
@@ -206,7 +208,7 @@ std::pair<uint16_t, uint16_t> GFX::fixImageSize(GFX::Image image) {
 	return std::make_pair(width, height);
 }
 
-void GFX::createAnim(const fileUtils::buffer& buffer, unsigned int offset, const fileUtils::path& filePath, const fileUtils::path& outputFolder) {
+void GFX::createAnim(const fileUtils::buffer& buffer, uint64_t offset, const fileUtils::path& filePath, const fileUtils::path& outputFolder) {
 	unsigned int animationCount = (buffer.at(offset + 3) << 24) | buffer.at(offset + 2) << 16 | (buffer.at(offset + 1) << 8) | buffer.at(offset);
 	std::vector<std::string> animationNames;
 

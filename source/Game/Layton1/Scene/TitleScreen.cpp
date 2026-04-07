@@ -1,4 +1,4 @@
-#include "Game/Scene/Layton1/TitleScreen.h"
+#include "Game/Layton1/Scene/TitleScreen.h"
 #include "Game/Sprite/ParallaxSprite.h"
 #include "Game/Sprite/FadingSprite.h"
 #include "Game/Sprite/AnimatedSprite.h"

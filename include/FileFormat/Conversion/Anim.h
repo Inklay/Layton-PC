@@ -12,5 +12,5 @@ public:
 	std::vector<uint32_t> m_imageIdx;
 
 private:
-	static void convertByte(fileUtils::buffer& buffer, const uint32_t byte);
+	static void convertByte(fileUtils::buffer& buffer, const size_t byte);
 };

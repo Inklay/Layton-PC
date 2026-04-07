@@ -1,5 +1,5 @@
-#include "Game/Layton1.h"
-#include "Game/Scene/Layton1/TitleScreen.h"
+#include "Game/Layton1/Layton1.h"
+#include "Game/Layton1/Scene/TitleScreen.h"
 
 Layton1::Layton1(const fileUtils::path& assetsPath, SDL_Window& window) :
 	Game(assetsPath, "LAYTON1", window)

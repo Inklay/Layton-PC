@@ -22,9 +22,9 @@ Anim::Anim(const fileUtils::path& inputFile) {
 
 void Anim::create(std::vector<uint32_t> framesUnk, std::vector<uint32_t> imageIdx, const fileUtils::path& outputFile) {
 	fileUtils::buffer buffer;
-	const uint32_t frameCount = framesUnk.size();
+	const size_t frameCount = framesUnk.size();
 
-	buffer.reserve(4 + frameCount * 8);
+	buffer.reserve((size_t)4 + frameCount * 8);
 	convertByte(buffer, frameCount);
 
 	for (unsigned int i = 0; i < frameCount; i++) {
@@ -38,9 +38,9 @@ void Anim::create(std::vector<uint32_t> framesUnk, std::vector<uint32_t> imageId
 	fileUtils::writeBin(buffer, outputFile);
 }
 
-void Anim::convertByte(fileUtils::buffer& buffer, const uint32_t byte) {
-	buffer.emplace_back((byte & 0xFF));
-	buffer.emplace_back((byte & 0xFF00) >> 8);
-	buffer.emplace_back((byte & 0xFF0000) >> 16);
-	buffer.emplace_back((byte & 0xFF000000) >> 24);
+void Anim::convertByte(fileUtils::buffer& buffer, const size_t byte) {
+	buffer.emplace_back((uint8_t)(byte & 0xFF));
+	buffer.emplace_back((uint8_t)((byte & 0xFF00) >> 8));
+	buffer.emplace_back((uint8_t)((byte & 0xFF0000) >> 16));
+	buffer.emplace_back((uint8_t)((byte & 0xFF000000) >> 24));
 }

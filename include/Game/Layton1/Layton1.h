@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Game.h"
+#include "Game/Game.h"
 
 class Layton1 : public Game {
 public:

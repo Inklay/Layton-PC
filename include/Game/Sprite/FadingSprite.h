@@ -1,7 +1,5 @@
 #pragma once
 
-#pragma once
-
 #include "Game/Sprite/Sprite.h"
 
 class FadingSprite : public Sprite {
@@ -10,6 +8,6 @@ public:
 	void draw() override;
 
 private:
-	int m_duration;
-	int m_timer;
+	size_t m_duration;
+	size_t m_timer;
 };

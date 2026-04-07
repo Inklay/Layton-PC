@@ -55,7 +55,7 @@ Huffman::TreeNode::TreeNode(const fileUtils::buffer& buffer, bool isData, size_t
 		unsigned int dataOffset = m_data & 0x3F;
 		unsigned int childAIsData = (m_data & 0x80) > 0;
 		unsigned int childBIsData = (m_data & 0x40) > 0;
-		unsigned int childOffset = (offset ^ (offset & 1)) + dataOffset * 2 + 2;
+		size_t childOffset = (offset ^ (offset & 1)) + size_t(dataOffset) * 2 + 2;
 
 		m_childA = std::make_unique<TreeNode>(buffer, childAIsData, childOffset);
 		m_childB = std::make_unique<TreeNode>(buffer, childBIsData, childOffset + 1);

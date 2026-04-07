@@ -6,10 +6,11 @@ fileUtils::buffer LZSS::decompress(const fileUtils::path& filePath, size_t offse
 	const size_t decompressedSize = 0 | (buffer.at(3) << 16) | (buffer.at(2) << 8) | buffer.at(1);
 
 	switch (versionByte) {
-		case 0x10:
-			return decompressLZ10(decompressedSize, buffer);
 		case 0x11:
 			return decompressLZ11(decompressedSize, buffer);
+		case 0x10:
+		default:
+			return decompressLZ10(decompressedSize, buffer);
 	}
 }
 

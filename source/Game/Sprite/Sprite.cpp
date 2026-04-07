@@ -46,6 +46,6 @@ void Sprite::center() {
 	} else if (m_transform.y == sdlUtils::POS_CENTER_TOP) {
 		m_transform.y = (sdlUtils::baseHeight / 2 - m_transform.h) / 2;
 	} else if (m_transform.y == sdlUtils::POS_CENTER_BOTTOM) {
-		m_transform.y = (sdlUtils::baseHeight * 1.5 - m_transform.h) / 2;
+		m_transform.y = (float)(sdlUtils::baseHeight * 1.5 - m_transform.h) / 2;
 	}
 }

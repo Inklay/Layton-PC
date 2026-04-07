@@ -48,13 +48,13 @@
     <ClCompile Include="source\FileFormat\Compression\RLE.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="source\Game\Layton1.cpp">
+    <ClCompile Include="source\Game\Layton1\Layton1.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="source\Game\Scene\Layton1\TitleScreen.cpp">
+    <ClCompile Include="source\Game\Layton1\Scene\TitleScreen.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="source\Game\Scene\Scene.cpp">
+    <ClCompile Include="source\Game\Scene.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="source\Game\Sprite\Sprite.cpp">
@@ -82,6 +82,12 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="source\FileFormat\Conversion\SADL.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Game\Layton1\Layton1Save.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Game\Save.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -377,13 +383,13 @@
     <ClInclude Include="include\FileFormat\Compression\RLE.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="include\Game\Layton1.h">
+    <ClInclude Include="include\Game\Layton1\Layton1.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="include\Game\Scene.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="include\Game\Scene\Layton1\TitleScreen.h">
+    <ClInclude Include="include\Game\Layton1\Scene\TitleScreen.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="include\Game\Sprite\Sprite.h">
@@ -411,6 +417,9 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="include\FileFormat\Conversion\SADL.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Game\Save.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

@@ -16,7 +16,7 @@ You will also need ffmpeg in a bin folder next to the game's executable
 
 - The LZSS decompressor code is inspired by [magical's nlzss](https://github.com/magical/nlzss/tree/master)
 - The PCM and BG converter as well as the RLE decompressor are inspired by [patataofcourse's Flora](https://github.com/patataofcourse/Flora/tree/main)
-- The PNG file writter is from [nothings's stb](https://github.com/nothings/stb/tree/master)
+- The PNG file writter is from [nothings' stb](https://github.com/nothings/stb/tree/master)
 - The Huffman decompressor and the GFX  conversion are inpired by [pleonex's tinke](https://github.com/pleonex/tinke)
 - The whole game rendering is using [SDL3](https://wiki.libsdl.org/SDL3/FrontPage)
 - PNG file support is from [SDL3_Image](https://wiki.libsdl.org/SDL3_image/FrontPage)
