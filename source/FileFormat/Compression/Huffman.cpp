@@ -30,7 +30,6 @@ fileUtils::buffer Huffman::decompress(const fileUtils::path& filePath, size_t of
 			decompressedBuffer.emplace_back(currentNode->m_data);
 			decompressed++;
 		} else {
-			std::cout << "4bpp" << std::endl;
 			if (cachedByte == -1) {
 				cachedByte = currentNode->m_data << 4;
 			} else {

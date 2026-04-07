@@ -1,15 +1,15 @@
 #include "Utils/StringUtils.h"
 
-void replace(std::string& str, const std::string& toReplace, const std::string& replaceWith) {
-	size_t pos = str.find(toReplace);
-
-	while (pos != std::string::npos) {
-		str.replace(pos, toReplace.length(), replaceWith);
-		pos = str.find(toReplace);
-	}
-}
-
 namespace stringUtils {
+	void replace(std::string& str, const std::string& toReplace, const std::string& replaceWith) {
+		size_t pos = str.find(toReplace);
+
+		while (pos != std::string::npos) {
+			str.replace(pos, toReplace.length(), replaceWith);
+			pos = str.find(toReplace);
+		}
+	}
+
 	void addAccents(std::string& str) {
 		replace(str, "<,c>", "ç");
 		replace(str, "<'e>", "é");

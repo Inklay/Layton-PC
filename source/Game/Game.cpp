@@ -3,7 +3,7 @@
 #include "Utils/folderUtils.h"
 #include "Utils/fileUtils.h"
 #include "FileFormat/Conversion/BGX.h"
-#include "FileFormat/Conversion/ARJ.h"
+#include "FileFormat/Conversion/GFX.h"
 #include <array>
 #include <algorithm>
 #include <execution>
@@ -59,7 +59,7 @@ void Game::covertImgData() const {
 }
 
 void Game::covertAnimData() const {
-	ARJ::convert(m_assetsPath / "ani", m_gameFolder / "ani");
+	GFX::convert(m_assetsPath / "ani", m_gameFolder / "ani");
 }
 
 void Game::run() {
