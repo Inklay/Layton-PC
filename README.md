@@ -4,19 +4,20 @@ A C++ rewrite of the DS Layton game that can read DS roms assets to run on PC. T
 
 The project will only host the code C++ code that allows to convert the DS game assets and play the game, there will never be any assets hosted on this repository. To be able to use this project you will need a legally obtained dump of your Layton game.
 
-For I'm working on the data conversation from an unpacked DS roms, once the conversion side of thing is done I'll work on adding the basics of the gameplay (puzzles, maps, dialogues, cinematics...) Since this is a full rewrite of the games, it will take time.
+For now I'm working on the data conversation from an unpacked DS roms, once the conversion side of thing is done I'll work on adding the basics of the gameplay (puzzles, maps, dialogues, cinematics...) Since this is a full rewrite of the games, it will take some time.
 
 ## Building
 
 You need to use C++17 or later to, build this project.
-The only dependencies needed for now are SDL3 (I'm specifically using SDL3-3.4.4) and SDL3_Image (3.4.0)
+The only dependencies needed for now are SDL3 (I'm specifically using SDL3-3.4.2) and SDL3_Image (3.4.2)
+You will also need ffmpeg in a bin folder next to the game's executable
 
 ## Thanks and credits:
 
 - The LZSS decompressor code is inspired by [magical's nlzss](https://github.com/magical/nlzss/tree/master)
 - The PCM and BG converter as well as the RLE decompressor are inspired by [patataofcourse's Flora](https://github.com/patataofcourse/Flora/tree/main)
 - The PNG file writter is from [nothings's stb](https://github.com/nothings/stb/tree/master)
-- The Huffman decompressor and the GFX conversion are inpired by [pleonex's tink](https://github.com/pleonex/tinke)
+- The Huffman decompressor, the GFX and SAD conversion are inpired by [pleonex's tink](https://github.com/pleonex/tinke)
 - The whole game rendering is using [SDL3](https://wiki.libsdl.org/SDL3/FrontPage)
 - PNG file support is from [SDL3_Image](https://wiki.libsdl.org/SDL3_image/FrontPage)
 - The MODS conversion is using [FFMPEG](https://wiki.libsdl.org/SDL3_image/FrontPage)
