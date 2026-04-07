@@ -17,5 +17,6 @@ The only dependencies needed for now are SDL3 (I'm specifically using SDL3-3.4.4
 - The PCM and BG converter as well as the RLE decompressor are inspired by [patataofcourse's Flora](https://github.com/patataofcourse/Flora/tree/main)
 - The PNG file writter is from [nothings's stb](https://github.com/nothings/stb/tree/master)
 - The Huffman decompressor and the GFX conversion are inpired by [pleonex's tink](https://github.com/pleonex/tinke)
-- [SDL3](https://wiki.libsdl.org/SDL3/FrontPage)
-- [SDL3_Image](https://wiki.libsdl.org/SDL3_image/FrontPage)
+- The whole game rendering is using [SDL3](https://wiki.libsdl.org/SDL3/FrontPage)
+- PNG file support is from [SDL3_Image](https://wiki.libsdl.org/SDL3_image/FrontPage)
+- The MODS conversion is using [FFMPEG](https://wiki.libsdl.org/SDL3_image/FrontPage)

@@ -4,6 +4,7 @@
 #include "Utils/fileUtils.h"
 #include "FileFormat/Conversion/BGX.h"
 #include "FileFormat/Conversion/GFX.h"
+#include "FileFormat/Conversion/MODS.h"
 #include "Utils/sdlutils.h"
 #include <array>
 #include <algorithm>
@@ -23,17 +24,19 @@ Game::Game(const fileUtils::path& assetsPath, const std::string& name, SDL_Windo
 }
 
 void Game::convertData() const {
-	//if (std::filesystem::exists(m_gameFolder / "extracted")) {
-	//	return;
-	//}
+	if (std::filesystem::exists(m_gameFolder / "extracted")) {
+		return;
+	}
 
 	if (!std::filesystem::exists(m_assetsPath)) {
+		std::cerr << "can't open " << std::filesystem::absolute(m_assetsPath) << std::endl;
 		exit(1);
 	}
 
-	//convertTextData();
-	//convertImgData();
+	convertTextData();
+	convertImgData();
 	convertAnimData();
+	convertVideoData();
 
 	fileUtils::writeText("", m_gameFolder / "extracted");
 	std::cout << "Data conversion done !" << std::endl;
@@ -62,6 +65,11 @@ void Game::convertImgData() const {
 
 void Game::convertAnimData() const {
 	GFX::convert(m_assetsPath / "ani", m_gameFolder / "ani");
+}
+
+
+void Game::convertVideoData() const {
+	MODS::convert(m_assetsPath / "video", m_gameFolder / "video");
 }
 
 void Game::run() {
