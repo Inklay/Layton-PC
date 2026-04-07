@@ -5,6 +5,7 @@
 #include "FileFormat/Conversion/BGX.h"
 #include "FileFormat/Conversion/GFX.h"
 #include "FileFormat/Conversion/MODS.h"
+#include "FileFormat/Conversion/SADL.h"
 #include "Utils/sdlutils.h"
 #include <array>
 #include <algorithm>
@@ -24,19 +25,20 @@ Game::Game(const fileUtils::path& assetsPath, const std::string& name, SDL_Windo
 }
 
 void Game::convertData() const {
-	if (std::filesystem::exists(m_gameFolder / "extracted")) {
-		return;
-	}
+	//if (std::filesystem::exists(m_gameFolder / "extracted")) {
+	//	return;
+	//}
 
 	if (!std::filesystem::exists(m_assetsPath)) {
 		std::cerr << "can't open " << std::filesystem::absolute(m_assetsPath) << std::endl;
 		exit(1);
 	}
 
-	convertTextData();
-	convertImgData();
-	convertAnimData();
-	convertVideoData();
+	//convertTextData();
+	//convertImgData();
+	//convertAnimData();
+	//convertVideoData();
+	convertAudioData();
 
 	fileUtils::writeText("", m_gameFolder / "extracted");
 	std::cout << "Data conversion done !" << std::endl;
@@ -78,6 +80,12 @@ void Game::convertVideoData() const {
 	std::cout << "Converting video data..." << std::endl;
 
 	MODS::convert(m_assetsPath / "video", m_gameFolder / "video");
+}
+
+void Game::convertAudioData() const {
+	std::cout << "Converting audio data..." << std::endl;
+
+	SADL::convert(m_assetsPath / "stream", m_gameFolder / "stream");
 }
 
 void Game::run() {

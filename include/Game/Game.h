@@ -28,6 +28,7 @@ private:
 	void convertImgData() const;
 	void convertAnimData() const;
 	void convertVideoData() const;
+	void convertAudioData() const;
 
 	const fileUtils::path& m_assetsPath;
 	const std::string& m_name;
