@@ -18,13 +18,12 @@ SDL_Window* initSdl() {
 int main()
 {
 	SDL_Window *window = initSdl();
-	//sdlUtils::SDL_WindowPtr window = initSdl();
 
 	if (window == nullptr) {
 		exit(1);
 	}
 
-	Layton1 game("C:\\Users\\inkla\\Desktop\\NDS_UNPACK\\data\\data", *window);
+	Layton1 game("NDS_UNPACK\\data\\data", *window);
 	game.run();
 
 	SDL_DestroyWindow(window);

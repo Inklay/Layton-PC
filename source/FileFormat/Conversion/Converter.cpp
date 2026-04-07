@@ -14,5 +14,5 @@ void Converter::convertFileFromFolder(const fileUtils::path& folderPath, const f
 }
 
 bool Converter::isFileCompressed(const fileUtils::path& file) {
-	return file.extension() == ".pcm" || file.extension() == ".arc";
+	return file.extension() == ".pcm" || file.extension() == ".arc" || file.extension() == ".arj";
 }

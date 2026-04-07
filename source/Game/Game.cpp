@@ -29,9 +29,9 @@ void Game::convertData() const {
 		exit(1);
 	}
 
-	/*convertTextData();
-	covertImgData();*/
-	covertAnimData();
+	//convertTextData();
+	//convertImgData();
+	convertAnimData();
 
 	fileUtils::writeText("", m_gameFolder / "extracted");
 	std::cout << "Data conversion done !" << std::endl;
@@ -54,11 +54,11 @@ void Game::convertTextData() const {
 	});
 }
 
-void Game::covertImgData() const {
+void Game::convertImgData() const {
 	BGX::convert(m_assetsPath / "bg", m_gameFolder / "bg");
 }
 
-void Game::covertAnimData() const {
+void Game::convertAnimData() const {
 	GFX::convert(m_assetsPath / "ani", m_gameFolder / "ani");
 }
 

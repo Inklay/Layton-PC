@@ -5,13 +5,13 @@
 #include "Utils/StringUtils.h"
 
 void GFX::convert(const fileUtils::path& folderPath, const fileUtils::path& outputFolder) {
-	//convertFileFromFolder(folderPath, outputFolder, ".arc", convertToPngs);
-	convertToPngs(folderPath / "clock_numbers.arc", outputFolder, true);
+	//convertFileFromFolder(folderPath, outputFolder, ".arj", convertToPngs);
+	convertFileFromFolder(folderPath, outputFolder, ".arc", convertToPngs);
+	//convertToPngs(folderPath / "clock_numbers.arc", outputFolder, true);
 }
 
 void GFX::convertToPngs(const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool isCompressed) {
 	fileUtils::buffer buffer = fileUtils::decompress(filePath, 4);
-	std::cout << filePath << std::endl;
 	if (buffer.size() == 0) {
 		return;
 	}
@@ -20,6 +20,10 @@ void GFX::convertToPngs(const fileUtils::path& filePath, const fileUtils::path& 
 	unsigned int colorDepth = ((buffer.at(3) << 8) | buffer.at(2)) == 3 ? 4 : 8;
 	unsigned int offset = 4;
 	std::vector<GFX::Image> images = getImages(imageCount, colorDepth, buffer, offset);
+	if (images.size() == 0) {
+		std::cerr << "Invalid GFX file at " << filePath << std::endl;
+		return;
+	}
 
 	unsigned int paletteCount = ((buffer.at(offset + 3) << 24) | (buffer.at(offset + 2) << 16) | (buffer.at(offset + 1) << 8) | buffer.at(offset));
 	std::vector<uint16_t> colors;
@@ -63,6 +67,10 @@ std::vector<GFX::Image> GFX::getImages(unsigned int imageCount, unsigned int col
 			data.reserve(size);
 
 			for (unsigned int i = 0; i < size; i++) {
+				if ((8 + i + offset) >= buffer.size()) {
+					images.clear();
+					return images;
+				}
 				data.emplace_back(buffer.at(8 + i + offset));
 			}
 
@@ -114,6 +122,7 @@ void GFX::createPng(unsigned int imageCount, unsigned int colorDepth, const std:
 
 		std::string outputFile = (outputFolder / filePath.filename().replace_extension(std::to_string(i) + ".png")).string();
 		stringUtils::replace(outputFile, "*", "");
+		stringUtils::replace(outputFile, "?", "");
 		stbi_write_png(outputFile.c_str(), images.at(i).m_width, images.at(i).m_height, 4, bmpBuffer.data(), size.first * 4);
 	}
 }
@@ -184,6 +193,7 @@ void GFX::createAnim(const fileUtils::buffer& buffer, unsigned int offset, const
 
 		std::string outputFile = filePath.filename().stem().string() + "_" + animationNames.at(i) + ".anim";
 		stringUtils::replace(outputFile, "*", "");
+		stringUtils::replace(outputFile, "?", "");
 
 		Anim::create(framesUnk, imageIdx, outputFolder / outputFile);
 	}
