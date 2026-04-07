@@ -6,9 +6,9 @@ Scene::Scene(Type type) :
 }
 
 void Scene::unload() {
-	for (std::pair<std::string, Sprite> it : m_sprites) {
-		SDL_DestroyTexture(it.second.m_texture);
-		SDL_DestroySurface(it.second.m_surface);
+	for (auto& it : m_sprites) {
+		it.second->unload();
+		it.second.release();
 	}
 
 	m_sprites.clear();

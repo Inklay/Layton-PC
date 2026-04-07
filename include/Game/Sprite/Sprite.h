@@ -2,13 +2,16 @@
 
 #include "SDL3/SDL.h"
 #include "Utils/FileUtils.h"
+#include "Utils/SdlUtils.h"
+#include "SDL3_image/SDL_image.h"
 
 class Scene;
 
 class Sprite {
 public:
 	Sprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, SDL_FRect subTexture = { -1, -1, -1, -1 });
-	void draw(SDL_Renderer* renderer) const;
+	virtual void draw();
+	virtual void unload();
 
 	SDL_Surface* m_surface;
 	SDL_Texture* m_texture;

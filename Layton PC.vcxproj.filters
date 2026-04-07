@@ -57,7 +57,7 @@
     <ClCompile Include="source\Game\Scene\Scene.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="source\Game\Sprite.cpp">
+    <ClCompile Include="source\Game\Sprite\Sprite.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="source\FileFormat\Conversion\GFX.cpp">
@@ -70,6 +70,9 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="source\FileFormat\Conversion\MODS.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Game\Sprite\ParallaxSprite.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -374,7 +377,7 @@
     <ClInclude Include="include\Game\Scene\Layton1\TitleScreen.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="include\Game\Sprite.h">
+    <ClInclude Include="include\Game\Sprite\Sprite.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="include\FileFormat\Conversion\GFX.h">
@@ -387,6 +390,9 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="include\FileFormat\Conversion\MODS.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Game\Sprite\ParallaxSprite.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

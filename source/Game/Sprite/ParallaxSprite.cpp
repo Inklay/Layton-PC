@@ -1,0 +1,50 @@
+#include "Game/Sprite/ParallaxSprite.h"
+#include "Game/Scene.h"
+
+ParallaxSprite::ParallaxSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, int duration, sdlUtils::Dir dir, SDL_FRect subTexture) :
+	Sprite(file, scene, transform, subTexture)
+{
+	m_duration = duration;
+	m_dir = dir;
+	m_transform2 = m_transform;
+
+	switch (m_dir) {
+		case sdlUtils::LEFT:
+			m_transform2.x += m_transform2.w;
+			break;
+		case sdlUtils::RIGHT:
+			m_transform2.x -= m_transform2.w;
+			break;
+	}
+}
+
+void ParallaxSprite::draw() {
+	float timeElapsed = SDL_GetTicks() - m_scene->m_lastTick;
+	float advancement = (timeElapsed / m_duration) * m_transform.w;
+
+	if (m_dir == sdlUtils::LEFT) {
+		m_transform.x -= advancement;
+		m_transform2.x -= advancement;
+
+		if (m_transform.x >= m_transform.w * -1) {
+			m_transform.x += m_transform.w * 2;
+		}
+		if (m_transform2.x >= m_transform2.w * -1) {
+			m_transform2.x += m_transform2.w * 2;
+		}
+	} else if (m_dir == sdlUtils::RIGHT) {
+		m_transform.x += advancement;
+		m_transform2.x += advancement;
+
+		if (m_transform.x >= m_transform.w) {
+			m_transform.x -= m_transform.w * 2;
+		}
+		if (m_transform2.x >= m_transform2.w) {
+			m_transform2.x -= m_transform2.w * 2;
+		}
+	}
+
+	const SDL_FRect* subTexture = m_subTexture.h < 0 || m_subTexture.w < 0 ? nullptr : reinterpret_cast<const SDL_FRect*>(&m_subTexture);
+	SDL_RenderTexture(m_scene->m_renderer, m_texture, subTexture, reinterpret_cast<const SDL_FRect*>(&m_transform));
+	SDL_RenderTexture(m_scene->m_renderer, m_texture, subTexture, reinterpret_cast<const SDL_FRect*>(&m_transform2));
+}

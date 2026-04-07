@@ -12,7 +12,7 @@ namespace sdlUtils {
 		SDL_SetWindowSize(window, baseWidth * multiplier, baseHeight * multiplier);
 		SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 
-		return multiplier / 2;
+		return multiplier;
 	}
 
 	void multiply(SDL_FRect& rect, float multiplier) {

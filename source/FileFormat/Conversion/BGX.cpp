@@ -91,10 +91,17 @@ void BGX::convertToPng(const fileUtils::path& filePath, const fileUtils::path& o
 					unsigned int imgY = y * 8 + tileY;
 					unsigned int idx = (imgY * imgWidth + imgX) * 4;
 
-					rawImageData[idx] = (color & 0x1f) * 8;
-					rawImageData[idx + 1] = (color >> 5 & 0x1f) * 8;
-					rawImageData[idx + 2] = (color >> 10 & 0x1f) * 8;
-					rawImageData[idx + 3] = colorPaletteIdx == 0 ? 0x0 : 0xFF;
+					if (colorPaletteIdx == 0) {
+						rawImageData[idx] = 0;
+						rawImageData[idx + 1] = 0;
+						rawImageData[idx + 2] = 0;
+						rawImageData[idx + 3] = 0;
+					} else {
+						rawImageData[idx] = (color & 0x1f) * 8;
+						rawImageData[idx + 1] = (color >> 5 & 0x1f) * 8;
+						rawImageData[idx + 2] = (color >> 10 & 0x1f) * 8;
+						rawImageData[idx + 3] = 0xFF;
+					}
 				}
 			}
 		}

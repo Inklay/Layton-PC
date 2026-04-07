@@ -165,7 +165,8 @@
     <ClCompile Include="source\Game\Layton1.cpp" />
     <ClCompile Include="source\Game\Scene\Layton1\TitleScreen.cpp" />
     <ClCompile Include="source\Game\Scene\Scene.cpp" />
-    <ClCompile Include="source\Game\Sprite.cpp" />
+    <ClCompile Include="source\Game\Sprite\ParallaxSprite.cpp" />
+    <ClCompile Include="source\Game\Sprite\Sprite.cpp" />
     <ClCompile Include="source\Utils\FileUtils.cpp" />
     <ClCompile Include="source\FileFormat\Conversion\LPCK.cpp" />
     <ClCompile Include="source\LaytonPC.cpp" />
@@ -186,7 +187,8 @@
     <ClInclude Include="include\Game\Layton1.h" />
     <ClInclude Include="include\Game\Scene.h" />
     <ClInclude Include="include\Game\Scene\Layton1\TitleScreen.h" />
-    <ClInclude Include="include\Game\Sprite.h" />
+    <ClInclude Include="include\Game\Sprite\Sprite.h" />
+    <ClInclude Include="include\Game\Sprite\ParallaxSprite.h" />
     <ClInclude Include="include\Utils\FileUtils.h" />
     <ClInclude Include="include\FileFormat\Conversion\LPCK.h" />
     <ClInclude Include="include\Utils\FolderUtils.h" />
