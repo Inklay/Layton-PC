@@ -194,8 +194,8 @@ void GFX::createAnim(const fileUtils::buffer& buffer, unsigned int offset, const
 			imageIdx.emplace_back((buffer.at(offset + 3) << 24) | (buffer.at(offset + 2) << 16) | (buffer.at(offset + 1) << 8) | buffer.at(offset));
 			offset += 4;
 		}
-
-		std::string outputFile = filePath.filename().stem().string() + "_" + animationNames.at(i) + ".anim";
+		
+		std::string outputFile = filePath.filename().replace_extension(animationNames.at(i) + ".anim").string();
 		stringUtils::replace(outputFile, "*", "");
 		stringUtils::replace(outputFile, "?", "");
 

@@ -18,4 +18,8 @@ public:
 	SDL_FRect m_transform;
 	SDL_FRect m_subTexture;
 	Scene* m_scene;
+
+protected:
+	Sprite(Scene* scene, SDL_FRect transform, SDL_FRect subTexture);
+	void center();
 };

@@ -8,6 +8,19 @@ Sprite::Sprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, S
 	m_subTexture = subTexture;
 	m_scene = scene;
 
+	center();
+
+	sdlUtils::multiply(m_transform, scene->m_windowMultiplier);
+	sdlUtils::multiply(m_subTexture, scene->m_windowMultiplier);
+}
+
+Sprite::Sprite(Scene* scene, SDL_FRect transform, SDL_FRect subTexture) {
+	m_transform = transform;
+	m_subTexture = subTexture;
+	m_scene = scene;
+
+	center();
+
 	sdlUtils::multiply(m_transform, scene->m_windowMultiplier);
 	sdlUtils::multiply(m_subTexture, scene->m_windowMultiplier);
 }
@@ -20,4 +33,13 @@ void Sprite::draw() {
 void Sprite::unload() {
 	SDL_DestroyTexture(m_texture);
 	SDL_DestroySurface(m_surface);
+}
+
+void Sprite::center() {
+	if (m_transform.x == SDL_WINDOWPOS_CENTERED) {
+		m_transform.x = (sdlUtils::baseWidth - m_transform.w) / 2;
+	}
+	if (m_transform.y == SDL_WINDOWPOS_CENTERED) {
+		m_transform.y = (sdlUtils::baseHeight - m_transform.h) / 2;
+	}
 }
