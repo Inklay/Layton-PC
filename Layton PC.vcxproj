@@ -177,6 +177,7 @@
     <ClCompile Include="source\Game\Save.cpp" />
     <ClCompile Include="source\Game\Scene.cpp" />
     <ClCompile Include="source\Game\Sprite\AnimatedSprite.cpp" />
+    <ClCompile Include="source\Game\Sprite\ClickableSprite.cpp" />
     <ClCompile Include="source\Game\Sprite\FadingSprite.cpp" />
     <ClCompile Include="source\Game\Sprite\ParallaxSprite.cpp" />
     <ClCompile Include="source\Game\Sprite\Sprite.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="include\Game\Scene.h" />
     <ClInclude Include="include\Game\Layton1\Scene\TitleScreen.h" />
     <ClInclude Include="include\Game\Sprite\AnimatedSprite.h" />
+    <ClInclude Include="include\Game\Sprite\ClickableSprite.h" />
     <ClInclude Include="include\Game\Sprite\FadingSprite.h" />
     <ClInclude Include="include\Game\Sprite\Sprite.h" />
     <ClInclude Include="include\Game\Sprite\ParallaxSprite.h" />

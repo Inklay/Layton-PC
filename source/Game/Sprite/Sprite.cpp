@@ -2,12 +2,13 @@
 #include "Game/Scene.h"
 #include "Game/Game.h"
 
-Sprite::Sprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, SDL_FRect subTexture) {
-	m_surface = IMG_Load(file.string().c_str());
+Sprite::Sprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, SDL_FRect subTexture, bool interactive) {
+	m_scene = scene;
+	m_surface = IMG_Load((m_scene->m_game->m_gameFolder / file).string().c_str());
 	m_texture = SDL_CreateTextureFromSurface(scene->m_game->m_renderer, m_surface);
 	m_transform = transform;
 	m_subTexture = subTexture;
-	m_scene = scene;
+	m_interactive = interactive;
 
 	SDL_SetTextureScaleMode(m_texture, SDL_SCALEMODE_NEAREST);
 
@@ -16,9 +17,12 @@ Sprite::Sprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, S
 }
 
 Sprite::Sprite(Scene* scene, SDL_FRect transform, SDL_FRect subTexture) {
+	m_surface = nullptr;
+	m_texture = nullptr;
 	m_transform = transform;
 	m_subTexture = subTexture;
 	m_scene = scene;
+	m_interactive = false;
 
 	sdlUtils::multiply(m_transform, scene->m_game->m_windowMultiplier);
 	sdlUtils::multiply(m_subTexture, scene->m_game->m_windowMultiplier);

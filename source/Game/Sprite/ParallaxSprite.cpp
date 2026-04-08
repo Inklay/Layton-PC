@@ -3,9 +3,7 @@
 #include "Game/Game.h"
 
 ParallaxSprite::ParallaxSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, int duration, sdlUtils::Dir dir, SDL_FRect subTexture) :
-	Sprite(file, scene, transform, subTexture),
-	m_surface2(nullptr),
-	m_texture2(nullptr)
+	Sprite(file, scene, transform, subTexture)
 {
 	m_duration = duration;
 	m_dir = dir;
@@ -56,4 +54,9 @@ void ParallaxSprite::draw() {
 	const SDL_FRect* subTexture = m_subTexture.h < 0 || m_subTexture.w < 0 ? nullptr : reinterpret_cast<const SDL_FRect*>(&m_subTexture);
 	SDL_RenderTexture(m_scene->m_game->m_renderer, m_texture, subTexture, reinterpret_cast<const SDL_FRect*>(&m_transform));
 	SDL_RenderTexture(m_scene->m_game->m_renderer, m_texture, subTexture, reinterpret_cast<const SDL_FRect*>(&m_transform2));
+}
+
+void ParallaxSprite::unload() {
+	SDL_DestroyTexture(m_texture);
+	SDL_DestroySurface(m_surface);
 }
