@@ -8,7 +8,7 @@ SDL_Window* initSdl() {
 		return nullptr;
 	}
 
-	SDL_Window* window = SDL_CreateWindow("Layton PC rewrite", sdlUtils::baseWidth, sdlUtils::baseHeight, 0);
+	SDL_Window* window = SDL_CreateWindow("Layton PC rewrite", sdlUtils::WIDTH, sdlUtils::HEIGHT, 0);
 	if (window == nullptr) {
 		std::cerr << "SDL could not created window! error: " << SDL_GetError() << std::endl;
 	}

@@ -17,12 +17,12 @@ namespace Layton1Scene {
 
 		float startButtonYOffset = m_hasSave ? 50.0f : 30.0f;
 
-		m_sprites.insert({ "topBackground", std::make_unique<Sprite>("bg/select_title.png", this, SDL_FRect{ 0, 0, 256, 192 }) });
-		m_sprites.insert({ "gameLogo", std::make_unique<FadingSprite>("ani/fr/sub_title_logo.png", this, SDL_FRect{ sdlUtils::centerXPos(168), sdlUtils::centerTopPos(80), 168, 80}, 800, -1500)});
-		m_sprites.insert({ "parallax1", std::make_unique<ParallaxSprite>("bg/start_select2.png", this, SDL_FRect{ 0, 192, 256, 192 }, 10000, sdlUtils::RIGHT) });
-		m_sprites.insert({ "parallax2", std::make_unique<ParallaxSprite>("bg/start_select.png", this, SDL_FRect{ 0, 192, 256, 192 }, 5000, sdlUtils::RIGHT) });
-		m_sprites.insert({ "car", std::make_unique<AnimatedSprite>("ani/start_car.gfx.anim", this, SDL_FRect{ sdlUtils::centerXPos(98), 321, 98, 62})});
-		m_sprites.insert({ "startButton", std::make_unique<ClickableSprite>("ani/fr/startbutton.0.png", "ani/fr/startbutton.1.png", this, SDL_FRect{ sdlUtils::centerXPos(82), sdlUtils::centerBottomPos(16) - startButtonYOffset, 82, 16})});
+		m_sprites.insert({ "topBackground", std::make_unique<Sprite>("bg/select_title.png", this, SDL_FRect{ 0, 0, WIDTH, HALF_HEIGHT }) });
+		m_sprites.insert({ "gameLogo", std::make_unique<FadingSprite>("ani/fr/sub_title_logo.png", this, SDL_FRect{ centerXPos(168), centerTopPos(80), 168, 80}, 800, -1500)});
+		m_sprites.insert({ "parallax1", std::make_unique<ParallaxSprite>("bg/start_select2.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, 192 }, 10000, RIGHT) });
+		m_sprites.insert({ "parallax2", std::make_unique<ParallaxSprite>("bg/start_select.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, 5000, RIGHT) });
+		m_sprites.insert({ "car", std::make_unique<AnimatedSprite>("ani/start_car.gfx.anim", this, SDL_FRect{ centerXPos(98), 321, 98, 62})});
+		m_sprites.insert({ "startButton", std::make_unique<ClickableSprite>("ani/fr/startbutton.0.png", "ani/fr/startbutton.1.png", this, SDL_FRect{ centerXPos(82), centerBottomPos(16) - startButtonYOffset, 82, 16})});
 
 		playBGM(m_game->m_gameFolder / "sound/SEQ_BG_001.wav");
 	}
@@ -40,7 +40,7 @@ namespace Layton1Scene {
 		m_lastTick = SDL_GetTicks();
 	}
 
-	void TitleScreen::handleClick(const std::string& spriteName) {
+	void TitleScreen::handleClick(const std::string& spriteName, SDL_Event event) {
 		if (spriteName == "startButton") {
 			if (!m_hasSave) {
 				m_game->changeScene(Scene::CREATE_SAVE);

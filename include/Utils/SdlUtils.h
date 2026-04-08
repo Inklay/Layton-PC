@@ -10,8 +10,9 @@ namespace sdlUtils {
 		RIGHT
 	};
 
-	const int baseWidth = 256;
-	const int baseHeight = 384;
+	const int WIDTH = 256;
+	const int HEIGHT = 384;
+	const int HALF_HEIGHT = 192;
 
 	float centerYPos(float size);
 	float centerXPos(float size);

@@ -2,7 +2,7 @@
 #include "Game/Scene.h"
 #include "Game/Game.h"
 
-Sprite::Sprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, SDL_FRect subTexture, bool interactive) {
+Sprite::Sprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, bool interactive, SDL_FRect subTexture) {
 	m_scene = scene;
 	m_surface = IMG_Load((m_scene->m_game->m_gameFolder / file).string().c_str());
 	m_texture = SDL_CreateTextureFromSurface(scene->m_game->m_renderer, m_surface);

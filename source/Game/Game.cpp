@@ -19,7 +19,7 @@ Game::Game(const fileUtils::path& assetsPath, const std::string& name, SDL_Windo
 {
 	m_renderer = SDL_CreateRenderer(&m_window, nullptr);
 	m_gameFolder = std::filesystem::current_path() / "games" / m_name;
-	m_sceneType = Scene::TITLE_SCREEN;
+	m_sceneType = Scene::CREATE_SAVE;
 
 	m_windowMultiplier = sdlUtils::scaleWindow(&window);
 	m_audioStream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &sdlUtils::audioSpec, NULL, nullptr);

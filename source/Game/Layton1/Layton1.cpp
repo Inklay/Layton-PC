@@ -8,7 +8,7 @@ Layton1::Layton1(const fileUtils::path& assetsPath, SDL_Window& window) :
 {
 	getSaves();
 	createScenes();
-	m_scenes.at(Scene::TITLE_SCREEN).get()->load();
+	m_scenes.at(Scene::CREATE_SAVE).get()->load();
 ;}
 
 void Layton1::createScenes() {

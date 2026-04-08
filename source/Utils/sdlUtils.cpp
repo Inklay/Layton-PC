@@ -8,8 +8,8 @@ namespace sdlUtils {
 
 		const SDL_DisplayMode* displayMode = SDL_GetCurrentDisplayMode(SDL_GetDisplayForWindow(window));
 		SDL_GetWindowSize(window, &w, &h);
-		float multiplier = std::min((float)displayMode->w / (float)baseWidth, (float)((displayMode->h * 0.9) / (float)baseHeight));
-		SDL_SetWindowSize(window, (int)(baseWidth * multiplier), (int)(baseHeight * multiplier));
+		float multiplier = std::min((float)displayMode->w / (float)WIDTH, (float)((displayMode->h * 0.9) / (float)HEIGHT));
+		SDL_SetWindowSize(window, (int)(WIDTH * multiplier), (int)(HEIGHT * multiplier));
 		SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 
 		return multiplier;
@@ -23,18 +23,18 @@ namespace sdlUtils {
 	}
 
 	float centerYPos(float size) {
-		return (baseHeight- size) / 2;
+		return std::round((HEIGHT - size) / 2);
 	}
 
 	float centerXPos(float size) {
-		return (baseWidth - size) / 2;
+		return std::round((WIDTH - size) / 2);
 	}
 
 	float centerTopPos(float size) {
-		return (baseHeight / 2 - size) / 2;
+		return std::round((HEIGHT / 2 - size) / 2);
 	}
 
 	float centerBottomPos(float size) {
-		return (baseHeight * 1.5f - size) / 2;
+		return std::round((HEIGHT * 1.5f - size) / 2);
 	}
 };

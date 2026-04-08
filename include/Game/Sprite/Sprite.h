@@ -9,7 +9,7 @@ class Scene;
 
 class Sprite {
 public:
-	Sprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, SDL_FRect subTexture = { -1, -1, -1, -1 }, bool isInteractive = false);
+	Sprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, bool isInteractive = false, SDL_FRect subTexture = { -1, -1, -1, -1 });
 	virtual void draw();
 	virtual void unload();
 
@@ -19,7 +19,7 @@ public:
 	SDL_FRect m_subTexture;
 	Scene* m_scene;
 	bool m_interactive;
-	void setClicked(bool isClicked);
+	virtual void setClicked(bool isClicked);
 	bool isHovered();
 
 protected:

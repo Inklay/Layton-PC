@@ -72,7 +72,7 @@ void Scene::handleEvent(SDL_Event event) {
 		}
 		m_clickedSprite.second->setClicked(false);
 		if (m_clickedSprite.second->isHovered()) {
-			handleClick(m_clickedSprite.first);
+			handleClick(m_clickedSprite.first, event);
 			m_clickedSprite.second = nullptr;
 		}
 	}

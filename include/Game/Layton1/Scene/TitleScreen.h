@@ -9,7 +9,7 @@ public:
 	TitleScreen(Game* game);
 	void load();
 	void render();
-	void handleClick(const std::string& spriteName);
+	void handleClick(const std::string& spriteName, SDL_Event event);
 
 private:
 	bool m_hasSave;

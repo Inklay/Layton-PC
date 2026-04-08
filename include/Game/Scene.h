@@ -4,6 +4,8 @@
 #include <map>
 #include <string>
 
+using namespace sdlUtils;
+
 class Game;
 
 class Scene {
@@ -19,7 +21,7 @@ public:
 	virtual void load();
 	virtual void render() = 0;
 	void handleEvent(SDL_Event event);
-	virtual void handleClick(const std::string& spriteName) = 0;
+	virtual void handleClick(const std::string& spriteName, SDL_Event event) = 0;
 	void unload();
 
 	Game* m_game;
