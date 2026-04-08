@@ -4,6 +4,8 @@
 #include <map>
 #include <string>
 
+class Game;
+
 class Scene {
 public:
 	enum Type {
@@ -12,17 +14,14 @@ public:
 		TITLE_SCREEN
 	};
 
-	Scene(Type type);
-	virtual void load(const fileUtils::path& assetFolder, SDL_Renderer* renderer, SDL_AudioStream* audioStream, float windowMultiplier);
+	Scene(Type type, Game* game);
+	virtual void load();
 	virtual void render() = 0;
 	void unload();
 	Type type() const;
 
-
+	Game* m_game;
 	uint64_t m_lastTick;
-	SDL_Renderer* m_renderer;
-	SDL_AudioStream* m_audioStream;
-	float m_windowMultiplier;
 
 protected:
 	void playBGM(const fileUtils::path& inputFile);

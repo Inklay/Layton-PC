@@ -1,21 +1,17 @@
 #include "Game/Scene.h"
+#include "Game/Game.h"
 
-Scene::Scene(Type type) :
+Scene::Scene(Type type, Game* game) :
+	m_game(game),
 	m_lastTick(0),
-	m_renderer(nullptr),
-	m_audioStream(nullptr),
-	m_windowMultiplier(1),
 	m_bgmBuffer(nullptr),
 	m_bgmBufferLen(0),
 	m_type(type)
 {
 }
 
-void Scene::load(const fileUtils::path& assetFolder, SDL_Renderer* renderer, SDL_AudioStream* audioStream, float windowMultiplier) {
+void Scene::load() {
 	m_lastTick = 0;
-	m_renderer = renderer;
-	m_windowMultiplier = windowMultiplier;
-	m_audioStream = audioStream;
 }
 
 void Scene::unload() {
@@ -48,12 +44,12 @@ void Scene::playBGM(const fileUtils::path& inputFile) {
 	memset(m_bgmBuffer, 0, m_bgmBufferLen);
 	SDL_MixAudio(m_bgmBuffer, buffer, spec.format, m_bgmBufferLen, 0.2f);
 
-	if (!SDL_PutAudioStreamData(m_audioStream, m_bgmBuffer, m_bgmBufferLen)) {
+	if (!SDL_PutAudioStreamData(m_game->m_audioStream, m_bgmBuffer, m_bgmBufferLen)) {
 		std::cerr << SDL_GetError() << std::endl;
 	}
 
 	SDL_free(buffer);
-	SDL_ResumeAudioStreamDevice(m_audioStream);
+	SDL_ResumeAudioStreamDevice(m_game->m_audioStream);
 }
 
 void Scene::loopBGM() {
@@ -61,7 +57,7 @@ void Scene::loopBGM() {
 		return;
 	}
 
-	if ((uint32_t)SDL_GetAudioStreamQueued(m_audioStream) < m_bgmBufferLen / 2) {
-		SDL_PutAudioStreamData(m_audioStream, m_bgmBuffer, m_bgmBufferLen);
+	if ((uint32_t)SDL_GetAudioStreamQueued(m_game->m_audioStream) < m_bgmBufferLen / 2) {
+		SDL_PutAudioStreamData(m_game->m_audioStream, m_bgmBuffer, m_bgmBufferLen);
 	}
 }

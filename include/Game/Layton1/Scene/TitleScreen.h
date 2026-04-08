@@ -6,8 +6,8 @@ namespace Layton1Scene {
 
 class TitleScreen : public Scene {
 public:
-	TitleScreen() : Scene(TITLE_SCREEN) {};
-	void load(const fileUtils::path& assetFolder, SDL_Renderer* renderer, SDL_AudioStream* audioStream, float windowMultiplier);
+	TitleScreen(Game* game) : Scene(TITLE_SCREEN, game) {};
+	void load();
 	void render();
 };
 

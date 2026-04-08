@@ -80,7 +80,6 @@ void Game::convertAnimData() const {
 	GFX::convert(m_assetsPath / "ani", m_gameFolder / "ani");
 }
 
-
 void Game::convertVideoData() const {
 	std::cout << "Converting video data..." << std::endl;
 
@@ -122,7 +121,7 @@ void Game::run() {
 void Game::changeScene(Scene::Type newScene) {
 	currentScene()->unload();
 	Scene* scene = m_scenes.at(newScene).get();
-	scene->load(m_gameFolder, m_renderer, m_audioStream, m_windowMultiplier);
+	scene->load();
 	m_sceneType = scene->type();
 }
 

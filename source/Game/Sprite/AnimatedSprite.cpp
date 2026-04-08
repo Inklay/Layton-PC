@@ -1,5 +1,6 @@
 #include "Game/Sprite/AnimatedSprite.h"
 #include "Game/Scene.h"
+#include "Game/Game.h"
 
 AnimatedSprite::AnimatedSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, SDL_FRect subTexture) :
 	Sprite(scene, transform, subTexture),
@@ -10,7 +11,7 @@ AnimatedSprite::AnimatedSprite(const fileUtils::path& file, Scene* scene, SDL_FR
 	for (auto& imageIdx : m_anim.m_imageIdx) {
 		if (m_surfaces.count(imageIdx) == 0) {
 			m_surfaces.insert({ imageIdx, IMG_Load(((file.parent_path() / file.stem().stem()).string() + "." + std::to_string(imageIdx) + ".png").c_str()) });
-			m_textures.insert({ imageIdx, SDL_CreateTextureFromSurface(scene->m_renderer, m_surfaces.at(imageIdx)) });
+			m_textures.insert({ imageIdx, SDL_CreateTextureFromSurface(scene->m_game->m_renderer, m_surfaces.at(imageIdx)) });
 			SDL_SetTextureScaleMode(m_textures.at(imageIdx), SDL_SCALEMODE_NEAREST);
 		}
 	}
@@ -28,7 +29,7 @@ void AnimatedSprite::draw() {
 
 
 	const SDL_FRect* subTexture = m_subTexture.h < 0 || m_subTexture.w < 0 ? nullptr : reinterpret_cast<const SDL_FRect*>(&m_subTexture);
-	SDL_RenderTexture(m_scene->m_renderer, m_textures.at(m_anim.m_imageIdx.at(m_frameIndex)), subTexture, reinterpret_cast<const SDL_FRect*>(&m_transform));
+	SDL_RenderTexture(m_scene->m_game->m_renderer, m_textures.at(m_anim.m_imageIdx.at(m_frameIndex)), subTexture, reinterpret_cast<const SDL_FRect*>(&m_transform));
 
 	m_frames++;
 }
