@@ -24,7 +24,7 @@ namespace Layton1Scene {
 		m_sprites.insert({ "car", std::make_unique<AnimatedSprite>("ani/start_car.gfx.anim", this, SDL_FRect{ sdlUtils::centerXPos(98), 321, 98, 62})});
 		m_sprites.insert({ "startButton", std::make_unique<ClickableSprite>("ani/fr/startbutton.0.png", "ani/fr/startbutton.1.png", this, SDL_FRect{ sdlUtils::centerXPos(82), sdlUtils::centerBottomPos(16) - startButtonYOffset, 82, 16})});
 
-		playBGM(m_game->m_gameFolder / "stream/BGM_09.wav");
+		playBGM(m_game->m_gameFolder / "sound/SEQ_BG_001.wav");
 	}
 
 	void TitleScreen::render() {

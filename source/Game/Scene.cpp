@@ -35,9 +35,10 @@ void Scene::playBGM(const fileUtils::path& inputFile) {
 		return;
 	}
 
+	SDL_SetAudioStreamFormat(m_game->m_audioStream, &spec, &spec);
 	m_bgmBuffer = (uint8_t*)SDL_malloc(m_bgmBufferLen);
 	memset(m_bgmBuffer, 0, m_bgmBufferLen);
-	SDL_MixAudio(m_bgmBuffer, buffer, spec.format, m_bgmBufferLen, 0.2f);
+	SDL_MixAudio(m_bgmBuffer, buffer, spec.format, m_bgmBufferLen, 1.0f);
 
 	if (!SDL_PutAudioStreamData(m_game->m_audioStream, m_bgmBuffer, m_bgmBufferLen)) {
 		std::cerr << SDL_GetError() << std::endl;
@@ -66,9 +67,13 @@ void Scene::handleEvent(SDL_Event event) {
 			}
 		}
 	} else if (event.type == SDL_EVENT_MOUSE_BUTTON_UP && event.button.button == SDL_BUTTON_LEFT) {
+		if (m_clickedSprite.second == nullptr) {
+			return;
+		}
 		m_clickedSprite.second->setClicked(false);
 		if (m_clickedSprite.second->isHovered()) {
 			handleClick(m_clickedSprite.first);
+			m_clickedSprite.second = nullptr;
 		}
 	}
 }

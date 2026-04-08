@@ -9,13 +9,13 @@ void SADL::convertToWav(const fileUtils::path& filePath, const fileUtils::path& 
 	std::stringstream stream;
 
 #ifdef _WIN32
-	const std::string ffmpeg = "bin\\vgmstream-cli.exe";
+	const std::string vgmstream = "bin\\vgmstream-cli.exe";
 	const std::string nullOutput = " > nul 2>&1";
 #else
-	const std::string ffmpeg = "./bin/vgmstream";
+	const std::string vgmstream = "./bin/vgmstream-cli";
 	const std::string nullOutput = " > /dev/null 2>&1";
 #endif
 
-	stream << ffmpeg << " -o" << outputFolder / filePath.filename().replace_extension("wav") << " " << std::filesystem::absolute(filePath) << nullOutput;
+	stream << vgmstream << " -o" << outputFolder / filePath.filename().replace_extension("wav") << " " << std::filesystem::absolute(filePath) << nullOutput;
 	system(stream.str().c_str());
 }
