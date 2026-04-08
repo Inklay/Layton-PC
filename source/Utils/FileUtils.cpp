@@ -89,3 +89,23 @@ fileUtils::CompressionMethod fileUtils::getCompressionMethod(const path& inputFi
 		return UNKNOWN;
 	}
 }
+
+uint8_t fileUtils::read1Byte(const buffer& buffer, size_t& offset) {
+	offset ++;
+	return buffer.at(offset);
+}
+
+uint16_t fileUtils::read2Byte(const buffer& buffer, size_t& offset) {
+	offset += 2;
+	return (uint16_t)((buffer.at(offset + 1) << 8) | buffer.at(offset));
+}
+
+uint32_t fileUtils::read3Byte(const buffer& buffer, size_t& offset) {
+	offset += 3;
+	return (uint32_t)((buffer.at(offset + 2) << 16) | (buffer.at(offset + 1) << 8) | buffer.at(offset));
+}
+
+uint32_t fileUtils::read4Byte(const buffer& buffer, size_t& offset) {
+	offset += 4;
+	return (uint32_t)((buffer.at(offset + 3) << 24) | (buffer.at(offset + 2) << 16) | (buffer.at(offset + 1) << 8) | buffer.at(offset));
+}
