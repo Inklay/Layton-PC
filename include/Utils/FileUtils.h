@@ -26,10 +26,18 @@ public:
 	static uint32_t read3Byte(const buffer& buffer, size_t& offset);
 	static uint32_t read4Byte(const buffer& buffer, size_t& offset);
 
+	static uint8_t read1Byte(const buffer& buffer, const size_t&& offset);
+	static uint16_t read2Byte(const buffer& buffer, const size_t&& offset);
+	static uint32_t read3Byte(const buffer& buffer, const size_t&& offset);
+	static uint32_t read4Byte(const buffer& buffer, const size_t&& offset);
+
 	static void write1Byte(buffer& buffer, uint8_t data);
 	static void write2Byte(buffer& buffer, uint16_t data);
 	static void write3Byte(buffer& buffer, uint32_t data);
 	static void write4Byte(buffer& buffer, uint32_t data);
+
+	static std::string readNullTerminatedString(const buffer& buffer, size_t& offset, int maxLenght = -1);
+	static std::string readNullTerminatedString(const buffer& buffer, const size_t&& offset, int maxLenght = -1);
 
 private:
 	static CompressionMethod getCompressionMethod(const path& inputFile, size_t offset = 0);

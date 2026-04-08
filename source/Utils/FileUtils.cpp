@@ -135,3 +135,62 @@ uint32_t fileUtils::read4Byte(const buffer& buffer, size_t& offset) {
 	offset += 4;
 	return data;
 }
+
+uint8_t fileUtils::read1Byte(const buffer& buffer, const size_t&& offset) {
+	uint8_t data = buffer.at(offset);
+	return data;
+}
+
+uint16_t fileUtils::read2Byte(const buffer& buffer, const size_t&& offset) {
+	uint16_t data = (buffer.at(offset + 1) << 8) | buffer.at(offset);
+	return data;
+}
+
+uint32_t fileUtils::read3Byte(const buffer& buffer, const size_t&& offset) {
+	uint32_t data = (buffer.at(offset + 2) << 16) | (buffer.at(offset + 1) << 8) | buffer.at(offset);
+	return data;
+}
+
+uint32_t fileUtils::read4Byte(const buffer& buffer, const size_t&& offset) {
+	uint32_t data = (buffer.at(offset + 3) << 24) | (buffer.at(offset + 2) << 16) | (buffer.at(offset + 1) << 8) | buffer.at(offset);
+	return data;
+}
+
+std::string fileUtils::readNullTerminatedString(const buffer& buffer, size_t& offset, int maxLenght) {
+	int count = 0;
+	uint8_t c = buffer.at(offset);
+	std::string string;
+
+	while (c != 0) {
+		string += c;
+		c = buffer.at(offset);
+
+		if (string.length() == maxLenght) {
+			break;
+		}
+
+		offset++;
+	}
+
+	return string;
+}
+
+std::string fileUtils::readNullTerminatedString(const buffer& buffer, const size_t&& offset, int maxLenght) {
+	int count = 0;
+	uint8_t c = buffer.at(offset);
+	std::string string;
+	size_t stringOffset = offset;
+
+	while (c != 0) {
+		string += c;
+		c = buffer.at(stringOffset);
+
+		if (string.length() == maxLenght) {
+			break;
+		}
+
+		stringOffset++;
+	}
+
+	return string;
+}
