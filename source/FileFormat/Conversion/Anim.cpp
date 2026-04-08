@@ -3,44 +3,34 @@
 Anim::Anim(const fileUtils::path& inputFile) {
 	fileUtils::buffer buffer = fileUtils::readBin(inputFile);
 	size_t offset = 0;
-	const uint32_t frameCount = (buffer.at(offset + 3) << 24) | (buffer.at(offset + 2) << 16) | (buffer.at(offset + 1) << 8) | buffer.at(offset);
+	const uint32_t frameCount = fileUtils::read4Byte(buffer, offset);
 
-	offset += 4;
 	m_framesUnk.reserve(frameCount);
 	m_imageIdx.reserve(frameCount);
 
 	for (unsigned int i = 0; i < frameCount; i++) {
-		m_framesUnk.emplace_back((buffer.at(offset + 3) << 24) | (buffer.at(offset + 2) << 16) | (buffer.at(offset + 1) << 8) | buffer.at(offset));
-		offset += 4;
+		m_framesUnk.emplace_back(fileUtils::read4Byte(buffer, offset));
 	}
 
 	for (unsigned int i = 0; i < frameCount; i++) {
-		m_imageIdx.emplace_back((buffer.at(offset + 3) << 24) | (buffer.at(offset + 2) << 16) | (buffer.at(offset + 1) << 8) | buffer.at(offset));
-		offset += 4;
+		m_imageIdx.emplace_back(fileUtils::read4Byte(buffer, offset));
 	}
 }
 
 void Anim::create(std::vector<uint32_t> framesUnk, std::vector<uint32_t> imageIdx, const fileUtils::path& outputFile) {
 	fileUtils::buffer buffer;
-	const size_t frameCount = framesUnk.size();
+	const uint32_t frameCount = (uint32_t)framesUnk.size();
 
 	buffer.reserve((size_t)4 + frameCount * 8);
-	convertByte(buffer, frameCount);
+	fileUtils::write4Byte(buffer, frameCount);
 
 	for (unsigned int i = 0; i < frameCount; i++) {
-		convertByte(buffer, framesUnk.at(i));
+		fileUtils::write4Byte(buffer, framesUnk.at(i));
 	}
 
 	for (unsigned int i = 0; i < frameCount; i++) {
-		convertByte(buffer, imageIdx.at(i));
+		fileUtils::write4Byte(buffer, imageIdx.at(i));
 	}
 
 	fileUtils::writeBin(buffer, outputFile);
-}
-
-void Anim::convertByte(fileUtils::buffer& buffer, const size_t byte) {
-	buffer.emplace_back((uint8_t)(byte & 0xFF));
-	buffer.emplace_back((uint8_t)((byte & 0xFF00) >> 8));
-	buffer.emplace_back((uint8_t)((byte & 0xFF0000) >> 16));
-	buffer.emplace_back((uint8_t)((byte & 0xFF000000) >> 24));
 }

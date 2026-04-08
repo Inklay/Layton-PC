@@ -90,22 +90,48 @@ fileUtils::CompressionMethod fileUtils::getCompressionMethod(const path& inputFi
 	}
 }
 
+void fileUtils::write1Byte(buffer& buffer, uint8_t data) {
+	buffer.emplace_back((uint8_t)(data & 0xFF));
+}
+
+void fileUtils::write2Byte(buffer& buffer, uint16_t data) {
+	buffer.emplace_back((uint8_t)(data & 0xFF));
+	buffer.emplace_back((uint8_t)((data & 0xFF00) >> 8));
+}
+
+void fileUtils::write3Byte(buffer& buffer, uint32_t data) {
+	buffer.emplace_back((uint8_t)(data & 0xFF));
+	buffer.emplace_back((uint8_t)((data & 0xFF00) >> 8));
+	buffer.emplace_back((uint8_t)((data & 0xFF0000) >> 16));
+}
+
+void fileUtils::write4Byte(buffer& buffer, uint32_t data) {
+	buffer.emplace_back((uint8_t)(data & 0xFF));
+	buffer.emplace_back((uint8_t)((data & 0xFF00) >> 8));
+	buffer.emplace_back((uint8_t)((data & 0xFF0000) >> 16));
+	buffer.emplace_back((uint8_t)((data & 0xFF000000) >> 24));
+}
+
 uint8_t fileUtils::read1Byte(const buffer& buffer, size_t& offset) {
-	offset ++;
-	return buffer.at(offset);
+	uint8_t data = buffer.at(offset);
+	offset++;
+	return data;
 }
 
 uint16_t fileUtils::read2Byte(const buffer& buffer, size_t& offset) {
+	uint16_t data = (buffer.at(offset + 1) << 8) | buffer.at(offset);
 	offset += 2;
-	return (uint16_t)((buffer.at(offset + 1) << 8) | buffer.at(offset));
+	return data;
 }
 
 uint32_t fileUtils::read3Byte(const buffer& buffer, size_t& offset) {
+	uint32_t data = (buffer.at(offset + 2) << 16) | (buffer.at(offset + 1) << 8) | buffer.at(offset);
 	offset += 3;
-	return (uint32_t)((buffer.at(offset + 2) << 16) | (buffer.at(offset + 1) << 8) | buffer.at(offset));
+	return data;
 }
 
 uint32_t fileUtils::read4Byte(const buffer& buffer, size_t& offset) {
+	uint32_t data = (buffer.at(offset + 3) << 24) | (buffer.at(offset + 2) << 16) | (buffer.at(offset + 1) << 8) | buffer.at(offset);
 	offset += 4;
-	return (uint32_t)((buffer.at(offset + 3) << 24) | (buffer.at(offset + 2) << 16) | (buffer.at(offset + 1) << 8) | buffer.at(offset));
+	return data;
 }

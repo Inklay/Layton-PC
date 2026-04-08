@@ -10,7 +10,4 @@ public:
 
 	std::vector<uint32_t> m_framesUnk;
 	std::vector<uint32_t> m_imageIdx;
-
-private:
-	static void convertByte(fileUtils::buffer& buffer, const size_t byte);
 };

@@ -24,4 +24,6 @@ protected:
 	const uint32_t m_magicNumber = 0x4C554B45; // LUKE
 	void readCommonData(const fileUtils::buffer& buffer, size_t& offset, GameId id);
 	uint16_t m_puzzleCount;
+
+	fileUtils::path m_filePath;
 };
