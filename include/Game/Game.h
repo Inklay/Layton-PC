@@ -20,9 +20,9 @@ public:
 	SDL_Window& m_window;
 	SDL_Renderer* m_renderer;
 	fileUtils::path m_gameFolder;
+	void changeScene(Scene::Type newScene);
 
 protected:
-	void changeScene(Scene::Type newScene);
 	virtual void createScenes() = 0;
 	virtual void getSaves() = 0;
 

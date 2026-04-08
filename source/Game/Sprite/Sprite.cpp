@@ -37,3 +37,14 @@ void Sprite::unload() {
 	SDL_DestroyTexture(m_texture);
 	SDL_DestroySurface(m_surface);
 }
+
+void Sprite::setClicked(bool isClicked) {
+	m_isClicked = isClicked;
+}
+
+bool Sprite::isHovered() {
+	float x, y;
+	SDL_GetMouseState(&x, &y);
+
+	return x > m_transform.x && x < m_transform.x + m_transform.w && y > m_transform.y && y < m_transform.y + m_transform.h;
+}

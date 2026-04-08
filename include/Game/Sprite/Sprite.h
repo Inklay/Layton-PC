@@ -19,7 +19,10 @@ public:
 	SDL_FRect m_subTexture;
 	Scene* m_scene;
 	bool m_interactive;
+	void setClicked(bool isClicked);
+	bool isHovered();
 
 protected:
 	Sprite(Scene* scene, SDL_FRect transform, SDL_FRect subTexture);
+	bool m_isClicked = false;
 };

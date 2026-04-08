@@ -7,7 +7,7 @@
 
 namespace Layton1Scene {
 	TitleScreen::TitleScreen(Game* game) :
-		Scene(TITLE_SCREEN, game),
+		Scene(game),
 		m_hasSave(game->hasSave())
 	{
 	}
@@ -38,5 +38,13 @@ namespace Layton1Scene {
 		loopBGM();
 
 		m_lastTick = SDL_GetTicks();
+	}
+
+	void TitleScreen::handleClick(const std::string& spriteName) {
+		if (spriteName == "startButton") {
+			if (!m_hasSave) {
+				m_game->changeScene(Scene::CREATE_SAVE);
+			}
+		}
 	}
 };

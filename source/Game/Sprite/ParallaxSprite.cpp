@@ -55,8 +55,3 @@ void ParallaxSprite::draw() {
 	SDL_RenderTexture(m_scene->m_game->m_renderer, m_texture, subTexture, reinterpret_cast<const SDL_FRect*>(&m_transform));
 	SDL_RenderTexture(m_scene->m_game->m_renderer, m_texture, subTexture, reinterpret_cast<const SDL_FRect*>(&m_transform2));
 }
-
-void ParallaxSprite::unload() {
-	SDL_DestroyTexture(m_texture);
-	SDL_DestroySurface(m_surface);
-}

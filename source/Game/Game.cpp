@@ -97,6 +97,10 @@ void Game::run() {
 	bool isRunning = true;
 
 	while (isRunning) {
+		SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
+		SDL_RenderClear(m_renderer);
+		currentScene()->render();
+		SDL_RenderPresent(m_renderer);
 		SDL_Event event;
 
 		while (SDL_PollEvent(&event)) {
@@ -104,14 +108,10 @@ void Game::run() {
 				isRunning = false;
 				break;
 			}
+
+			currentScene()->handleEvent(event);
 		}
 
-		SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
-		SDL_RenderClear(m_renderer);
-
-		currentScene()->render();
-
-		SDL_RenderPresent(m_renderer);
 		SDL_Delay(16);
 	}
 
@@ -123,7 +123,7 @@ void Game::changeScene(Scene::Type newScene) {
 	currentScene()->unload();
 	Scene* scene = m_scenes.at(newScene).get();
 	scene->load();
-	m_sceneType = scene->type();
+	m_sceneType = newScene;
 }
 
 Scene* Game::currentScene() {

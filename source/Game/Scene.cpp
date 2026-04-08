@@ -1,12 +1,11 @@
 #include "Game/Scene.h"
 #include "Game/Game.h"
 
-Scene::Scene(Type type, Game* game) :
+Scene::Scene(Game* game) :
 	m_game(game),
 	m_lastTick(0),
 	m_bgmBuffer(nullptr),
-	m_bgmBufferLen(0),
-	m_type(type)
+	m_bgmBufferLen(0)
 {
 }
 
@@ -25,10 +24,6 @@ void Scene::unload() {
 	}
 
 	m_sprites.clear();
-}
-
-Scene::Type Scene::type() const {
-	return m_type;
 }
 
 void Scene::playBGM(const fileUtils::path& inputFile) {
@@ -59,5 +54,21 @@ void Scene::loopBGM() {
 
 	if ((uint32_t)SDL_GetAudioStreamQueued(m_game->m_audioStream) < m_bgmBufferLen / 2) {
 		SDL_PutAudioStreamData(m_game->m_audioStream, m_bgmBuffer, m_bgmBufferLen);
+	}
+}
+
+void Scene::handleEvent(SDL_Event event) {
+	if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN && event.button.button == SDL_BUTTON_LEFT) {
+		for (auto& it : m_sprites) {
+			if (it.second->m_interactive && it.second->isHovered()) {
+				it.second->setClicked(true);
+				m_clickedSprite = { it.first, it.second.get()};
+			}
+		}
+	} else if (event.type == SDL_EVENT_MOUSE_BUTTON_UP && event.button.button == SDL_BUTTON_LEFT) {
+		m_clickedSprite.second->setClicked(false);
+		if (m_clickedSprite.second->isHovered()) {
+			handleClick(m_clickedSprite.first);
+		}
 	}
 }

@@ -1,6 +1,7 @@
 #include "Game/Layton1/Layton1.h"
 #include "Game/Layton1/Layton1Save.h"
 #include "Game/Layton1/Scene/TitleScreen.h"
+#include "Game/Layton1/Scene/CreateSave.h"
 
 Layton1::Layton1(const fileUtils::path& assetsPath, SDL_Window& window) :
 	Game(assetsPath, "LAYTON1", window)
@@ -12,6 +13,7 @@ Layton1::Layton1(const fileUtils::path& assetsPath, SDL_Window& window) :
 
 void Layton1::createScenes() {
 	m_scenes[Scene::TITLE_SCREEN] = std::make_unique<Layton1Scene::TitleScreen>(this);
+	m_scenes[Scene::CREATE_SAVE] = std::make_unique<Layton1Scene::CreateSave>(this);
 }
 
 void Layton1::getSaves() {
