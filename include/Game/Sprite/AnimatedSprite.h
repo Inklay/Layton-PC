@@ -10,7 +10,7 @@ public:
 	void draw() override;
 	void unload() override;
 
-private:
+protected:
 	std::map<int, SDL_Surface*> m_surfaces;
 	std::map<int, SDL_Texture*> m_textures;
 

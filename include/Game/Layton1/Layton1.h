@@ -8,4 +8,5 @@ public:
 
 protected:
 	void createScenes();
+	void getSaves();
 };

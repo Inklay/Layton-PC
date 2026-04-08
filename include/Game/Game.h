@@ -11,7 +11,9 @@ class Game {
 public:
 	Game(const fileUtils::path& assetsPath, const std::string& name, SDL_Window& window);
 	void run();
-
+	bool hasSave();
+	
+	std::vector<std::unique_ptr<Save>> m_saves;
 	float m_windowMultiplier;
 	SDL_AudioStream* m_audioStream;
 	std::unique_ptr<Save> m_save;
@@ -22,6 +24,7 @@ public:
 protected:
 	void changeScene(Scene::Type newScene);
 	virtual void createScenes() = 0;
+	virtual void getSaves() = 0;
 
 	Scene* currentScene();
 	std::map<Scene::Type, std::unique_ptr<Scene>> m_scenes;

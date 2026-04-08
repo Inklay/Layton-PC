@@ -21,4 +21,20 @@ namespace sdlUtils {
 		rect.x *= multiplier;
 		rect.y *= multiplier;
 	}
+
+	float centerYPos(float size) {
+		return (baseHeight- size) / 2;
+	}
+
+	float centerXPos(float size) {
+		return (baseWidth - size) / 2;
+	}
+
+	float centerTopPos(float size) {
+		return (baseHeight / 2 - size) / 2;
+	}
+
+	float centerBottomPos(float size) {
+		return (baseHeight * 1.5f - size) / 2;
+	}
 };

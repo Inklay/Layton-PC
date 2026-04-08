@@ -13,9 +13,10 @@ namespace sdlUtils {
 	const int baseWidth = 256;
 	const int baseHeight = 384;
 
-	const int POS_CENTER = 0xFFFFFF00;
-	const int POS_CENTER_TOP = 0xFFFFFF01;
-	const int POS_CENTER_BOTTOM = 0xFFFFFF02;
+	float centerYPos(float size);
+	float centerXPos(float size);
+	float centerTopPos(float size);
+	float centerBottomPos(float size);
 
 	const SDL_AudioSpec audioSpec{ SDL_AUDIO_S16LE, 2, 16364 };
 

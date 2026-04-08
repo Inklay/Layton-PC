@@ -10,7 +10,6 @@ Sprite::Sprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, S
 	m_scene = scene;
 
 	SDL_SetTextureScaleMode(m_texture, SDL_SCALEMODE_NEAREST);
-	center();
 
 	sdlUtils::multiply(m_transform, scene->m_game->m_windowMultiplier);
 	sdlUtils::multiply(m_subTexture, scene->m_game->m_windowMultiplier);
@@ -20,8 +19,6 @@ Sprite::Sprite(Scene* scene, SDL_FRect transform, SDL_FRect subTexture) {
 	m_transform = transform;
 	m_subTexture = subTexture;
 	m_scene = scene;
-
-	center();
 
 	sdlUtils::multiply(m_transform, scene->m_game->m_windowMultiplier);
 	sdlUtils::multiply(m_subTexture, scene->m_game->m_windowMultiplier);
@@ -35,18 +32,4 @@ void Sprite::draw() {
 void Sprite::unload() {
 	SDL_DestroyTexture(m_texture);
 	SDL_DestroySurface(m_surface);
-}
-
-void Sprite::center() {
-	if (m_transform.x == sdlUtils::POS_CENTER) {
-		m_transform.x = (sdlUtils::baseWidth - m_transform.w) / 2;
-	}
-
-	if (m_transform.y == sdlUtils::POS_CENTER) {
-		m_transform.y = (sdlUtils::baseHeight - m_transform.h) / 2;
-	} else if (m_transform.y == sdlUtils::POS_CENTER_TOP) {
-		m_transform.y = (sdlUtils::baseHeight / 2 - m_transform.h) / 2;
-	} else if (m_transform.y == sdlUtils::POS_CENTER_BOTTOM) {
-		m_transform.y = (float)(sdlUtils::baseHeight * 1.5 - m_transform.h) / 2;
-	}
 }

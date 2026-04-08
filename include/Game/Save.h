@@ -17,12 +17,14 @@ public:
 	std::string m_name;
 	uint32_t m_playTime = 0;
 	uint16_t m_picarats = 0;
+	uint16_t m_hintCoins = 0;
 	std::vector<uint8_t> m_puzzles;
 	GameId m_id = UNKNOWN;
 
 protected:
 	const uint32_t m_magicNumber = 0x454B554C; // LUKE
 	void readCommonData(const fileUtils::buffer& buffer, size_t& offset, GameId id);
+	void writeCommonData(fileUtils::buffer& buffer);
 	uint16_t m_puzzleCount = 0;
 	fileUtils::path m_filePath;
 };

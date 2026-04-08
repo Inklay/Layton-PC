@@ -20,13 +20,14 @@ Game::Game(const fileUtils::path& assetsPath, const std::string& name, SDL_Windo
 	m_gameFolder = std::filesystem::current_path() / "games" / m_name;
 	m_sceneType = Scene::TITLE_SCREEN;
 
-	convertData();
 	m_windowMultiplier = sdlUtils::scaleWindow(&window);
 	m_audioStream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &sdlUtils::audioSpec, NULL, nullptr);
 
 	if (m_audioStream == NULL) {
 		std::cerr << SDL_GetError() << std::endl;
 	}
+
+	convertData();
 }
 
 void Game::convertData() const {
@@ -128,3 +129,13 @@ void Game::changeScene(Scene::Type newScene) {
 Scene* Game::currentScene() {
 	return m_scenes.at(m_sceneType).get();
 };
+
+bool Game::hasSave() {
+	for (int i = 0; i < 3; i++) {
+		if (m_saves.at(i).get() != nullptr) {
+			return true;
+		}
+	}
+
+	return false;
+}
