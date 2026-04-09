@@ -10,7 +10,7 @@ class Scene;
 class Sprite {
 public:
 	Sprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, bool isInteractive = false, SDL_FRect subTexture = { -1, -1, -1, -1 });
-	virtual void draw();
+	virtual void draw(int zIndex = 0);
 	virtual void unload();
 
 	SDL_Surface* m_surface;
@@ -21,6 +21,7 @@ public:
 	bool m_interactive;
 	virtual void setClicked(bool isClicked);
 	bool isHovered();
+	int m_zIndex = 0;
 
 protected:
 	Sprite(Scene* scene, SDL_FRect transform, SDL_FRect subTexture);

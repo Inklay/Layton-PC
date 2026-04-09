@@ -28,7 +28,8 @@ Sprite::Sprite(Scene* scene, SDL_FRect transform, SDL_FRect subTexture) {
 	sdlUtils::multiply(m_subTexture, scene->m_game->m_windowMultiplier);
 }
 
-void Sprite::draw() {
+void Sprite::draw(int zIndex) {
+	m_zIndex = zIndex;
 	const SDL_FRect* subTexture = m_subTexture.h < 0 || m_subTexture.w < 0 ? nullptr : reinterpret_cast<const SDL_FRect*>(&m_subTexture);
 	SDL_RenderTexture(m_scene->m_game->m_renderer, m_texture, subTexture, reinterpret_cast<const SDL_FRect*>(&m_transform));
 }

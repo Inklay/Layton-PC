@@ -18,6 +18,9 @@ SDL_Window* initSdl() {
 
 int main()
 {
+#ifdef _WIN32
+	system("chcp 65001 >nul");
+#endif
 	SDL_Window *window = initSdl();
 
 	if (window == nullptr) {

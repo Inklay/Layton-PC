@@ -17,7 +17,9 @@ AnimatedSprite::AnimatedSprite(const fileUtils::path& file, Scene* scene, SDL_FR
 	}
 }
 
-void AnimatedSprite::draw() {
+void AnimatedSprite::draw(int zIndex) {
+	m_zIndex = zIndex;
+
 	if (m_frames == m_anim.m_framesUnk.at(m_frameIndex)) {
 		m_frames = 0;
 		m_frameIndex++;

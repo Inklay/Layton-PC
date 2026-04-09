@@ -16,10 +16,9 @@ void Save::readCommonData(const fileUtils::buffer& buffer, size_t& offset, GameI
 	uint8_t nameLength = fileUtils::read1Byte(buffer, offset);
 
 	for (size_t i = 0; i < nameLength; i++) {
-		m_name += buffer.at(offset + i);
+		m_name += fileUtils::read4Byte(buffer, offset);
 	}
 
-	offset += nameLength;
 	m_puzzles.reserve(m_puzzleCount);
 
 	for (size_t i = 0; i < m_puzzleCount; i++) {
@@ -39,7 +38,7 @@ void Save::writeCommonData(fileUtils::buffer& buffer) {
 	fileUtils::write1Byte(buffer, (uint8_t)m_name.length());
 
 	for (uint8_t i = 0; i < m_name.length(); i++) {
-		fileUtils::write1Byte(buffer, m_name.at(i));
+		fileUtils::write4Byte(buffer, m_name.at(i));
 	}
 
 	for (size_t i = 0; i < m_puzzles.size(); i++) {

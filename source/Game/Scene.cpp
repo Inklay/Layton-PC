@@ -60,13 +60,14 @@ void Scene::loopBGM() {
 
 void Scene::handleEvent(SDL_Event event) {
 	if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN && event.button.button == SDL_BUTTON_LEFT) {
+		int maxZIndex = -1;
 		for (auto& it : m_sprites) {
-			if (it.second->m_interactive && it.second->isHovered()) {
-				it.second->setClicked(true);
+			if (it.second->m_interactive && it.second->isHovered() && it.second->m_zIndex > maxZIndex) {
 				m_clickedSprite = { it.first, it.second.get()};
-				break;
+				maxZIndex = it.second->m_zIndex;
 			}
 		}
+		m_clickedSprite.second->setClicked(true);
 	} else if (event.type == SDL_EVENT_MOUSE_BUTTON_UP && event.button.button == SDL_BUTTON_LEFT) {
 		if (m_clickedSprite.second == nullptr) {
 			return;

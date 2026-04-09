@@ -102,40 +102,7 @@
     <ClCompile Include="source\FileFormat\Conversion\SDAT.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="source\FileFormat\Conversion\Vgmtrans\NDSScanner.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="source\FileFormat\Conversion\Vgmtrans\Scanner.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="source\FileFormat\Conversion\Vgmtrans\Format.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="source\FileFormat\Conversion\Vgmtrans\Matcher.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="source\FileFormat\Conversion\Vgmtrans\VGMColl.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="source\FileFormat\Conversion\Vgmtrans\common.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="source\FileFormat\Conversion\Vgmtrans\NDSSeq.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="source\FileFormat\Conversion\Vgmtrans\VGMSeq.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="source\FileFormat\Conversion\Vgmtrans\VGMFile.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="source\FileFormat\Conversion\Vgmtrans\Root.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="source\FileFormat\Conversion\Vgmtrans\FileLoader.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="source\FileFormat\Conversion\Vgmtrans\RawFile.cpp">
+    <ClCompile Include="source\FileFormat\Conversion\MID.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -485,43 +452,7 @@
     <ClInclude Include="include\FileFormat\Conversion\SDAT.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="include\FileFormat\Conversion\Vgmtrans\NDSScanner.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\FileFormat\Conversion\Vgmtrans\Scanner.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\FileFormat\Conversion\Vgmtrans\ScannerManager.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\FileFormat\Conversion\Vgmtrans\Format.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\FileFormat\Conversion\Vgmtrans\Matcher.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\FileFormat\Conversion\Vgmtrans\VGMColl.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\FileFormat\Conversion\Vgmtrans\common.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\FileFormat\Conversion\Vgmtrans\NDSSeq.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\FileFormat\Conversion\Vgmtrans\VGMSeq.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\FileFormat\Conversion\Vgmtrans\VGMFile.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\FileFormat\Conversion\Vgmtrans\Root.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\FileFormat\Conversion\Vgmtrans\FileLoader.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\FileFormat\Conversion\Vgmtrans\RawFile.h">
+    <ClInclude Include="include\FileFormat\Conversion\MID.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,6 +7,7 @@ ClickableSprite::ClickableSprite(const fileUtils::path& file, const fileUtils::p
 {
 	m_surfaceClicked = IMG_Load((scene->m_game->m_gameFolder / fileClicked).string().c_str());
 	m_textureClicked = SDL_CreateTextureFromSurface(scene->m_game->m_renderer, m_surfaceClicked);
+
 	SDL_SetTextureScaleMode(m_textureClicked, SDL_SCALEMODE_NEAREST);
 }
 
@@ -17,9 +18,11 @@ ClickableSprite::ClickableSprite(const fileUtils::path& file, Scene* scene, SDL_
 	m_textureClicked = nullptr;
 }
 
-void ClickableSprite::draw() {
+void ClickableSprite::draw(int zIndex) {
 	const SDL_FRect* subTexture = m_subTexture.h < 0 || m_subTexture.w < 0 ? nullptr : reinterpret_cast<const SDL_FRect*>(&m_subTexture);
 	SDL_Texture* texture = m_texture;
+
+	m_zIndex = zIndex;
 
 	if (m_isClicked) {
 		if (m_textureClicked != nullptr) {

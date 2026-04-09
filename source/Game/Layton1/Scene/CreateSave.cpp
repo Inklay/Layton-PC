@@ -48,11 +48,11 @@ namespace Layton1Scene {
 				break;
 		}
 
-		m_sprites.at("okButton")->draw();
-		m_sprites.at("backSpaceButton")->draw();
-		m_sprites.at("spaceButton")->draw();
-		m_sprites.at("specialButton")->draw();
-		m_sprites.at("lowerButton")->draw();
+		m_sprites.at("okButton")->draw(1);
+		m_sprites.at("backSpaceButton")->draw(1);
+		m_sprites.at("spaceButton")->draw(1);
+		m_sprites.at("specialButton")->draw(1);
+		m_sprites.at("lowerButton")->draw(1);
 
 		if (m_displayCursor) {
 			m_sprites.at("cursor")->draw();
@@ -85,13 +85,14 @@ namespace Layton1Scene {
 			checkKeyPressed(m_upperCaseKeyPos);
 		} else if (spriteName == "keyboardShift") {
 			checkKeyPressed(m_shiftKeyPos);
+		} else if (spriteName == "keyboardSpecial") {
+			checkKeyPressed(m_specialKeyPos);
 		} else if (spriteName == "backSpaceButton" && m_name.length() != 0) {
 			m_name.pop_back();
 			m_sprites.at("cursor")->m_transform.x -= 16 * m_game->m_windowMultiplier;
 		} else if (spriteName == "spaceButton") {
-			addChar(' ');
+			addChar(" ");
 		}
-		std::cout << m_name << std::endl;
 	}
 
 	bool CreateSave::isLetterClicked(SDL_FRect rect) {
@@ -106,9 +107,9 @@ namespace Layton1Scene {
 		return mouseX >= rect.x && mouseX < rect.x + rect.w && mouseY >= rect.y && mouseY < rect.y + rect.h;
 	}
 
-	void CreateSave::checkKeyPressed(const std::map<char, std::pair<float, float>>& keyLayout) {
+	void CreateSave::checkKeyPressed(const std::map<std::string, std::pair<float, float>>& keyLayout) {
 		for (auto& key : keyLayout) {
-			if (key.first == 0 && isLetterClicked(SDL_FRect{ key.second.first, HALF_HEIGHT + key.second.second, 25, 12 })) {
+			if (key.first == "0" && isLetterClicked(SDL_FRect{ key.second.first, HALF_HEIGHT + key.second.second, 25, 12 })) {
 				if (m_keyboardState == UPPER) {
 					m_keyboardState = LOWER;
 					m_sprites.at("keyboardUpperCase")->m_interactive = false;
@@ -124,7 +125,7 @@ namespace Layton1Scene {
 				return;
 			}
 
-			if (key.first == 1 && isLetterClicked(SDL_FRect{ key.second.first, HALF_HEIGHT + key.second.second, 36, 12 })) {
+			if (key.first == "1" && isLetterClicked(SDL_FRect{ key.second.first, HALF_HEIGHT + key.second.second, 36, 12 })) {
 				m_keyboardState = SHIFT;
 				m_sprites.at("keyboardLowerCase")->m_interactive = false;
 				m_sprites.at("keyboardUpperCase")->m_interactive = false;
@@ -144,7 +145,7 @@ namespace Layton1Scene {
 		}
 	}
 
-	void CreateSave::addChar(char c) {
+	void CreateSave::addChar(const std::string& c) {
 		if (m_name.length() == 9) {
 			return;
 		}

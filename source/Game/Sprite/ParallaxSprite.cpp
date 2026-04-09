@@ -19,9 +19,11 @@ ParallaxSprite::ParallaxSprite(const fileUtils::path& file, Scene* scene, SDL_FR
 	}
 }
 
-void ParallaxSprite::draw() {
+void ParallaxSprite::draw(int zIndex) {
 	uint64_t timeElapsed = SDL_GetTicks() - m_scene->m_lastTick;
 	uint64_t advancement = static_cast<uint64_t>(((double)timeElapsed / m_duration) * m_transform.w);
+
+	m_zIndex = zIndex;
 
 	if (m_dir == sdlUtils::LEFT) {
 		advancement *= -1;
