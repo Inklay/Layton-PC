@@ -7,6 +7,7 @@
 #include "FileFormat/Conversion/MODS.h"
 #include "FileFormat/Conversion/SADL.h"
 #include "FileFormat/Conversion/SDAT.h"
+#include "FileFormat/Conversion/NFTR.h"
 #include "Utils/sdlutils.h"
 #include <array>
 #include <algorithm>
@@ -32,20 +33,21 @@ Game::Game(const fileUtils::path& assetsPath, const std::string& name, SDL_Windo
 }
 
 void Game::convertData() const {
-	if (std::filesystem::exists(m_gameFolder / "extracted")) {
-		return;
-	}
+	//if (std::filesystem::exists(m_gameFolder / "extracted")) {
+	//	return;
+	//}
 
 	if (!std::filesystem::exists(m_assetsPath)) {
 		std::cerr << "can't open " << std::filesystem::absolute(m_assetsPath) << std::endl;
 		exit(1);
 	}
 
-	convertTextData();
-	convertImgData();
-	convertAnimData();
-	convertVideoData();
-	convertAudioData();
+	//convertTextData();
+	//convertImgData();
+	//convertAnimData();
+	//convertVideoData();
+	//convertAudioData();
+	convertFontData();
 
 	fileUtils::writeText("", m_gameFolder / "extracted");
 	std::cout << "Data conversion done !" << std::endl;
@@ -93,6 +95,12 @@ void Game::convertAudioData() const {
 
 	SADL::convert(m_assetsPath / "stream", m_gameFolder / "stream");
 	SDAT::convert(m_assetsPath / "sound", m_gameFolder / "sound");
+}
+
+void Game::convertFontData() const {
+	std::cout << "Converting font data..." << std::endl;
+
+	NFTR::convert(m_assetsPath / "font", m_gameFolder / "font");
 }
 
 void Game::run() {

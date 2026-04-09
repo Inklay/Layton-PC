@@ -37,6 +37,7 @@ private:
 	void convertAnimData() const;
 	void convertVideoData() const;
 	void convertAudioData() const;
+	void convertFontData() const;
 
 	const fileUtils::path& m_assetsPath;
 	Scene::Type m_sceneType;
