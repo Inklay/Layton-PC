@@ -64,12 +64,14 @@ void Scene::handleEvent(SDL_Event event) {
 			if (it.second->m_interactive && it.second->isHovered()) {
 				it.second->setClicked(true);
 				m_clickedSprite = { it.first, it.second.get()};
+				break;
 			}
 		}
 	} else if (event.type == SDL_EVENT_MOUSE_BUTTON_UP && event.button.button == SDL_BUTTON_LEFT) {
 		if (m_clickedSprite.second == nullptr) {
 			return;
 		}
+
 		m_clickedSprite.second->setClicked(false);
 		if (m_clickedSprite.second->isHovered()) {
 			handleClick(m_clickedSprite.first, event);

@@ -11,9 +11,9 @@ namespace Layton1Scene {
 	{
 		m_sprites.insert({ "topBackground", std::make_unique<Sprite>("bg/fr/name_sub.png", this, SDL_FRect{ 0, 0, WIDTH, HALF_HEIGHT }) });
 		m_sprites.insert({ "keyboardLowerCase", std::make_unique<Sprite>("bg/name_bg1.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
-		m_sprites.insert({ "keyboardUpperCase", std::make_unique<Sprite>("bg/name_bg2.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
-		m_sprites.insert({ "keyboardShift", std::make_unique<Sprite>("bg/name_bg3.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
-		m_sprites.insert({ "keyboardSpecial", std::make_unique<Sprite>("bg/name_bg4.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+		m_sprites.insert({ "keyboardUpperCase", std::make_unique<Sprite>("bg/name_bg2.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
+		m_sprites.insert({ "keyboardShift", std::make_unique<Sprite>("bg/name_bg3.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
+		m_sprites.insert({ "keyboardSpecial", std::make_unique<Sprite>("bg/name_bg4.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
 
 		m_sprites.insert({ "okButton", std::make_unique<ClickableSprite>("ani/fr/name_ok.png", this, SDL_FRect{ centerXPos(64), 353, 64, 24}) });
 		m_sprites.insert({ "backSpaceButton", std::make_unique<ClickableSprite>("ani/name_btn.5.png", this, SDL_FRect{ 194, 321, 60, 20}) });
@@ -71,20 +71,85 @@ namespace Layton1Scene {
 	void CreateSave::handleClick(const std::string& spriteName, SDL_Event event) {
 		if (spriteName == "specialButton") {
 			m_keyboardState = SPECIAL;
+			m_sprites.at("keyboardLowerCase")->m_interactive = false;
+			m_sprites.at("keyboardUpperCase")->m_interactive = false;
+			m_sprites.at("keyboardShift")->m_interactive = false;
+			m_sprites.at("keyboardSpecial")->m_interactive = true;
 		} else if (spriteName == "lowerButton") {
 			m_keyboardState = LOWER;
-		} else if (spriteName.starts_with("keyboard")) {
-			std::cout << isLetterClicked(15, HALF_HEIGHT + 49) << std::endl;
+			m_sprites.at("keyboardSpecial")->m_interactive = false;
+			m_sprites.at("keyboardLowerCase")->m_interactive = true;
+		} else if (spriteName == "keyboardLowerCase") {
+			checkKeyPressed(m_lowerCaseKeyPos);
+		} else if (spriteName == "keyboardUpperCase") {
+			checkKeyPressed(m_upperCaseKeyPos);
+		} else if (spriteName == "keyboardShift") {
+			checkKeyPressed(m_shiftKeyPos);
+		} else if (spriteName == "backSpaceButton" && m_name.length() != 0) {
+			m_name.pop_back();
+			m_sprites.at("cursor")->m_transform.x -= 16 * m_game->m_windowMultiplier;
+		} else if (spriteName == "spaceButton") {
+			addChar(' ');
 		}
+		std::cout << m_name << std::endl;
 	}
 
-	bool CreateSave::isLetterClicked(float x, float y) {
+	bool CreateSave::isLetterClicked(SDL_FRect rect) {
 		float mouseX, mouseY;
 		SDL_GetMouseState(&mouseX, &mouseY);
 
-		x *= m_game->m_windowMultiplier;
-		y *= m_game->m_windowMultiplier;
+		rect.x *= m_game->m_windowMultiplier;
+		rect.y *= m_game->m_windowMultiplier;
+		rect.h *= m_game->m_windowMultiplier;
+		rect.w *= m_game->m_windowMultiplier;
 
-		return mouseX >= x && mouseX < x + 18 * m_game->m_windowMultiplier && mouseY >= y && mouseY < y + 18 * m_game->m_windowMultiplier;
+		return mouseX >= rect.x && mouseX < rect.x + rect.w && mouseY >= rect.y && mouseY < rect.y + rect.h;
+	}
+
+	void CreateSave::checkKeyPressed(const std::map<char, std::pair<float, float>>& keyLayout) {
+		for (auto& key : keyLayout) {
+			if (key.first == 0 && isLetterClicked(SDL_FRect{ key.second.first, HALF_HEIGHT + key.second.second, 25, 12 })) {
+				if (m_keyboardState == UPPER) {
+					m_keyboardState = LOWER;
+					m_sprites.at("keyboardUpperCase")->m_interactive = false;
+					m_sprites.at("keyboardShift")->m_interactive = false;
+					m_sprites.at("keyboardLowerCase")->m_interactive = true;
+				} else {
+					m_keyboardState = UPPER;
+					m_sprites.at("keyboardShift")->m_interactive = false;
+					m_sprites.at("keyboardLowerCase")->m_interactive = false;
+					m_sprites.at("keyboardUpperCase")->m_interactive = true;
+				}
+
+				return;
+			}
+
+			if (key.first == 1 && isLetterClicked(SDL_FRect{ key.second.first, HALF_HEIGHT + key.second.second, 36, 12 })) {
+				m_keyboardState = SHIFT;
+				m_sprites.at("keyboardLowerCase")->m_interactive = false;
+				m_sprites.at("keyboardUpperCase")->m_interactive = false;
+				m_sprites.at("keyboardShift")->m_interactive = true;
+
+				return;
+			}
+
+			if (isLetterClicked(SDL_FRect{ key.second.first, HALF_HEIGHT + key.second.second, 17, 17 })) {
+				if (m_keyboardState == SHIFT) {
+					m_keyboardState = LOWER;
+					m_sprites.at("keyboardShift")->m_interactive = false;
+					m_sprites.at("keyboardLowerCase")->m_interactive = true;
+				}
+				addChar(key.first);
+			}
+		}
+	}
+
+	void CreateSave::addChar(char c) {
+		if (m_name.length() == 9) {
+			return;
+		}
+
+		m_name += c;
+		m_sprites.at("cursor")->m_transform.x += 16 * m_game->m_windowMultiplier;
 	}
 };
