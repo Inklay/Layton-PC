@@ -223,6 +223,7 @@
     <ClInclude Include="include\Game\Sprite\Sprite.h" />
     <ClInclude Include="include\Game\Sprite\ParallaxSprite.h" />
     <ClInclude Include="include\Game\Sprite\SpriteSheet.h" />
+    <ClInclude Include="include\Game\Sprite\TextSprite.h" />
     <ClInclude Include="include\Utils\FileUtils.h" />
     <ClInclude Include="include\FileFormat\Conversion\LPCK.h" />
     <ClInclude Include="include\Utils\FolderUtils.h" />

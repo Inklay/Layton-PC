@@ -48,7 +48,6 @@ std::vector<NFTR::Glyph> NFTR::extractNFTR(const fileUtils::buffer& buffer) {
     uint8_t cellH = fileUtils::read1Byte(buffer, offset);
     uint16_t tileSize = fileUtils::read2Byte(buffer, offset);
     uint16_t bpp = (8 * tileSize) / cellW / cellH;
-    printf("cellW=%d cellH=%d tileSize=%d bpp=%d\n", cellW, cellH, tileSize, bpp);
 
     offset += 4;
 
