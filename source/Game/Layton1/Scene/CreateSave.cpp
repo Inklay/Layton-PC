@@ -3,6 +3,7 @@
 #include "Game/Sprite/FadingSprite.h"
 #include "Game/Sprite/AnimatedSprite.h"
 #include "Game/Sprite/ClickableSprite.h"
+#include "Game/Sprite/TextSprite.h"
 #include "Game/Game.h"
 
 namespace Layton1Scene {
@@ -22,6 +23,7 @@ namespace Layton1Scene {
 		m_sprites.insert({ "lowerButton", std::make_unique<ClickableSprite>("ani/name_btn.2.png", this, SDL_FRect{ 3, 321, 28, 20}) });
 
 		m_sprites.insert({ "cursor", std::make_unique<Sprite>("ani/name_btn.0.png", this, SDL_FRect{ 52, 221, 10, 2})});
+		m_sprites.insert({ "char", std::make_unique<TextSprite>("font/fontevent.png", this, SDL_FRect{ 53, 210, 9, 12})});
 	}
 
 	void CreateSave::load() {
@@ -57,6 +59,8 @@ namespace Layton1Scene {
 		if (m_displayCursor) {
 			m_sprites.at("cursor")->draw();
 		}
+
+		m_sprites.at("char")->drawText('a');
 
 		m_cursorCount++;
 

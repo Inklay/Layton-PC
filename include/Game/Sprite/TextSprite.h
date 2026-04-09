@@ -5,12 +5,10 @@
 class TextSprite : public Sprite {
 public:
 	TextSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, SDL_FRect subTexture = { -1, -1, -1, -1 });
-	void draw(int zIndex = 0) override;
+	void draw(int zIndex = 0) {};
+	void drawText(char c) override;
 
 private:
-	size_t m_duration;
-	size_t m_timer;
-
 	std::vector<std::string> m_fontChars = {
 		" ", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*",  "+", ",", "-", ".", "/",
 		"0", "1",  "2", "3", "4", "5", "6", "7", "8", "9", ":",  ";", "=", "?", "@", "A",

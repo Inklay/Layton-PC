@@ -12,6 +12,7 @@ public:
 	Sprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, bool isInteractive = false, SDL_FRect subTexture = { -1, -1, -1, -1 });
 	virtual void draw(int zIndex = 0);
 	virtual void unload();
+	virtual void drawText(char c) {};
 
 	SDL_Surface* m_surface;
 	SDL_Texture* m_texture;
