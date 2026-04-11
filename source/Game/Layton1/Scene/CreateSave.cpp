@@ -151,7 +151,7 @@ namespace Layton1Scene {
 	}
 
 	void CreateSave::addChar(const std::u32string& c) {
-		if (m_name.length() == 10) {
+		if (m_name.length() == 10 || c.length() > 1) {
 			return;
 		}
 

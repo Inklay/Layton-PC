@@ -20,7 +20,7 @@ Game::Game(const fileUtils::path& assetsPath, const std::string& name, SDL_Windo
 {
 	m_renderer = SDL_CreateRenderer(&m_window, nullptr);
 	m_gameFolder = std::filesystem::current_path() / "games" / m_name;
-	m_sceneType = Scene::CREATE_SAVE;
+	m_sceneType = Scene::TITLE_SCREEN;
 
 	m_windowMultiplier = sdlUtils::scaleWindow(&window);
 	m_audioStream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &sdlUtils::audioSpec, NULL, nullptr);
@@ -33,20 +33,20 @@ Game::Game(const fileUtils::path& assetsPath, const std::string& name, SDL_Windo
 }
 
 void Game::convertData() const {
-	//if (std::filesystem::exists(m_gameFolder / "extracted")) {
-	//	return;
-	//}
+	if (std::filesystem::exists(m_gameFolder / "extracted")) {
+		return;
+	}
 
 	if (!std::filesystem::exists(m_assetsPath)) {
 		std::cerr << "can't open " << std::filesystem::absolute(m_assetsPath) << std::endl;
 		exit(1);
 	}
 
-	//convertTextData();
-	//convertImgData();
-	//convertAnimData();
-	//convertVideoData();
-	//convertAudioData();
+	convertTextData();
+	convertImgData();
+	convertAnimData();
+	convertVideoData();
+	convertAudioData();
 	convertFontData();
 
 	fileUtils::writeText("", m_gameFolder / "extracted");

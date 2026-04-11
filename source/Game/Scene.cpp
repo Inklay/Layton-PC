@@ -67,7 +67,9 @@ void Scene::handleEvent(SDL_Event event) {
 				maxZIndex = it.second->m_zIndex;
 			}
 		}
-		m_clickedSprite.second->setClicked(true);
+		if (m_clickedSprite.second != nullptr) {
+			m_clickedSprite.second->setClicked(true);
+		}
 	} else if (event.type == SDL_EVENT_MOUSE_BUTTON_UP && event.button.button == SDL_BUTTON_LEFT) {
 		if (m_clickedSprite.second == nullptr) {
 			return;
