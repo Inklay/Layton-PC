@@ -20,7 +20,42 @@ void NFTR::convertToPng(const fileUtils::path& filePath, const fileUtils::path& 
 	}
 
     const std::vector<Glyph> glyphs = extractNFTR(buffer);
+    const fileUtils::buffer glyphWidths = getGlyphWidths(buffer);
+    fileUtils::writeBin(glyphWidths, outputFolder / filePath.filename().replace_extension("font"));
     savePNG(glyphs, outputFolder / filePath.filename().replace_extension("png"));
+}
+
+fileUtils::buffer NFTR::getGlyphWidths(const fileUtils::buffer& buffer) {
+    fileUtils::buffer widths;
+    size_t offset = 0x10;
+
+    while (offset < buffer.size()) {
+        uint32_t blockType = fileUtils::read4Byte(buffer, offset);
+        uint32_t size = fileUtils::read4Byte(buffer, offset);
+
+        if (blockType == 0x43574448) {
+            break;
+        }
+
+        offset += size - 8;
+    }
+
+    if (offset >= buffer.size()) {
+        return widths;
+    }
+
+    uint16_t firstChar = fileUtils::read2Byte(buffer, offset);
+    uint16_t lastChar = fileUtils::read2Byte(buffer, offset);
+    uint32_t nextCWDH = fileUtils::read4Byte(buffer, offset);
+
+    for (uint16_t i = firstChar; i <= lastChar; i++) {
+        offset += 1;
+        uint8_t glyphW = fileUtils::read1Byte(buffer, offset);
+        offset += 1;
+        widths.push_back(glyphW);
+    }
+
+    return widths;
 }
 
 std::vector<NFTR::Glyph> NFTR::extractNFTR(const fileUtils::buffer& buffer) {
@@ -48,7 +83,7 @@ std::vector<NFTR::Glyph> NFTR::extractNFTR(const fileUtils::buffer& buffer) {
     uint8_t cellH = fileUtils::read1Byte(buffer, offset);
     uint16_t tileSize = fileUtils::read2Byte(buffer, offset);
     uint16_t bpp = (8 * tileSize) / cellW / cellH;
-
+    
     offset += 4;
 
     while (offset + tileSize <= blockEnd) {

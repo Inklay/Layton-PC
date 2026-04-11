@@ -1,4 +1,4 @@
-#include "FileFormat/Conversion/Anim.h"
+#include "FileFormat/Custom/Anim.h"
 
 Anim::Anim(const fileUtils::path& inputFile) {
 	fileUtils::buffer buffer = fileUtils::readBin(inputFile);

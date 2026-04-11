@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Game/Sprite/Sprite.h"
-#include "FileFormat/Conversion/Anim.h"
+#include "FileFormat/Custom/Anim.h"
 #include <map>
 
 class AnimatedSprite : public Sprite {

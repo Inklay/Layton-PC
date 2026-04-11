@@ -6,6 +6,7 @@
 TextSprite::TextSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, SDL_FRect subTexture) :
 	Sprite(file, scene, transform, false, subTexture)
 {
+	m_glyphWidths = fileUtils::readBin(m_scene->m_game->m_gameFolder / file.parent_path() / file.filename().replace_extension("font"));
 }
 
 void TextSprite::drawText(std::u32string&& c) {
@@ -21,10 +22,13 @@ void TextSprite::drawText(std::u32string&& c) {
 	const uint64_t charIdx = charIt - m_fontChars.begin();
 	const float x = static_cast<float>(charIdx % colSize * width);
 	const float y = static_cast<float>(charIdx / colSize * height);
+	const float baseX = m_transform.x;
 
-	//std::cout << x << "/" << y << std::endl;
+	m_transform.x += (width - m_glyphWidths.at(charIdx)) / 2;
 
 	const SDL_FRect subTexture{ x, y, width, height };
 	SDL_SetTextureColorMod(m_texture, 0, 0, 0);
 	SDL_RenderTexture(m_scene->m_game->m_renderer, m_texture, &subTexture, reinterpret_cast<const SDL_FRect*>(&m_transform));
+
+	m_transform.x = baseX;
 }

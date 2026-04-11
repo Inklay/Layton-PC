@@ -168,7 +168,7 @@
   <ItemGroup>
     <ClCompile Include="source\FileFormat\Compression\Huffman.cpp" />
     <ClCompile Include="source\FileFormat\Compression\RLE.cpp" />
-    <ClCompile Include="source\FileFormat\Conversion\Anim.cpp" />
+    <ClCompile Include="source\FileFormat\Custom\Anim.cpp" />
     <ClCompile Include="source\FileFormat\Conversion\GFX.cpp" />
     <ClCompile Include="source\FileFormat\Conversion\BGX.cpp" />
     <ClCompile Include="source\FileFormat\Conversion\Converter.cpp" />
@@ -201,7 +201,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\FileFormat\Compression\RLE.h" />
-    <ClInclude Include="include\FileFormat\Conversion\Anim.h" />
+    <ClInclude Include="include\FileFormat\Custom\Anim.h" />
     <ClInclude Include="include\FileFormat\Conversion\GFX.h" />
     <ClInclude Include="include\FileFormat\Conversion\BGX.h" />
     <ClInclude Include="include\FileFormat\Compression\Huffman.h" />

@@ -16,4 +16,5 @@ private:
 	static void convertToPng(const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool isCompressed);
 	static std::vector<Glyph> extractNFTR(const fileUtils::buffer& buf);
 	static void savePNG(const std::vector<Glyph>& glyphs, const fileUtils::path& filePath);
+	static fileUtils::buffer getGlyphWidths(const fileUtils::buffer& buffer);
 };

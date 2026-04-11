@@ -21,4 +21,5 @@ private:
 		U"Ó", U"Ô",  U"Ö", U"Ù", U"Ú", U"Û", U"Ü", U"ß", U"à", U"á", U"â",  U"ä", U"ç", U"è", U"é", U"ê",
 		U"ë", U"ì",  U"í", U"î", U"ñ", U"ò", U"ó", U"ô", U"ö", U"ù", U"ú",  U"û", U"ü"
 	};
+	fileUtils::buffer m_glyphWidths;
 };

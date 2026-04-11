@@ -114,7 +114,7 @@ namespace Layton1Scene {
 
 	void CreateSave::checkKeyPressed(const std::map<std::u32string, std::pair<float, float>>& keyLayout) {
 		for (auto& key : keyLayout) {
-			if (key.first == U"0" && isLetterClicked(SDL_FRect{ key.second.first, HALF_HEIGHT + key.second.second, 25, 12 })) {
+			if (key.first == U"upper" && isLetterClicked(SDL_FRect{ key.second.first, HALF_HEIGHT + key.second.second, 25, 12 })) {
 				if (m_keyboardState == UPPER) {
 					m_keyboardState = LOWER;
 					m_sprites.at("keyboardUpperCase")->m_interactive = false;
@@ -130,7 +130,7 @@ namespace Layton1Scene {
 				return;
 			}
 
-			if (key.first == U"1" && isLetterClicked(SDL_FRect{ key.second.first, HALF_HEIGHT + key.second.second, 36, 12 })) {
+			if (key.first == U"shift" && isLetterClicked(SDL_FRect{ key.second.first, HALF_HEIGHT + key.second.second, 36, 12 })) {
 				m_keyboardState = SHIFT;
 				m_sprites.at("keyboardLowerCase")->m_interactive = false;
 				m_sprites.at("keyboardUpperCase")->m_interactive = false;

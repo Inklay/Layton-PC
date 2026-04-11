@@ -1,5 +1,5 @@
 #include "FileFormat/Conversion/GFX.h"
-#include "FileFormat/Conversion/Anim.h"
+#include "FileFormat/Custom/Anim.h"
 #include <cmath>
 #include "Utils/stb_image_write.h"
 #include "Utils/StringUtils.h"
