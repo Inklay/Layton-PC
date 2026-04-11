@@ -10,6 +10,9 @@ namespace Layton1Scene {
 	CreateSave::CreateSave(Game* game) :
 		Scene(game)
 	{
+	}
+
+	void CreateSave::load() {
 		m_sprites.insert({ "topBackground", std::make_unique<Sprite>("bg/fr/name_sub.png", this, SDL_FRect{ 0, 0, WIDTH, HALF_HEIGHT }) });
 		m_sprites.insert({ "keyboardLowerCase", std::make_unique<Sprite>("bg/name_bg1.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 		m_sprites.insert({ "keyboardUpperCase", std::make_unique<Sprite>("bg/name_bg2.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
@@ -22,17 +25,12 @@ namespace Layton1Scene {
 		m_sprites.insert({ "specialButton", std::make_unique<ClickableSprite>("ani/name_btn.3.png", this, SDL_FRect{ 34, 321, 28, 20}) });
 		m_sprites.insert({ "lowerButton", std::make_unique<ClickableSprite>("ani/name_btn.2.png", this, SDL_FRect{ 3, 321, 28, 20}) });
 
-		m_sprites.insert({ "cursor", std::make_unique<Sprite>("ani/name_btn.0.png", this, SDL_FRect{ 52, 221, 10, 2})});
-		m_sprites.insert({ "char", std::make_unique<TextSprite>("font/fontevent.png", this, SDL_FRect{ 53, 210, 9, 12})});
-	}
-
-	void CreateSave::load() {
-		Scene::load();
+		m_sprites.insert({ "cursor", std::make_unique<Sprite>("ani/name_btn.0.png", this, SDL_FRect{ 52, 221, 10, 2}) });
+		m_sprites.insert({ "char", std::make_unique<TextSprite>("font/fontevent.png", this, SDL_FRect{ 53, 210, 9, 12}) });
 	}
 
 	void CreateSave::render() {
 		loopBGM();
-
 		m_sprites.at("topBackground")->draw();
 
 		switch (m_keyboardState) {
@@ -56,14 +54,17 @@ namespace Layton1Scene {
 		m_sprites.at("specialButton")->draw(1);
 		m_sprites.at("lowerButton")->draw(1);
 
-		if (m_displayCursor) {
+		if (m_displayCursor && m_name.length() != 10) {
 			m_sprites.at("cursor")->draw();
 		}
 
-		m_sprites.at("char")->drawText('a');
+		m_sprites.at("char")->m_transform.x = 53 * m_game->m_windowMultiplier;
+		for (size_t i = 0; i < m_name.length(); i++) {
+			m_sprites.at("char")->drawText(m_name.substr(i, 1));
+			m_sprites.at("char")->m_transform.x += 16 * m_game->m_windowMultiplier;
+		}
 
 		m_cursorCount++;
-
 		if (m_cursorCount == 30) {
 			m_cursorCount = 0;
 			m_displayCursor = !m_displayCursor;
@@ -95,7 +96,7 @@ namespace Layton1Scene {
 			m_name.pop_back();
 			m_sprites.at("cursor")->m_transform.x -= 16 * m_game->m_windowMultiplier;
 		} else if (spriteName == "spaceButton") {
-			addChar(" ");
+			addChar(U" ");
 		}
 	}
 
@@ -111,9 +112,9 @@ namespace Layton1Scene {
 		return mouseX >= rect.x && mouseX < rect.x + rect.w && mouseY >= rect.y && mouseY < rect.y + rect.h;
 	}
 
-	void CreateSave::checkKeyPressed(const std::map<std::string, std::pair<float, float>>& keyLayout) {
+	void CreateSave::checkKeyPressed(const std::map<std::u32string, std::pair<float, float>>& keyLayout) {
 		for (auto& key : keyLayout) {
-			if (key.first == "0" && isLetterClicked(SDL_FRect{ key.second.first, HALF_HEIGHT + key.second.second, 25, 12 })) {
+			if (key.first == U"0" && isLetterClicked(SDL_FRect{ key.second.first, HALF_HEIGHT + key.second.second, 25, 12 })) {
 				if (m_keyboardState == UPPER) {
 					m_keyboardState = LOWER;
 					m_sprites.at("keyboardUpperCase")->m_interactive = false;
@@ -129,7 +130,7 @@ namespace Layton1Scene {
 				return;
 			}
 
-			if (key.first == "1" && isLetterClicked(SDL_FRect{ key.second.first, HALF_HEIGHT + key.second.second, 36, 12 })) {
+			if (key.first == U"1" && isLetterClicked(SDL_FRect{ key.second.first, HALF_HEIGHT + key.second.second, 36, 12 })) {
 				m_keyboardState = SHIFT;
 				m_sprites.at("keyboardLowerCase")->m_interactive = false;
 				m_sprites.at("keyboardUpperCase")->m_interactive = false;
@@ -149,8 +150,8 @@ namespace Layton1Scene {
 		}
 	}
 
-	void CreateSave::addChar(const std::string& c) {
-		if (m_name.length() == 9) {
+	void CreateSave::addChar(const std::u32string& c) {
+		if (m_name.length() == 10) {
 			return;
 		}
 

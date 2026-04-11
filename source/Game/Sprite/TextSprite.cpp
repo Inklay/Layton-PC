@@ -1,14 +1,30 @@
 #include "Game/Sprite/TextSprite.h"
 #include "Game/Scene.h"
 #include "Game/Game.h"
+#include <algorithm>
 
 TextSprite::TextSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, SDL_FRect subTexture) :
 	Sprite(file, scene, transform, false, subTexture)
 {
 }
 
-void TextSprite::drawText(char c) {
+void TextSprite::drawText(std::u32string&& c) {
+	const float height = 12.0f;
+	const float width = 9.0f;
+	const int colSize = 16;
+	const std::vector<std::u32string>::iterator charIt = std::find(m_fontChars.begin(), m_fontChars.end(), c);
+
+	if (charIt == m_fontChars.end()) {
+		return;
+	}
+
+	const uint64_t charIdx = charIt - m_fontChars.begin();
+	const float x = static_cast<float>(charIdx % colSize * width);
+	const float y = static_cast<float>(charIdx / colSize * height);
+
+	//std::cout << x << "/" << y << std::endl;
+
+	const SDL_FRect subTexture{ x, y, width, height };
 	SDL_SetTextureColorMod(m_texture, 0, 0, 0);
-	const SDL_FRect subTexture{ 9, 0, 9, 12 };
 	SDL_RenderTexture(m_scene->m_game->m_renderer, m_texture, &subTexture, reinterpret_cast<const SDL_FRect*>(&m_transform));
 }
