@@ -12,6 +12,7 @@ public:
 	Game(const fileUtils::path& assetsPath, const std::string& name, SDL_Window& window);
 	void run();
 	bool hasSave();
+	void changeScene(Scene::Type newScene);
 	
 	std::vector<std::unique_ptr<Save>> m_saves;
 	float m_windowMultiplier;
@@ -20,7 +21,6 @@ public:
 	SDL_Window& m_window;
 	SDL_Renderer* m_renderer;
 	fileUtils::path m_gameFolder;
-	void changeScene(Scene::Type newScene);
 
 protected:
 	virtual void createScenes() = 0;

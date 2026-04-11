@@ -5,7 +5,11 @@ Scene::Scene(Game* game) :
 	m_game(game),
 	m_lastTick(0),
 	m_bgmBuffer(nullptr),
-	m_bgmBufferLen(0)
+	m_bgmBufferLen(0),
+	m_fading(false),
+	m_faded(false),
+	m_fadeProgress(0),
+	m_nextScene(UNKNOWN)
 {
 }
 
@@ -22,6 +26,10 @@ void Scene::unload() {
 	if (m_bgmBuffer == nullptr) {
 		SDL_free(m_bgmBuffer);
 	}
+
+	m_faded = false;
+	m_fading = false;
+	m_fadeProgress = 0;
 
 	m_sprites.clear();
 }
@@ -81,4 +89,19 @@ void Scene::handleEvent(SDL_Event event) {
 			m_clickedSprite.second = nullptr;
 		}
 	}
+}
+
+void Scene::fadeToBlack() {
+	size_t elapsedTime = SDL_GetTicks() - m_lastTick;
+	m_fadeProgress += elapsedTime;
+	size_t opacity = (m_fadeProgress * 255) / 300;
+
+	if (opacity >= 255) {
+		m_faded = true;
+		opacity = 255;
+	}
+
+	SDL_SetRenderDrawBlendMode(m_game->m_renderer, SDL_BLENDMODE_MUL);
+	SDL_SetRenderDrawColor(m_game->m_renderer, 0, 0, 0, (uint8_t)opacity);
+	SDL_RenderFillRect(m_game->m_renderer, NULL);
 }

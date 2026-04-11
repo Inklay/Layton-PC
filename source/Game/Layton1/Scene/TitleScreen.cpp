@@ -37,13 +37,22 @@ namespace Layton1Scene {
 
 		loopBGM();
 
+		if (m_fading) {
+			fadeToBlack();
+
+			if (m_faded) {
+				m_game->changeScene(m_nextScene);
+			}
+		}
+
 		m_lastTick = SDL_GetTicks();
 	}
 
 	void TitleScreen::handleClick(const std::string& spriteName, SDL_Event event) {
 		if (spriteName == "startButton") {
 			if (!m_hasSave) {
-				m_game->changeScene(Scene::CREATE_SAVE);
+				m_nextScene = Scene::CREATE_SAVE;
+				m_fading = true;
 			}
 		}
 	}
