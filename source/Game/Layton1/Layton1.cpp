@@ -2,6 +2,7 @@
 #include "Game/Layton1/Layton1Save.h"
 #include "Game/Layton1/Scene/TitleScreen.h"
 #include "Game/Layton1/Scene/CreateSave.h"
+#include "Game/Layton1/Scene/Intro.h"
 
 Layton1::Layton1(const fileUtils::path& assetsPath, SDL_Window& window) :
 	Game(assetsPath, "LAYTON1", window)
@@ -14,6 +15,7 @@ Layton1::Layton1(const fileUtils::path& assetsPath, SDL_Window& window) :
 void Layton1::init() {
 	m_scenes[Scene::TITLE_SCREEN] = std::make_unique<Layton1Scene::TitleScreen>(this);
 	m_scenes[Scene::CREATE_SAVE] = std::make_unique<Layton1Scene::CreateSave>(this);
+	m_scenes[Scene::INTRO] = std::make_unique<Layton1Scene::Intro>(this);
 
 	m_sfx = {
 		{ "level5Logo", "0"},
@@ -36,7 +38,7 @@ void Layton1::init() {
 }
 
 void Layton1::getSaves() {
-	m_saves.reserve(3);
+	m_saves.resize(3);
 
 	for (int i = 0; i < 3; i++) {
 		fileUtils::path path = std::filesystem::current_path() / "saves/LAYTON1" / (std::to_string(i) + ".luke");
@@ -46,4 +48,18 @@ void Layton1::getSaves() {
 			m_saves.emplace_back(nullptr);
 		}
 	}
+}
+
+void Layton1::addSave(const std::u32string name) {
+	int idx = 0;
+
+	for (int idx = 0; idx < 3; idx++) {
+		if (m_saves.at(idx).get() == nullptr) {
+			break;
+		}
+	}
+
+	fileUtils::path path = std::filesystem::current_path() / "saves" / m_name / (std::to_string(idx + 1) + ".luke");
+	m_saves.at(idx) = std::make_unique<Layton1Save>(name, path);
+	m_save = m_saves.at(idx).get();
 }

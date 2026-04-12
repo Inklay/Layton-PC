@@ -13,12 +13,13 @@ public:
 	void run();
 	bool hasSave();
 	void changeScene(Scene::Type newScene);
+	virtual void addSave(const std::u32string name) = 0;
 	
 	std::vector<std::unique_ptr<Save>> m_saves;
 	float m_windowMultiplier;
 	SDL_AudioStream* m_bgmStream;
 	SDL_AudioStream* m_sfxStream;
-	std::unique_ptr<Save> m_save;
+	Save* m_save;
 	SDL_Window& m_window;
 	SDL_Renderer* m_renderer;
 	fileUtils::path m_gameFolder;
@@ -31,7 +32,7 @@ protected:
 
 	Scene* currentScene();
 	std::map<Scene::Type, std::unique_ptr<Scene>> m_scenes;
-	const std::string& m_name;
+	const std::string m_name;
 
 private:
 	void convertData() const;

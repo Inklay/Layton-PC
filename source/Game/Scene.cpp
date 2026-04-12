@@ -7,7 +7,10 @@ Scene::Scene(Game* game) :
 	m_fading(false),
 	m_faded(false),
 	m_fadeProgress(0),
-	m_nextScene(UNKNOWN)
+	m_nextScene(UNKNOWN),
+	m_fadeInSeconds(0),
+	m_fadeOutSeconds(0),
+	m_sfxBuffer(nullptr)
 {
 }
 
@@ -21,6 +24,14 @@ void Scene::unload() {
 		it.second.release();
 	}
 
+	SDL_ClearAudioStream(m_game->m_bgmStream);
+
+	if (SDL_GetAudioStreamQueued(m_game->m_sfxStream)) {
+		if (m_sfxBuffer != nullptr) {
+			SDL_free(m_sfxBuffer);
+		}
+	}
+
 	if (m_game->m_bgmData.buffer != nullptr) {
 		m_game->m_bgmData.buffer = nullptr;
 		m_game->m_bgmData.position = 0;
@@ -30,16 +41,10 @@ void Scene::unload() {
 		SDL_free(m_game->m_bgmData.buffer);
 	}
 
-	if (m_sfxBuffer != nullptr) {
-		SDL_free(m_sfxBuffer);
-	}
-
 	m_faded = false;
 	m_fading = false;
 	m_fadeProgress = 0;
 	m_sprites.clear();
-
-	SDL_ClearAudioStream(m_game->m_bgmStream);
 }
 
 void Scene::playBGM(const fileUtils::path& inputFile) {
@@ -91,7 +96,7 @@ void Scene::handleEvent(SDL_Event event) {
 void Scene::fadeOut() {
 	size_t elapsedTime = SDL_GetTicks() - m_lastTick;
 	m_fadeProgress += elapsedTime;
-	int opacity = (int)((m_fadeProgress * 255) / (m_findOutSeconds * 1000));
+	int opacity = (int)((m_fadeProgress * 255) / (m_fadeOutSeconds * 1000));
 
 	if (opacity >= 255) {
 		m_faded = true;
@@ -111,10 +116,9 @@ void Scene::fadeIn() {
 		m_fadeProgress += elapsedTime;
 	}
 
-	int opacity = 255 - (int)(((int)m_fadeProgress * 255) / (m_findInSeconds * 1000));
+	int opacity = 255 - (int)(((int)m_fadeProgress * 255) / (m_fadeInSeconds * 1000));
 
 	if (opacity <= 0) {
-		m_faded = true;
 		m_fading = false;
 		m_fadeProgress = 0;
 		opacity = 0;
@@ -127,10 +131,10 @@ void Scene::fadeIn() {
 }
 
 void Scene::fadeToNextScene(Type type) {
-	m_nextScene = Scene::CREATE_SAVE;
+	m_nextScene = type;
 	m_fading = true;
 	m_game->m_bgmData.fading = true;
-	m_game->m_bgmData.fadingSeconds = m_findOutSeconds;
+	m_game->m_bgmData.fadingSeconds = m_fadeOutSeconds;
 }
 
 void Scene::fade() {

@@ -13,9 +13,10 @@ public:
 	enum Type {
 		UNKNOWN,
 		EXTRACTING_DATA,
-		INTRO,
+		DEVLOGO,
 		TITLE_SCREEN,
-		CREATE_SAVE
+		CREATE_SAVE,
+		INTRO
 	};
 
 	Scene(Game* game);
@@ -40,8 +41,8 @@ protected:
 	std::map<std::string, std::unique_ptr<Sprite>> m_sprites;
 	size_t m_fadeProgress;
 	Type m_nextScene;
-	float m_findOutSeconds;
-	float m_findInSeconds;
+	float m_fadeOutSeconds;
+	float m_fadeInSeconds;
 
 private:
 	void fadeOut();

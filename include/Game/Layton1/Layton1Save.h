@@ -5,7 +5,7 @@
 class Layton1Save : public Save {
 public:
 	Layton1Save(fileUtils::path inputFile);
-	Layton1Save(const std::string name, fileUtils::path file);
+	Layton1Save(const std::u32string name, fileUtils::path file);
 	void save();
 
 protected:

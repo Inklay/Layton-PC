@@ -29,8 +29,8 @@ namespace Layton1Scene {
 		m_sprites.insert({ "char", std::make_unique<TextSprite>("font/fontevent.png", this, SDL_FRect{ 53, 210, 9, 12}) });
 
 		m_fading = true;
-		m_findInSeconds = 0.8f;
-		m_findOutSeconds = 0.3f;
+		m_fadeInSeconds = 0.8f;
+		m_fadeOutSeconds = 0.3f;
 	}
 
 	void CreateSave::render() {
@@ -108,6 +108,8 @@ namespace Layton1Scene {
 			addChar(U" ");
 		} else if (spriteName == "okButton" && m_name.length() != 0) {
 			playSFX("keyboardOk");
+			m_game->addSave(m_name);
+			fadeToNextScene(INTRO);
 		}
 	}
 

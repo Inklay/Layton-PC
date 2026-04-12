@@ -166,6 +166,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="include\Game\Layton1\Scene\Intro.h" />
     <ClCompile Include="source\FileFormat\Compression\Huffman.cpp" />
     <ClCompile Include="source\FileFormat\Compression\RLE.cpp" />
     <ClCompile Include="source\FileFormat\Custom\Anim.cpp" />
@@ -181,6 +182,7 @@
     <ClCompile Include="source\Game\Layton1\Layton1.cpp" />
     <ClCompile Include="source\Game\Layton1\Layton1Save.cpp" />
     <ClCompile Include="source\Game\Layton1\Scene\CreateSave.cpp" />
+    <ClCompile Include="source\Game\Layton1\Scene\Intro.cpp" />
     <ClCompile Include="source\Game\Layton1\Scene\TitleScreen.cpp" />
     <ClCompile Include="source\Game\Save.cpp" />
     <ClCompile Include="source\Game\Scene.cpp" />

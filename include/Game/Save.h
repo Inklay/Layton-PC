@@ -14,7 +14,7 @@ public:
 
 	virtual void save() = 0;
 
-	std::string m_name;
+	std::u32string m_name;
 	uint32_t m_playTime = 0;
 	uint16_t m_picarats = 0;
 	uint16_t m_hintCoins = 0;

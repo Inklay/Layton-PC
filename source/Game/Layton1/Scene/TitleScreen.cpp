@@ -25,7 +25,7 @@ namespace Layton1Scene {
 		m_sprites.insert({ "startButton", std::make_unique<ClickableSprite>("ani/fr/startbutton.0.png", "ani/fr/startbutton.1.png", this, SDL_FRect{ centerXPos(82), centerBottomPos(16) - startButtonYOffset, 82, 16})});
 
 		playBGM(m_game->m_gameFolder / "sound/SEQ_BG_001.wav");
-		m_findOutSeconds = 0.8f;
+		m_fadeOutSeconds = 0.8f;
 	}
 
 	void TitleScreen::render() {

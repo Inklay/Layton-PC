@@ -16,7 +16,7 @@ void Save::readCommonData(const fileUtils::buffer& buffer, size_t& offset, GameI
 	uint8_t nameLength = fileUtils::read1Byte(buffer, offset);
 
 	for (size_t i = 0; i < nameLength; i++) {
-		m_name += fileUtils::read4Byte(buffer, offset);
+		m_name.append(1, fileUtils::read4Byte(buffer, offset));
 	}
 
 	m_puzzles.reserve(m_puzzleCount);
