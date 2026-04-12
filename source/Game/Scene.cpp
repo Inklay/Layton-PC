@@ -21,13 +21,22 @@ void Scene::unload() {
 		it.second.release();
 	}
 
-	if (m_game->m_audioData.bgmBuffer != nullptr) {
-		m_game->m_audioData.bgmBuffer = nullptr;
-		m_game->m_audioData.position = 0;
-		m_game->m_audioData.fading = false;
-		m_game->m_audioData.volume = 1.0f;
-		m_game->m_audioData.fadeProression = 0;
-		SDL_free(m_game->m_audioData.bgmBuffer);
+	if (m_game->m_bgmData.buffer != nullptr) {
+		m_game->m_bgmData.buffer = nullptr;
+		m_game->m_bgmData.position = 0;
+		m_game->m_bgmData.fading = false;
+		m_game->m_bgmData.volume = 1.0f;
+		m_game->m_bgmData.fadeProression = 0;
+		SDL_free(m_game->m_bgmData.buffer);
+	}
+
+	if (m_game->m_sfxData.buffer != nullptr) {
+		m_game->m_sfxData.buffer = nullptr;
+		m_game->m_sfxData.position = 0;
+		m_game->m_sfxData.fading = false;
+		m_game->m_sfxData.volume = 1.0f;
+		m_game->m_sfxData.fadeProression = 0;
+		SDL_free(m_game->m_sfxData.buffer);
 	}
 
 	m_faded = false;
@@ -35,17 +44,19 @@ void Scene::unload() {
 	m_fadeProgress = 0;
 	m_sprites.clear();
 
-	SDL_ClearAudioStream(m_game->m_audioStream);
+	SDL_ClearAudioStream(m_game->m_bgmStream);
 }
 
 void Scene::playBGM(const fileUtils::path& inputFile) {
-	if (!SDL_LoadWAV(inputFile.string().c_str(), &m_game->m_audioData.bgmSpec, &m_game->m_audioData.bgmBuffer, &m_game->m_audioData.bgmBufferLen)) {
-		std::cerr << SDL_GetError() << std::endl;
-		return;
-	}
+	SDL_LoadWAV(inputFile.string().c_str(), &m_game->m_bgmData.spec, &m_game->m_bgmData.buffer, &m_game->m_bgmData.bufferLen);
+	SDL_SetAudioStreamFormat(m_game->m_bgmStream, &m_game->m_bgmData.spec, &m_game->m_bgmData.spec);
+	SDL_ResumeAudioStreamDevice(m_game->m_bgmStream);
+}
 
-	SDL_SetAudioStreamFormat(m_game->m_audioStream, &m_game->m_audioData.bgmSpec, &m_game->m_audioData.bgmSpec);
-	SDL_ResumeAudioStreamDevice(m_game->m_audioStream);
+void Scene::playSFX(const fileUtils::path& inputFile) {
+	SDL_LoadWAV(inputFile.string().c_str(), &m_game->m_sfxData.spec, &m_game->m_sfxData.buffer, &m_game->m_sfxData.bufferLen);
+	SDL_SetAudioStreamFormat(m_game->m_sfxStream, &m_game->m_sfxData.spec, &m_game->m_sfxData.spec);
+	SDL_ResumeAudioStreamDevice(m_game->m_sfxStream);
 }
 
 void Scene::handleEvent(SDL_Event event) {
@@ -76,7 +87,7 @@ void Scene::handleEvent(SDL_Event event) {
 void Scene::fadeToBlack() {
 	size_t elapsedTime = SDL_GetTicks() - m_lastTick;
 	m_fadeProgress += elapsedTime;
-	size_t opacity = (m_fadeProgress * 255) / 400;
+	size_t opacity = (m_fadeProgress * 255) / 800;
 
 	if (opacity >= 255) {
 		m_faded = true;
@@ -91,5 +102,6 @@ void Scene::fadeToBlack() {
 void Scene::fadeToNextScene(Type type) {
 	m_nextScene = Scene::CREATE_SAVE;
 	m_fading = true;
-	m_game->m_audioData.fading = true;
+	m_game->m_bgmData.fading = true;
+	m_game->m_sfxData.fading = true;
 }

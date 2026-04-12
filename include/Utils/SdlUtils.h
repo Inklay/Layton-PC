@@ -18,19 +18,15 @@ namespace sdlUtils {
 	float centerXPos(float size);
 	float centerTopPos(float size);
 	float centerBottomPos(float size);
-
-	const SDL_AudioSpec audioSpec{ SDL_AUDIO_S16LE, 2, 16364 };
-
 	float scaleWindow(SDL_Window* window);
 	void multiply(SDL_FRect& rect, float multiplier);
-
 	void SDLCALL audioCallback(void* userData, SDL_AudioStream* stream, int additionalAmount, int totalAmount);
 
 	struct AudioData {
-		SDL_AudioSpec bgmSpec = { SDL_AUDIO_UNKNOWN, 0, 0 };
-		uint32_t bgmBufferLen = 0;
+		SDL_AudioSpec spec = { SDL_AUDIO_UNKNOWN, 0, 0 };
+		uint32_t bufferLen = 0;
 		int position = 0;
-		uint8_t* bgmBuffer = nullptr;
+		uint8_t* buffer = nullptr;
 		bool fading = false;
 		float volume = 1.0f;
 		int fadeProression = 0;

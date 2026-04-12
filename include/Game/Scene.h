@@ -33,6 +33,7 @@ public:
 
 protected:
 	void playBGM(const fileUtils::path& inputFile);
+	void playSFX(const fileUtils::path& inputFile);
 	void fadeToNextScene(Type type);
 
 	std::pair<std::string, Sprite*> m_clickedSprite;

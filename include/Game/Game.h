@@ -16,12 +16,14 @@ public:
 	
 	std::vector<std::unique_ptr<Save>> m_saves;
 	float m_windowMultiplier;
-	SDL_AudioStream* m_audioStream;
+	SDL_AudioStream* m_bgmStream;
+	SDL_AudioStream* m_sfxStream;
 	std::unique_ptr<Save> m_save;
 	SDL_Window& m_window;
 	SDL_Renderer* m_renderer;
 	fileUtils::path m_gameFolder;
-	sdlUtils::AudioData m_audioData;
+	sdlUtils::AudioData m_bgmData;
+	sdlUtils::AudioData m_sfxData;
 
 protected:
 	virtual void createScenes() = 0;
