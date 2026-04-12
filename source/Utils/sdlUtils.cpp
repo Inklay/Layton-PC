@@ -45,15 +45,39 @@ namespace sdlUtils {
 			return;
 		}
 
-		if ((uint32_t)SDL_GetAudioStreamQueued(stream) < audioData->bgmBufferLen / 2) {
-			SDL_PutAudioStreamData(stream, audioData->bgmBuffer, audioData->bgmBufferLen);
-		}
-	}
+		int available = audioData->bgmBufferLen - audioData->position;
+		int toWrite = std::min(additionalAmount, available);
 
-	AudioData::AudioData() :
-		bgmBuffer(nullptr),
-		bgmBufferLen(0),
-		bgmSpec({ SDL_AUDIO_UNKNOWN, 0, 0 })
-	{
+		if (audioData->fading) {
+			int bytesPerSample = SDL_AUDIO_BYTESIZE(audioData->bgmSpec.format) * audioData->bgmSpec.channels;
+			int numSamples = toWrite / bytesPerSample;
+
+			uint8_t* tmp = (uint8_t*)SDL_malloc(toWrite);
+			SDL_memset(tmp, 0, toWrite);
+
+			for (int i = 0; i < numSamples; i++) {
+				int offset = i * bytesPerSample;
+				SDL_MixAudio(tmp + offset,
+					audioData->bgmBuffer + audioData->position + offset,
+					audioData->bgmSpec.format, bytesPerSample, audioData->volume);
+
+				audioData->volume -= 1.0f / (float)(audioData->bgmSpec.freq * 0.4f);
+				if (audioData->volume < 0.0f) {
+					audioData->volume = 0.0f;
+					break;
+				}
+			}
+
+			SDL_PutAudioStreamData(stream, tmp, toWrite);
+			SDL_free(tmp);
+		} else {
+			SDL_PutAudioStreamData(stream, audioData->bgmBuffer + audioData->position, toWrite);
+		}
+
+		audioData->position += toWrite;
+
+		if (audioData->position >= (int)audioData->bgmBufferLen) {
+			audioData->position = 0;
+		}
 	}
 };

@@ -27,10 +27,12 @@ namespace sdlUtils {
 	void SDLCALL audioCallback(void* userData, SDL_AudioStream* stream, int additionalAmount, int totalAmount);
 
 	struct AudioData {
-		AudioData();
-
-		SDL_AudioSpec bgmSpec;
-		uint32_t bgmBufferLen;
-		uint8_t* bgmBuffer;
+		SDL_AudioSpec bgmSpec = { SDL_AUDIO_UNKNOWN, 0, 0 };
+		uint32_t bgmBufferLen = 0;
+		int position = 0;
+		uint8_t* bgmBuffer = nullptr;
+		bool fading = false;
+		float volume = 1.0f;
+		int fadeProression = 0;
 	};
 }

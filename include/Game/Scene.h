@@ -33,6 +33,7 @@ public:
 
 protected:
 	void playBGM(const fileUtils::path& inputFile);
+	void fadeToNextScene(Type type);
 
 	std::pair<std::string, Sprite*> m_clickedSprite;
 	std::map<std::string, std::unique_ptr<Sprite>> m_sprites;

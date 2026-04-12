@@ -48,10 +48,7 @@ namespace Layton1Scene {
 
 	void TitleScreen::handleClick(const std::string& spriteName, SDL_Event event) {
 		if (spriteName == "startButton") {
-			if (!m_hasSave) {
-				m_nextScene = Scene::CREATE_SAVE;
-				m_fading = true;
-			}
+			fadeToNextScene(CREATE_SAVE);
 		}
 	}
 };
