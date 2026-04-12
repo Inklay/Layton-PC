@@ -16,6 +16,6 @@ void MID::convertToWav(const fileUtils::path& filePath, const fileUtils::path& o
 	const std::string nullOutput = " > /dev/null 2>&1";
 #endif
 
-	stream << fluidsynth << " -F " << outputFolder / filePath.filename().replace_extension("wav") << " " << filePath << " " << (filePath.parent_path() / filePath.filename().replace_extension("sf2")) << nullOutput;
+	stream << fluidsynth << " -F " << outputFolder / filePath.filename().replace_extension("wav") << " -g 2 " << filePath << " " << (filePath.parent_path() / filePath.filename().replace_extension("sf2")) << nullOutput;
 	system(stream.str().c_str());
 }

@@ -21,6 +21,7 @@ public:
 	SDL_Window& m_window;
 	SDL_Renderer* m_renderer;
 	fileUtils::path m_gameFolder;
+	sdlUtils::AudioData m_audioData;
 
 protected:
 	virtual void createScenes() = 0;

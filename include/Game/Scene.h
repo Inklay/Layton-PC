@@ -33,11 +33,8 @@ public:
 
 protected:
 	void playBGM(const fileUtils::path& inputFile);
-	void loopBGM();
 
 	std::pair<std::string, Sprite*> m_clickedSprite;
-	uint8_t* m_bgmBuffer;
-	uint32_t m_bgmBufferLen;
 	std::map<std::string, std::unique_ptr<Sprite>> m_sprites;
 	size_t m_fadeProgress;
 	Type m_nextScene;

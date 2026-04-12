@@ -35,8 +35,6 @@ namespace Layton1Scene {
 		m_sprites.at("car")->draw();
 		m_sprites.at("startButton")->draw();
 
-		loopBGM();
-
 		if (m_fading) {
 			fadeToBlack();
 

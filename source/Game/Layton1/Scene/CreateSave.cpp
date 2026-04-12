@@ -30,7 +30,6 @@ namespace Layton1Scene {
 	}
 
 	void CreateSave::render() {
-		loopBGM();
 		m_sprites.at("topBackground")->draw();
 
 		switch (m_keyboardState) {

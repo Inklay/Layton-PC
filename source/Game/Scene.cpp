@@ -4,8 +4,6 @@
 Scene::Scene(Game* game) :
 	m_game(game),
 	m_lastTick(0),
-	m_bgmBuffer(nullptr),
-	m_bgmBufferLen(0),
 	m_fading(false),
 	m_faded(false),
 	m_fadeProgress(0),
@@ -23,8 +21,8 @@ void Scene::unload() {
 		it.second.release();
 	}
 
-	if (m_bgmBuffer == nullptr) {
-		SDL_free(m_bgmBuffer);
+	if (m_game->m_audioData.bgmBuffer == nullptr) {
+		SDL_free(m_game->m_audioData.bgmBuffer);
 	}
 
 	m_faded = false;
@@ -32,38 +30,29 @@ void Scene::unload() {
 	m_fadeProgress = 0;
 
 	m_sprites.clear();
+
+	SDL_ClearAudioStream(m_game->m_audioStream);
 }
 
 void Scene::playBGM(const fileUtils::path& inputFile) {
-	SDL_AudioSpec spec;
-	uint8_t* buffer;
+	//uint8_t* buffer;
 
-	if (!SDL_LoadWAV(inputFile.string().c_str(), &spec, &buffer, &m_bgmBufferLen)) {
+	if (!SDL_LoadWAV(inputFile.string().c_str(), &m_game->m_audioData.bgmSpec, &m_game->m_audioData.bgmBuffer, &m_game->m_audioData.bgmBufferLen)) {
 		std::cerr << SDL_GetError() << std::endl;
 		return;
 	}
 
-	SDL_SetAudioStreamFormat(m_game->m_audioStream, &spec, &spec);
-	m_bgmBuffer = (uint8_t*)SDL_malloc(m_bgmBufferLen);
-	memset(m_bgmBuffer, 0, m_bgmBufferLen);
-	SDL_MixAudio(m_bgmBuffer, buffer, spec.format, m_bgmBufferLen, 1.0f);
+	SDL_SetAudioStreamFormat(m_game->m_audioStream, &m_game->m_audioData.bgmSpec, &m_game->m_audioData.bgmSpec);
+	//m_game->m_audioData.bgmBuffer = (uint8_t*)SDL_malloc(m_game->m_audioData.bgmBufferLen);
+	//memset(m_game->m_audioData.bgmBuffer, 0, m_game->m_audioData.bgmBufferLen);
+	//SDL_MixAudio(m_game->m_audioData.bgmBuffer, buffer, m_game->m_audioData.bgmSpec.format, m_game->m_audioData.bgmBufferLen, 1.0f);
 
-	if (!SDL_PutAudioStreamData(m_game->m_audioStream, m_bgmBuffer, m_bgmBufferLen)) {
+	if (!SDL_PutAudioStreamData(m_game->m_audioStream, m_game->m_audioData.bgmBuffer, m_game->m_audioData.bgmBufferLen)) {
 		std::cerr << SDL_GetError() << std::endl;
 	}
 
-	SDL_free(buffer);
+	//SDL_free(buffer);
 	SDL_ResumeAudioStreamDevice(m_game->m_audioStream);
-}
-
-void Scene::loopBGM() {
-	if (m_bgmBuffer == nullptr) {
-		return;
-	}
-
-	if ((uint32_t)SDL_GetAudioStreamQueued(m_game->m_audioStream) < m_bgmBufferLen / 2) {
-		SDL_PutAudioStreamData(m_game->m_audioStream, m_bgmBuffer, m_bgmBufferLen);
-	}
 }
 
 void Scene::handleEvent(SDL_Event event) {
@@ -100,6 +89,17 @@ void Scene::fadeToBlack() {
 		m_faded = true;
 		opacity = 255;
 	}
+
+	//if (m_bgmBuffer != nullptr) {
+	//	int bufferLen = SDL_GetAudioStreamQueued(m_game->m_audioStream);
+	//	uint8_t* buffer = (uint8_t*)SDL_malloc(bufferLen);
+
+	//	memset(buffer, 0, bufferLen);
+	//	SDL_MixAudio(buffer, m_bgmBuffer, m_bgmSpec.format, bufferLen, 1.0f - m_fadeProgress / 300);
+	//	SDL_ClearAudioStream(m_game->m_audioStream);
+	//	SDL_PutAudioStreamData(m_game->m_audioStream, buffer, bufferLen);
+	//	SDL_free(buffer);
+	//}
 
 	SDL_SetRenderDrawBlendMode(m_game->m_renderer, SDL_BLENDMODE_MUL);
 	SDL_SetRenderDrawColor(m_game->m_renderer, 0, 0, 0, (uint8_t)opacity);

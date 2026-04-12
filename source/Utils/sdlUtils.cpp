@@ -37,4 +37,23 @@ namespace sdlUtils {
 	float centerBottomPos(float size) {
 		return std::round((HEIGHT * 1.5f - size) / 2);
 	}
+
+	void SDLCALL audioCallback(void* userData, SDL_AudioStream* stream, int additionalAmount, int totalAmount) {
+		AudioData* audioData = (AudioData*)userData;
+
+		if (audioData->bgmBuffer == nullptr) {
+			return;
+		}
+
+		if ((uint32_t)SDL_GetAudioStreamQueued(stream) < audioData->bgmBufferLen / 2) {
+			SDL_PutAudioStreamData(stream, audioData->bgmBuffer, audioData->bgmBufferLen);
+		}
+	}
+
+	AudioData::AudioData() :
+		bgmBuffer(nullptr),
+		bgmBufferLen(0),
+		bgmSpec({ SDL_AUDIO_UNKNOWN, 0, 0 })
+	{
+	}
 };

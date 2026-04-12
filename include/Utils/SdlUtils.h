@@ -23,4 +23,14 @@ namespace sdlUtils {
 
 	float scaleWindow(SDL_Window* window);
 	void multiply(SDL_FRect& rect, float multiplier);
+
+	void SDLCALL audioCallback(void* userData, SDL_AudioStream* stream, int additionalAmount, int totalAmount);
+
+	struct AudioData {
+		AudioData();
+
+		SDL_AudioSpec bgmSpec;
+		uint32_t bgmBufferLen;
+		uint8_t* bgmBuffer;
+	};
 }
