@@ -77,12 +77,14 @@ namespace Layton1Scene {
 
 	void CreateSave::handleClick(const std::string& spriteName, SDL_Event event) {
 		if (spriteName == "specialButton") {
+			playSFX("keyboardSwitch");
 			m_keyboardState = SPECIAL;
 			m_sprites.at("keyboardLowerCase")->m_interactive = false;
 			m_sprites.at("keyboardUpperCase")->m_interactive = false;
 			m_sprites.at("keyboardShift")->m_interactive = false;
 			m_sprites.at("keyboardSpecial")->m_interactive = true;
 		} else if (spriteName == "lowerButton") {
+			playSFX("keyboardSwitch");
 			m_keyboardState = LOWER;
 			m_sprites.at("keyboardSpecial")->m_interactive = false;
 			m_sprites.at("keyboardLowerCase")->m_interactive = true;
@@ -94,11 +96,16 @@ namespace Layton1Scene {
 			checkKeyPressed(m_shiftKeyPos);
 		} else if (spriteName == "keyboardSpecial") {
 			checkKeyPressed(m_specialKeyPos);
-		} else if (spriteName == "backSpaceButton" && m_name.length() != 0) {
-			m_name.pop_back();
-			m_sprites.at("cursor")->m_transform.x -= 16 * m_game->m_windowMultiplier;
+		} else if (spriteName == "backSpaceButton") {
+			playSFX("keyboardBackspace");
+			if (m_name.length() != 0) {
+				m_name.pop_back();
+				m_sprites.at("cursor")->m_transform.x -= 16 * m_game->m_windowMultiplier;
+			}
 		} else if (spriteName == "spaceButton") {
 			addChar(U" ");
+		} else if (spriteName == "okButton" && m_name.length() != 0) {
+			playSFX("keyboardOk");
 		}
 	}
 
@@ -117,6 +124,7 @@ namespace Layton1Scene {
 	void CreateSave::checkKeyPressed(const std::map<std::u32string, std::pair<float, float>>& keyLayout) {
 		for (auto& key : keyLayout) {
 			if (key.first == U"upper" && isLetterClicked(SDL_FRect{ key.second.first, HALF_HEIGHT + key.second.second, 25, 12 })) {
+				playSFX("keyboardSwitch");
 				if (m_keyboardState == UPPER) {
 					m_keyboardState = LOWER;
 					m_sprites.at("keyboardUpperCase")->m_interactive = false;
@@ -133,6 +141,7 @@ namespace Layton1Scene {
 			}
 
 			if (key.first == U"shift" && isLetterClicked(SDL_FRect{ key.second.first, HALF_HEIGHT + key.second.second, 36, 12 })) {
+				playSFX("keyboardSwitch");
 				m_keyboardState = SHIFT;
 				m_sprites.at("keyboardLowerCase")->m_interactive = false;
 				m_sprites.at("keyboardUpperCase")->m_interactive = false;
@@ -153,6 +162,7 @@ namespace Layton1Scene {
 	}
 
 	void CreateSave::addChar(const std::u32string& c) {
+		playSFX("keyboardChar");
 		if (m_name.length() == 10 || c.length() > 1) {
 			return;
 		}

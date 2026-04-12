@@ -23,10 +23,10 @@ public:
 	SDL_Renderer* m_renderer;
 	fileUtils::path m_gameFolder;
 	sdlUtils::AudioData m_bgmData;
-	sdlUtils::AudioData m_sfxData;
+	std::map<std::string, std::string> m_sfx;
 
 protected:
-	virtual void createScenes() = 0;
+	virtual void init() = 0;
 	virtual void getSaves() = 0;
 
 	Scene* currentScene();

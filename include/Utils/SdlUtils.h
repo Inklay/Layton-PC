@@ -20,7 +20,7 @@ namespace sdlUtils {
 	float centerBottomPos(float size);
 	float scaleWindow(SDL_Window* window);
 	void multiply(SDL_FRect& rect, float multiplier);
-	void SDLCALL audioCallback(void* userData, SDL_AudioStream* stream, int additionalAmount, int totalAmount);
+	void SDLCALL bgmCallback(void* userData, SDL_AudioStream* stream, int additionalAmount, int totalAmount);
 
 	struct AudioData {
 		SDL_AudioSpec spec = { SDL_AUDIO_UNKNOWN, 0, 0 };

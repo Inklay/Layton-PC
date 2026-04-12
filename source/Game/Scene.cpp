@@ -30,13 +30,8 @@ void Scene::unload() {
 		SDL_free(m_game->m_bgmData.buffer);
 	}
 
-	if (m_game->m_sfxData.buffer != nullptr) {
-		m_game->m_sfxData.buffer = nullptr;
-		m_game->m_sfxData.position = 0;
-		m_game->m_sfxData.fading = false;
-		m_game->m_sfxData.volume = 1.0f;
-		m_game->m_sfxData.fadeProression = 0;
-		SDL_free(m_game->m_sfxData.buffer);
+	if (m_sfxBuffer != nullptr) {
+		SDL_free(m_sfxBuffer);
 	}
 
 	m_faded = false;
@@ -53,9 +48,18 @@ void Scene::playBGM(const fileUtils::path& inputFile) {
 	SDL_ResumeAudioStreamDevice(m_game->m_bgmStream);
 }
 
-void Scene::playSFX(const fileUtils::path& inputFile) {
-	SDL_LoadWAV(inputFile.string().c_str(), &m_game->m_sfxData.spec, &m_game->m_sfxData.buffer, &m_game->m_sfxData.bufferLen);
-	SDL_SetAudioStreamFormat(m_game->m_sfxStream, &m_game->m_sfxData.spec, &m_game->m_sfxData.spec);
+void Scene::playSFX(const std::string& name) {
+	SDL_AudioSpec spec;
+	uint32_t bufferLen;
+
+	if (m_sfxBuffer != nullptr) {
+		SDL_free(m_sfxBuffer);
+	}
+
+	SDL_LoadWAV((m_game->m_gameFolder / "sound/sfx" / (m_game->m_sfx.at(name) + ".wav")).string().c_str(), &spec, &m_sfxBuffer, &bufferLen);
+	SDL_SetAudioStreamFormat(m_game->m_sfxStream, &spec, &spec);
+	SDL_ClearAudioStream(m_game->m_sfxStream);
+	SDL_PutAudioStreamData(m_game->m_sfxStream, m_sfxBuffer, bufferLen);
 	SDL_ResumeAudioStreamDevice(m_game->m_sfxStream);
 }
 
@@ -126,7 +130,6 @@ void Scene::fadeToNextScene(Type type) {
 	m_nextScene = Scene::CREATE_SAVE;
 	m_fading = true;
 	m_game->m_bgmData.fading = true;
-	m_game->m_sfxData.fading = true;
 }
 
 void Scene::fade() {

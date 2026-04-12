@@ -38,7 +38,7 @@ namespace sdlUtils {
 		return std::round((HEIGHT * 1.5f - size) / 2);
 	}
 
-	void SDLCALL audioCallback(void* userData, SDL_AudioStream* stream, int additionalAmount, int totalAmount) {
+	void SDLCALL bgmCallback(void* userData, SDL_AudioStream* stream, int additionalAmount, int totalAmount) {
 		AudioData* audioData = (AudioData*)userData;
 
 		if (audioData->buffer == nullptr) {

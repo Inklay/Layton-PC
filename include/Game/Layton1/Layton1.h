@@ -7,6 +7,6 @@ public:
 	Layton1(const fileUtils::path& assetsPath, SDL_Window& window);
 
 protected:
-	void createScenes();
+	void init();
 	void getSaves();
 };

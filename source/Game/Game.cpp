@@ -23,8 +23,8 @@ Game::Game(const fileUtils::path& assetsPath, const std::string& name, SDL_Windo
 	m_sceneType = Scene::TITLE_SCREEN;
 
 	m_windowMultiplier = sdlUtils::scaleWindow(&window);
-	m_bgmStream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, NULL, sdlUtils::audioCallback, &m_bgmData);
-	m_sfxStream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, NULL, sdlUtils::audioCallback, &m_sfxData);
+	m_bgmStream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, NULL, sdlUtils::bgmCallback, &m_bgmData);
+	m_sfxStream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, NULL, NULL, nullptr);
 
 	if (m_bgmStream == NULL) {
 		std::cerr << SDL_GetError() << std::endl;

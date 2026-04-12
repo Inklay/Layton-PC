@@ -41,7 +41,7 @@ namespace Layton1Scene {
 
 	void TitleScreen::handleClick(const std::string& spriteName, SDL_Event event) {
 		if (spriteName == "startButton") {
-			playSFX(m_game->m_gameFolder / "sound/sfx/1.wav");
+			playSFX("titleScreenClick");
 			fadeToNextScene(CREATE_SAVE);
 		}
 	}

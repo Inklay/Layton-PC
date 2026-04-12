@@ -32,7 +32,7 @@ public:
 
 protected:
 	void playBGM(const fileUtils::path& inputFile);
-	void playSFX(const fileUtils::path& inputFile);
+	void playSFX(const std::string& name);
 	void fadeToNextScene(Type type);
 	void fade();
 
@@ -44,4 +44,6 @@ protected:
 private:
 	void fadeOut();
 	void fadeIn();
+
+	uint8_t* m_sfxBuffer;
 };
