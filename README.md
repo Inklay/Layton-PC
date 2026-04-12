@@ -24,3 +24,4 @@ You will also need ffmpeg in a bin folder next to the game's executable
 - The SADL conversion is using [vgmstream](https://github.com/vgmstream/vgmstream)
 - The SDAT data extration is using [vgmtrans](https://github.com/vgmtrans/vgmtrans)
 - The MID to WAV conversion is using [fluidsynth](https://github.com/fluidsynth/fluidsynth)
+- The Sound effect extration from the SADT file is using [oreo639's sdatxtract](https://github.com/oreo639/sdatxtract)
