@@ -51,17 +51,16 @@ namespace sdlUtils {
 		if (audioData->fading) {
 			int bytesPerSample = SDL_AUDIO_BYTESIZE(audioData->spec.format) * audioData->spec.channels;
 			int numSamples = toWrite / bytesPerSample;
-
 			uint8_t* tmp = (uint8_t*)SDL_malloc(toWrite);
+
 			SDL_memset(tmp, 0, toWrite);
 
 			for (int i = 0; i < numSamples; i++) {
 				int offset = i * bytesPerSample;
-				SDL_MixAudio(tmp + offset,
-					audioData->buffer + audioData->position + offset,
-					audioData->spec.format, bytesPerSample, audioData->volume);
 
+				SDL_MixAudio(tmp + offset, audioData->buffer + audioData->position + offset, audioData->spec.format, bytesPerSample, audioData->volume);
 				audioData->volume -= 1.0f / (float)(audioData->spec.freq * 0.8f);
+
 				if (audioData->volume < 0.0f) {
 					audioData->volume = 0.0f;
 					break;

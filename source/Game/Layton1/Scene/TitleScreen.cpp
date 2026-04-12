@@ -35,14 +35,7 @@ namespace Layton1Scene {
 		m_sprites.at("car")->draw();
 		m_sprites.at("startButton")->draw();
 
-		if (m_fading) {
-			fadeToBlack();
-
-			if (m_faded) {
-				m_game->changeScene(m_nextScene);
-			}
-		}
-
+		fade();
 		m_lastTick = SDL_GetTicks();
 	}
 

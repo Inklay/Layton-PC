@@ -84,7 +84,7 @@ void Scene::handleEvent(SDL_Event event) {
 	}
 }
 
-void Scene::fadeToBlack() {
+void Scene::fadeOut() {
 	size_t elapsedTime = SDL_GetTicks() - m_lastTick;
 	m_fadeProgress += elapsedTime;
 	size_t opacity = (m_fadeProgress * 255) / 800;
@@ -99,9 +99,46 @@ void Scene::fadeToBlack() {
 	SDL_RenderFillRect(m_game->m_renderer, NULL);
 }
 
+void Scene::fadeIn() {
+	if (m_lastTick == 0) {
+		m_fadeProgress = 0;
+	} else {
+		size_t elapsedTime = SDL_GetTicks() - m_lastTick;
+		m_fadeProgress += elapsedTime;
+	}
+
+	int opacity = 255 - (((int)m_fadeProgress * 255) / 800);
+
+	if (opacity <= 0) {
+		m_faded = true;
+		m_fading = false;
+		m_fadeProgress = 0;
+		opacity = 0;
+		return;
+	}
+
+	SDL_SetRenderDrawBlendMode(m_game->m_renderer, SDL_BLENDMODE_MUL);
+	SDL_SetRenderDrawColor(m_game->m_renderer, 0, 0, 0, (uint8_t)opacity);
+	SDL_RenderFillRect(m_game->m_renderer, NULL);
+}
+
 void Scene::fadeToNextScene(Type type) {
 	m_nextScene = Scene::CREATE_SAVE;
 	m_fading = true;
 	m_game->m_bgmData.fading = true;
 	m_game->m_sfxData.fading = true;
+}
+
+void Scene::fade() {
+	if (m_fading) {
+		if (m_nextScene == UNKNOWN) {
+			fadeIn();
+		} else {
+			fadeOut();
+
+			if (m_faded) {
+				m_game->changeScene(m_nextScene);
+			}
+		}
+	}
 }

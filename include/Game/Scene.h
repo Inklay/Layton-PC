@@ -24,7 +24,6 @@ public:
 	void handleEvent(SDL_Event event);
 	virtual void handleClick(const std::string& spriteName, SDL_Event event) = 0;
 	void unload();
-	void fadeToBlack();
 
 	Game* m_game;
 	uint64_t m_lastTick;
@@ -35,9 +34,14 @@ protected:
 	void playBGM(const fileUtils::path& inputFile);
 	void playSFX(const fileUtils::path& inputFile);
 	void fadeToNextScene(Type type);
+	void fade();
 
 	std::pair<std::string, Sprite*> m_clickedSprite;
 	std::map<std::string, std::unique_ptr<Sprite>> m_sprites;
 	size_t m_fadeProgress;
 	Type m_nextScene;
+
+private:
+	void fadeOut();
+	void fadeIn();
 };
