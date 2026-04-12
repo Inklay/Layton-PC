@@ -29,6 +29,8 @@ namespace Layton1Scene {
 		m_sprites.insert({ "char", std::make_unique<TextSprite>("font/fontevent.png", this, SDL_FRect{ 53, 210, 9, 12}) });
 
 		m_fading = true;
+		m_findInSeconds = 0.8f;
+		m_findOutSeconds = 0.3f;
 	}
 
 	void CreateSave::render() {

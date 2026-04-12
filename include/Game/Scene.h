@@ -40,6 +40,8 @@ protected:
 	std::map<std::string, std::unique_ptr<Sprite>> m_sprites;
 	size_t m_fadeProgress;
 	Type m_nextScene;
+	float m_findOutSeconds;
+	float m_findInSeconds;
 
 private:
 	void fadeOut();

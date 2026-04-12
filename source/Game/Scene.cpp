@@ -91,7 +91,7 @@ void Scene::handleEvent(SDL_Event event) {
 void Scene::fadeOut() {
 	size_t elapsedTime = SDL_GetTicks() - m_lastTick;
 	m_fadeProgress += elapsedTime;
-	size_t opacity = (m_fadeProgress * 255) / 800;
+	int opacity = (int)((m_fadeProgress * 255) / (m_findOutSeconds * 1000));
 
 	if (opacity >= 255) {
 		m_faded = true;
@@ -111,7 +111,7 @@ void Scene::fadeIn() {
 		m_fadeProgress += elapsedTime;
 	}
 
-	int opacity = 255 - (((int)m_fadeProgress * 255) / 800);
+	int opacity = 255 - (int)(((int)m_fadeProgress * 255) / (m_findInSeconds * 1000));
 
 	if (opacity <= 0) {
 		m_faded = true;
@@ -130,6 +130,7 @@ void Scene::fadeToNextScene(Type type) {
 	m_nextScene = Scene::CREATE_SAVE;
 	m_fading = true;
 	m_game->m_bgmData.fading = true;
+	m_game->m_bgmData.fadingSeconds = m_findOutSeconds;
 }
 
 void Scene::fade() {

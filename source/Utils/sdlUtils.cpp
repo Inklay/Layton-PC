@@ -59,7 +59,7 @@ namespace sdlUtils {
 				int offset = i * bytesPerSample;
 
 				SDL_MixAudio(tmp + offset, audioData->buffer + audioData->position + offset, audioData->spec.format, bytesPerSample, audioData->volume);
-				audioData->volume -= 1.0f / (float)(audioData->spec.freq * 0.8f);
+				audioData->volume -= 1.0f / (float)(audioData->spec.freq * audioData->fadingSeconds);
 
 				if (audioData->volume < 0.0f) {
 					audioData->volume = 0.0f;

@@ -30,5 +30,6 @@ namespace sdlUtils {
 		bool fading = false;
 		float volume = 1.0f;
 		int fadeProression = 0;
+		float fadingSeconds = 1.0f;
 	};
 }
