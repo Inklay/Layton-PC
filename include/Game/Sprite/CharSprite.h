@@ -4,7 +4,7 @@
 
 class CharSprite : public Sprite {
 public:
-	CharSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, SDL_FRect subTexture = { -1, -1, -1, -1 });
+	CharSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform);
 	void draw(int zIndex = 0) {};
 	void drawText(const std::u32string& c) override;
 
@@ -22,4 +22,5 @@ protected:
 		U"ë", U"ì",  U"í", U"î", U"ñ", U"ò", U"ó", U"ô", U"ö", U"ù", U"ú",  U"û", U"ü"
 	};
 	fileUtils::buffer m_glyphWidths;
+	std::u32string m_str;
 };

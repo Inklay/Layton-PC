@@ -3,8 +3,8 @@
 #include "Game/Game.h"
 #include <algorithm>
 
-CharSprite::CharSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, SDL_FRect subTexture) :
-	Sprite(file, scene, transform, false, subTexture)
+CharSprite::CharSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform) :
+	Sprite(file, scene, transform)
 {
 	m_glyphWidths = fileUtils::readBin(m_scene->m_game->m_gameFolder / file.parent_path() / file.filename().replace_extension("font"));
 }

@@ -7,12 +7,12 @@
 #include "FileFormat/Compression/LZSS.h"
 #include "FileFormat/Compression/RLE.h"
 
-fileUtils::buffer fileUtils::readBin(const path& filePath, size_t offset, size_t lenght) {
-	if (lenght == 0) {
-		lenght = std::filesystem::file_size(filePath) - offset;
+fileUtils::buffer fileUtils::readBin(const path& filePath, size_t offset, size_t length) {
+	if (length == 0) {
+		length = std::filesystem::file_size(filePath) - offset;
 	}
 
-	buffer buffer(lenght);
+	buffer buffer(length);
 	std::ifstream file(filePath, std::ios_base::binary);
 
 	if (!file.good()) {
@@ -21,14 +21,14 @@ fileUtils::buffer fileUtils::readBin(const path& filePath, size_t offset, size_t
 	}
 
 	file.seekg(offset);
-	file.read(reinterpret_cast<char*>(buffer.data()), lenght);
+	file.read(reinterpret_cast<char*>(buffer.data()), length);
 	file.close();
 	return buffer;
 }
 
 std::u32string fileUtils::readText(const path& filePath) {
-	size_t lenght = std::filesystem::file_size(filePath);
-	std::string u8str;
+	size_t length = std::filesystem::file_size(filePath);
+	std::string u8str(length, 0);
 	std::u32string str;
 	std::ifstream file(filePath, std::ios_base::in);
 
@@ -36,8 +36,7 @@ std::u32string fileUtils::readText(const path& filePath) {
 		std::cerr << "Can't open file '" << filePath << "'" << std::endl;
 		exit(1);
 	}
-
-	file.read(u8str.data(), lenght);
+	file.read(u8str.data(), length);
 	return stringUtils::toU32(u8str);
 }
 

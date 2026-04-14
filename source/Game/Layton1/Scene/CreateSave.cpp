@@ -1,7 +1,4 @@
 #include "Game/Layton1/Scene/CreateSave.h"
-#include "Game/Sprite/ParallaxSprite.h"
-#include "Game/Sprite/FadingSprite.h"
-#include "Game/Sprite/AnimatedSprite.h"
 #include "Game/Sprite/ClickableSprite.h"
 #include "Game/Sprite/CharSprite.h"
 #include "Game/Game.h"

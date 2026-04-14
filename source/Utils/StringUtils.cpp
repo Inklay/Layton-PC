@@ -82,13 +82,13 @@ namespace stringUtils {
 		replace(str, "<9>",  "'");
 	}
 
-	std::u32string toU32(const std::string& utf8)
+	std::u32string toU32(const std::string& u8str)
 	{
 		std::u32string result;
-		result.reserve(utf8.size());
+		result.reserve(u8str.size());
 
-		const char* ptr = utf8.data();
-		const char* end = ptr + utf8.size();
+		const char* ptr = u8str.data();
+		const char* end = ptr + u8str.size();
 		mbstate_t state{};
 		char32_t c;
 
@@ -106,6 +106,22 @@ namespace stringUtils {
 			}
 		}
 
+		return result;
+	}
+
+	std::string toU8(const std::u32string& u32str) {
+		std::string result;
+		char buf[MB_LEN_MAX];
+		std::mbstate_t state{};
+
+		for (char32_t c : u32str) {
+			size_t rc = std::c32rtomb(buf, c, &state);
+
+			if (rc == (size_t)-1) {
+				break;
+			}
+			result.append(buf, rc);
+		}
 		return result;
 	}
 };

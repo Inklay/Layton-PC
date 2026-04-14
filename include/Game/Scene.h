@@ -36,7 +36,6 @@ protected:
 	void playSFX(const std::string& name);
 	void fadeToNextScene(Type type);
 	void fade();
-	std::u32string getText(const fileUtils::path& inputFile, const std::u32string& toReplace = U"", const std::u32string& replaceWith = U"");
 
 	std::pair<std::string, Sprite*> m_clickedSprite;
 	std::map<std::string, std::unique_ptr<Sprite>> m_sprites;
@@ -44,7 +43,6 @@ protected:
 	Type m_nextScene;
 	float m_fadeOutSeconds;
 	float m_fadeInSeconds;
-	std::map<std::string, std::u32string> m_texts;
 
 private:
 	void fadeOut();
