@@ -19,6 +19,7 @@ public:
 	static void writeBin(const buffer& buffer, const path& filePath);
 	static void writeText(const std::string& str, const path& filePath);
 	static buffer readBin(const path& filePath, size_t offset = 0, size_t lenght = 0);
+	static std::u32string readText(const path& filePath);
 	static buffer decompress(const path& inputFile, size_t offset = 0, CompressionMethod method = CompressionMethod::UNKNOWN);
 
 	static uint8_t read1Byte(const buffer& buffer, size_t& offset);

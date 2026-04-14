@@ -1,6 +1,7 @@
 #include <fstream>
 #include "Utils/FileUtils.h"
 #include "Utils/FolderUtils.h"
+#include "Utils/StringUtils.h"
 #include <filesystem>
 #include "FileFormat/Compression/Huffman.h"
 #include "FileFormat/Compression/LZSS.h"
@@ -23,6 +24,21 @@ fileUtils::buffer fileUtils::readBin(const path& filePath, size_t offset, size_t
 	file.read(reinterpret_cast<char*>(buffer.data()), lenght);
 	file.close();
 	return buffer;
+}
+
+std::u32string fileUtils::readText(const path& filePath) {
+	size_t lenght = std::filesystem::file_size(filePath);
+	std::string u8str;
+	std::u32string str;
+	std::ifstream file(filePath, std::ios_base::in);
+
+	if (!file.good()) {
+		std::cerr << "Can't open file '" << filePath << "'" << std::endl;
+		exit(1);
+	}
+
+	file.read(u8str.data(), lenght);
+	return stringUtils::toU32(u8str);
 }
 
 void fileUtils::writeBin(const buffer& buffer, const path& filePath) {

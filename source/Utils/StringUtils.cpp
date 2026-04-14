@@ -1,7 +1,17 @@
 #include "Utils/StringUtils.h"
+#include <cuchar>
 
 namespace stringUtils {
 	void replace(std::string& str, const std::string& toReplace, const std::string& replaceWith) {
+		size_t pos = str.find(toReplace);
+
+		while (pos != std::string::npos) {
+			str.replace(pos, toReplace.length(), replaceWith);
+			pos = str.find(toReplace);
+		}
+	}
+
+	void replace(std::u32string& str, const std::u32string& toReplace, const std::u32string& replaceWith) {
 		size_t pos = str.find(toReplace);
 
 		while (pos != std::string::npos) {
@@ -70,5 +80,32 @@ namespace stringUtils {
 		replace(str, "<2>",  "²");
 		replace(str, "<3>",  "³");
 		replace(str, "<9>",  "'");
+	}
+
+	std::u32string toU32(const std::string& utf8)
+	{
+		std::u32string result;
+		result.reserve(utf8.size());
+
+		const char* ptr = utf8.data();
+		const char* end = ptr + utf8.size();
+		mbstate_t state{};
+		char32_t c;
+
+		while (ptr < end) {
+			size_t rc = std::mbrtoc32(&c, ptr, end - ptr, &state);
+
+			switch (rc) {
+			case (size_t)-3:
+				break;
+			case 0: ptr++;
+				break;
+			default:
+				result += c; ptr += rc;
+				break;
+			}
+		}
+
+		return result;
 	}
 };

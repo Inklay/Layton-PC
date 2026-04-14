@@ -1,5 +1,6 @@
 #include "Game/Scene.h"
 #include "Game/Game.h"
+#include "Utils/StringUtils.h"
 
 Scene::Scene(Game* game) :
 	m_game(game),
@@ -149,4 +150,14 @@ void Scene::fade() {
 			}
 		}
 	}
+}
+
+std::u32string Scene::getText(const fileUtils::path& inputFile, const std::u32string& toReplace, const std::u32string& replaceWith) {
+	std::u32string str = fileUtils::readText(m_game->m_gameFolder / inputFile);
+
+	if (!toReplace.empty()) {
+		stringUtils::replace(str, toReplace, replaceWith);
+	}
+
+	return str;
 }

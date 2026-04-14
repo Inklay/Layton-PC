@@ -63,9 +63,6 @@
     <ClCompile Include="source\FileFormat\Conversion\GFX.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="source\FileFormat\Conversion\Anim.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="source\Utils\sdlUtils.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -106,6 +103,21 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="source\FileFormat\Conversion\NFTR.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Game\Layton1\Scene\Intro.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClCompile>
+    <ClCompile Include="source\FileFormat\Custom\Anim.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Game\Layton1\Scene\Intro.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Game\Sprite\CharSprite.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Game\Sprite\TextSprite.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -416,9 +428,6 @@
     <ClInclude Include="include\FileFormat\Conversion\GFX.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="include\FileFormat\Conversion\Anim.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="include\Utils\SdlUtils.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -459,6 +468,15 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="include\FileFormat\Conversion\NFTR.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FileFormat\Custom\Anim.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Game\Sprite\CharSprite.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Game\Sprite\TextSprite.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

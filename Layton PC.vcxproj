@@ -192,6 +192,7 @@
     <ClCompile Include="source\Game\Sprite\ParallaxSprite.cpp" />
     <ClCompile Include="source\Game\Sprite\Sprite.cpp" />
     <ClCompile Include="source\Game\Sprite\SpriteSheet.cpp" />
+    <ClCompile Include="source\Game\Sprite\CharSprite.cpp" />
     <ClCompile Include="source\Game\Sprite\TextSprite.cpp" />
     <ClCompile Include="source\Utils\FileUtils.cpp" />
     <ClCompile Include="source\FileFormat\Conversion\LPCK.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="include\Game\Sprite\Sprite.h" />
     <ClInclude Include="include\Game\Sprite\ParallaxSprite.h" />
     <ClInclude Include="include\Game\Sprite\SpriteSheet.h" />
+    <ClInclude Include="include\Game\Sprite\CharSprite.h" />
     <ClInclude Include="include\Game\Sprite\TextSprite.h" />
     <ClInclude Include="include\Utils\FileUtils.h" />
     <ClInclude Include="include\FileFormat\Conversion\LPCK.h" />
