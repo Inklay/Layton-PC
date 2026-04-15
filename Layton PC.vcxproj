@@ -194,7 +194,6 @@
     <ClCompile Include="source\Game\Sprite\SpriteSheet.cpp" />
     <ClCompile Include="source\Game\Sprite\CharSprite.cpp" />
     <ClCompile Include="source\Game\Sprite\TextSprite.cpp" />
-    <ClCompile Include="source\Game\Text\Text.cpp" />
     <ClCompile Include="source\Utils\FileUtils.cpp" />
     <ClCompile Include="source\FileFormat\Conversion\LPCK.cpp" />
     <ClCompile Include="source\LaytonPC.cpp" />
@@ -230,7 +229,6 @@
     <ClInclude Include="include\Game\Sprite\SpriteSheet.h" />
     <ClInclude Include="include\Game\Sprite\CharSprite.h" />
     <ClInclude Include="include\Game\Sprite\TextSprite.h" />
-    <ClInclude Include="include\Game\Text\Text.h" />
     <ClInclude Include="include\Utils\FileUtils.h" />
     <ClInclude Include="include\FileFormat\Conversion\LPCK.h" />
     <ClInclude Include="include\Utils\FolderUtils.h" />

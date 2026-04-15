@@ -13,7 +13,7 @@ namespace Layton1Scene {
 
 		m_sprites.insert({ "topBackground", std::make_unique<Sprite>("bg/fr/ara_top.png", this, SDL_FRect{ 0, 0, WIDTH, HALF_HEIGHT }) });
 		m_sprites.insert({ "bottomBackground", std::make_unique<Sprite>("bg/ibg_20.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
-		m_sprites.insert({ "firstText", std::make_unique<TextSprite>("font/fontevent.png", "itext/fr/t_0.txt", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, U"%s", m_game->m_save->m_name) });
+		m_sprites.insert({ "firstText", std::make_unique<TextSprite>("font/fontevent.png", "itext/fr/t_0.txt", this, SDL_FRect{ -1, -1, WIDTH, HALF_HEIGHT }, U"%s", m_game->m_save->m_name) });
 
 		m_bottomScreenRect = SDL_FRect{ 0, HALF_HEIGHT * m_game->m_windowMultiplier, WIDTH * m_game->m_windowMultiplier, HALF_HEIGHT * m_game->m_windowMultiplier };
 		m_fading = true;

@@ -24,6 +24,28 @@ void TextSprite::draw(int) {
 	const float height = 12.0f;
 	const float width = 9.0f;
 	const int colSize = 16;
+	std::cout << m_transform.x << std::endl;
+	if (m_transform.x == -1 * m_scene->m_game->m_windowMultiplier) {
+		m_transform.x = WIDTH / 2;
+
+		for (size_t i = 0; i < m_str.length(); i++) {
+			const std::vector<std::u32string>::iterator charIt = std::find(m_fontChars.begin(), m_fontChars.end(), std::u32string(1, m_str.at(i)));
+
+			if (charIt == m_fontChars.end()) {
+				return;
+			}
+
+			const uint64_t charIdx = charIt - m_fontChars.begin();
+			m_transform.x -= (m_glyphWidths.at(charIdx) + 1) / 2;
+		}
+
+		m_transform.x *= m_scene->m_game->m_windowMultiplier;
+	}
+
+	if (m_transform.y == -1 * m_scene->m_game->m_windowMultiplier) {
+		m_transform.y = (HALF_HEIGHT * 1.5f - height) * m_scene->m_game->m_windowMultiplier;
+	}
+
 	const SDL_FRect baseRect = m_transform;
 	m_transform.h = height * m_scene->m_game->m_windowMultiplier;
 	m_transform.w = width * m_scene->m_game->m_windowMultiplier;
