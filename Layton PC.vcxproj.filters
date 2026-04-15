@@ -63,7 +63,7 @@
     <ClCompile Include="source\FileFormat\Conversion\GFX.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="source\Utils\sdlUtils.cpp">
+    <ClCompile Include="source\Utils\SdlUtils.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="source\FileFormat\Conversion\MODS.cpp">
@@ -118,6 +118,12 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="source\Game\Sprite\TextSprite.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Game\Layton1\Scene\Cinematic.h">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Game\Layton1\Scene\Cinematic.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>

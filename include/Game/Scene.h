@@ -16,7 +16,8 @@ public:
 		DEVLOGO,
 		TITLE_SCREEN,
 		CREATE_SAVE,
-		INTRO
+		INTRO,
+		CINEMATIC
 	};
 
 	Scene(Game* game);
@@ -32,6 +33,7 @@ public:
 	bool m_faded;
 
 protected:
+	void pauseBGM();
 	void playBGM(const fileUtils::path& inputFile);
 	void playSFX(const std::string& name);
 	void fadeToNextScene(Type type);

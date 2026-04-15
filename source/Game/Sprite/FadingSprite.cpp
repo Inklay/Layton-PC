@@ -13,8 +13,8 @@ void FadingSprite::draw(int zIndex) {
 	m_zIndex = zIndex;
 
 	if (m_timer < m_duration) {
-		m_timer += (SDL_GetTicks() - m_scene->m_lastTick);
-		uint8_t opacity = (uint8_t)(m_timer < 0 ? 0 : (m_timer * 255) / m_duration);
+		m_timer += (int)(SDL_GetTicks() - m_scene->m_lastTick);
+		int opacity = (int)(m_timer < 0 ? 0 : (m_timer * 255) / m_duration);
 
 		if (opacity > 255) {
 			opacity = 255;

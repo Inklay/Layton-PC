@@ -8,6 +8,6 @@ public:
 	void draw(int zIndex = 0) override;
 
 private:
-	size_t m_duration;
-	size_t m_timer;
+	int m_duration;
+	int m_timer;
 };

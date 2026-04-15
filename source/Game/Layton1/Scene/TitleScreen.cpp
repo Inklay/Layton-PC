@@ -24,7 +24,7 @@ namespace Layton1Scene {
 		m_sprites.insert({ "car", std::make_unique<AnimatedSprite>("ani/start_car.gfx.anim", this, SDL_FRect{ centerXPos(98), 321, 98, 62})});
 		m_sprites.insert({ "startButton", std::make_unique<ClickableSprite>("ani/fr/startbutton.0.png", "ani/fr/startbutton.1.png", this, SDL_FRect{ centerXPos(82), centerBottomPos(16) - startButtonYOffset, 82, 16})});
 
-		playBGM(m_game->m_gameFolder / "sound/SEQ_BG_001.wav");
+		playBGM("sound/SEQ_BG_001.wav");
 		m_fadeOutSeconds = 0.8f;
 	}
 
