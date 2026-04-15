@@ -4,15 +4,17 @@
 #include "Utils/StringUtils.h"
 #include <algorithm>
 
-TextSprite::TextSprite(const fileUtils::path& fontFile, const fileUtils::path& textFile, Scene* scene, SDL_FRect transform) :
+TextSprite::TextSprite(const fileUtils::path& fontFile, const fileUtils::path& textFile, Scene* scene, SDL_FRect transform, SDL_Color color) :
 	CharSprite(fontFile, scene, transform)
 {
+	m_color = color;
 	m_str = fileUtils::readText(scene->m_game->m_gameFolder / textFile);
 }
 
-TextSprite::TextSprite(const fileUtils::path& fontFile, const fileUtils::path& textFile, Scene* scene, SDL_FRect transform, const std::u32string& toReplace, const std::u32string& replaceWith) :
+TextSprite::TextSprite(const fileUtils::path& fontFile, const fileUtils::path& textFile, Scene* scene, SDL_FRect transform, SDL_Color color, const std::u32string& toReplace, const std::u32string& replaceWith) :
 	CharSprite(fontFile, scene, transform)
 {
+	m_color = color;
 	m_str = fileUtils::readText(scene->m_game->m_gameFolder / textFile);
 
 	if (!toReplace.empty()) {
@@ -24,7 +26,7 @@ void TextSprite::draw(int) {
 	const float height = 12.0f;
 	const float width = 9.0f;
 	const int colSize = 16;
-	std::cout << m_transform.x << std::endl;
+
 	if (m_transform.x == -1 * m_scene->m_game->m_windowMultiplier) {
 		m_transform.x = WIDTH / 2;
 
@@ -62,7 +64,8 @@ void TextSprite::draw(int) {
 		const float y = static_cast<float>(charIdx / colSize * height);
 		
 		const SDL_FRect subTexture{ x, y, width, height };
-		SDL_SetTextureColorMod(m_texture, 0, 0, 0);
+		SDL_SetTextureColorMod(m_texture, m_color.r, m_color.g, m_color.b);
+		SDL_SetTextureAlphaMod(m_texture, m_opacity);
 		SDL_RenderTexture(m_scene->m_game->m_renderer, m_texture, &subTexture, reinterpret_cast<const SDL_FRect*>(&m_transform));
 
 		float glyphWidth = (float)m_glyphWidths.at(charIdx);

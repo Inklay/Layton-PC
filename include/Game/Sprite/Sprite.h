@@ -23,6 +23,7 @@ public:
 	virtual void setClicked(bool isClicked);
 	bool isHovered();
 	int m_zIndex = 0;
+	int m_opacity = 255;
 
 protected:
 	Sprite(Scene* scene, SDL_FRect transform, SDL_FRect subTexture);
