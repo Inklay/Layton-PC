@@ -166,7 +166,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="include\Game\Layton1\Scene\Cinematic.h" />
+    <ClCompile Include="include\Game\Layton1\Scene\Cinematic\IntroCinematic.h" />
     <ClCompile Include="include\Game\Layton1\Scene\Intro.h" />
     <ClCompile Include="source\FileFormat\Compression\Huffman.cpp" />
     <ClCompile Include="source\FileFormat\Compression\RLE.cpp" />
@@ -182,7 +182,7 @@
     <ClCompile Include="source\Game\Game.cpp" />
     <ClCompile Include="source\Game\Layton1\Layton1.cpp" />
     <ClCompile Include="source\Game\Layton1\Layton1Save.cpp" />
-    <ClCompile Include="source\Game\Layton1\Scene\Cinematic.cpp" />
+    <ClCompile Include="source\Game\Layton1\Scene\Cinematic\IntroCinematic.cpp" />
     <ClCompile Include="source\Game\Layton1\Scene\CreateSave.cpp" />
     <ClCompile Include="source\Game\Layton1\Scene\Intro.cpp" />
     <ClCompile Include="source\Game\Layton1\Scene\TitleScreen.cpp" />

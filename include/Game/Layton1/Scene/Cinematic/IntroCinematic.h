@@ -4,9 +4,9 @@
 
 namespace Layton1Scene {
 
-	class Cinematic : public Scene {
+	class IntroCinematic : public Scene {
 	public:
-		Cinematic(Game* game);
+		IntroCinematic(Game* game);
 		void load();
 		void render();
 		void handleClick(const std::string& spriteName, SDL_Event event) {};

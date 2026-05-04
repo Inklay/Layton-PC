@@ -86,7 +86,7 @@ namespace Layton1Scene {
 				m_sprites.at("fadingText5")->draw();
 				if (m_timer >= 10500) {
 					pauseBGM();
-					fadeToNextScene(CINEMATIC);
+					fadeToNextScene("cinematic_intro");
 				}
 				break;
 		} 

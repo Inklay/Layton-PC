@@ -20,7 +20,7 @@ Game::Game(const fileUtils::path& assetsPath, const std::string& name, SDL_Windo
 {
 	m_renderer = SDL_CreateRenderer(&m_window, nullptr);
 	m_gameFolder = std::filesystem::current_path() / "games" / m_name;
-	m_sceneType = Scene::TITLE_SCREEN;
+	m_sceneName = "titleScreen";
 
 	m_windowMultiplier = sdlUtils::scaleWindow(&window);
 	m_bgmStream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, NULL, sdlUtils::bgmCallback, &m_bgmData);
@@ -130,15 +130,15 @@ void Game::run() {
 	SDL_DestroyAudioStream(m_bgmStream);
 }
 
-void Game::changeScene(Scene::Type newScene) {
+void Game::changeScene(const std::string& newScene) {
 	currentScene()->unload();
 	Scene* scene = m_scenes.at(newScene).get();
 	scene->load();
-	m_sceneType = newScene;
+	m_sceneName = newScene;
 }
 
 Scene* Game::currentScene() {
-	return m_scenes.at(m_sceneType).get();
+	return m_scenes.at(m_sceneName).get();
 };
 
 bool Game::hasSave() {

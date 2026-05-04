@@ -10,16 +10,6 @@ class Game;
 
 class Scene {
 public:
-	enum Type {
-		UNKNOWN,
-		EXTRACTING_DATA,
-		DEVLOGO,
-		TITLE_SCREEN,
-		CREATE_SAVE,
-		INTRO,
-		CINEMATIC
-	};
-
 	Scene(Game* game);
 	virtual void load();
 	virtual void render() = 0;
@@ -36,13 +26,13 @@ protected:
 	void pauseBGM();
 	void playBGM(const fileUtils::path& inputFile);
 	void playSFX(const std::string& name);
-	void fadeToNextScene(Type type);
+	void fadeToNextScene(const std::string&& name);
 	void fade();
 
 	std::pair<std::string, Sprite*> m_clickedSprite;
 	std::map<std::string, std::unique_ptr<Sprite>> m_sprites;
 	size_t m_fadeProgress;
-	Type m_nextScene;
+	std::string m_nextScene;
 	float m_fadeOutSeconds;
 	float m_fadeInSeconds;
 

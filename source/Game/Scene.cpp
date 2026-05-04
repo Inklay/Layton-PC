@@ -7,7 +7,7 @@ Scene::Scene(Game* game) :
 	m_fading(false),
 	m_faded(false),
 	m_fadeProgress(0),
-	m_nextScene(UNKNOWN),
+	m_nextScene("Unknown"),
 	m_fadeInSeconds(0),
 	m_fadeOutSeconds(0),
 	m_sfxBuffer(nullptr)
@@ -130,8 +130,8 @@ void Scene::fadeIn() {
 	SDL_RenderFillRect(m_game->m_renderer, NULL);
 }
 
-void Scene::fadeToNextScene(Type type) {
-	m_nextScene = type;
+void Scene::fadeToNextScene(const std::string&& name) {
+	m_nextScene = name;
 	m_fading = true;
 	m_game->m_bgmData.fading = true;
 	m_game->m_bgmData.fadingSeconds = m_fadeOutSeconds;
@@ -139,7 +139,7 @@ void Scene::fadeToNextScene(Type type) {
 
 void Scene::fade() {
 	if (m_fading) {
-		if (m_nextScene == UNKNOWN) {
+		if (m_nextScene == "Unknown") {
 			fadeIn();
 		} else {
 			fadeOut();
