@@ -20,7 +20,7 @@ You will also need ffmpeg in a bin folder next to the game's executable
 - The Huffman decompressor and the GFX conversion are inpired by [pleonex's tinke](https://github.com/pleonex/tinke)
 - The whole game rendering is using [SDL3](https://wiki.libsdl.org/SDL3/FrontPage)
 - PNG file support is from [SDL3_Image](https://wiki.libsdl.org/SDL3_image/FrontPage)
-- The MODS conversion is using [FFMPEG](https://ffmpeg.org/)
+- The MODS conversion and video playback are using [FFmpeg](https://ffmpeg.org/)
 - The SADL conversion is using [vgmstream](https://github.com/vgmstream/vgmstream)
 - The SDAT data extration is using [vgmtrans](https://github.com/vgmtrans/vgmtrans)
 - The MID to WAV conversion is using [fluidsynth](https://github.com/fluidsynth/fluidsynth)

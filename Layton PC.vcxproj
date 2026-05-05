@@ -45,12 +45,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)SDL3\include;$(ProjectDir)include;$(ProjectDir)SDL3_image\include;$(ProjectDir)FFmpeg-lgpl-win64\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)SDL3\lib\x64;$(ProjectDir)SDL3_image\lib\x64;$(ProjectDir)FFmpeg-lgpl-win64\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)dependencies\SDL3\include;$(ProjectDir)include;$(ProjectDir)dependencies\SDL3_image\include;$(ProjectDir)dependencies\FFmpeg_lgpl\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)dependencies\SDL3\lib\win_amd64;$(ProjectDir)dependencies\SDL3_image\lib\win_amd64;$(ProjectDir)FFmpeg-lgpl\lib\win_amd64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)SDL3\include;$(ProjectDir)include;$(ProjectDir)SDL3_image\include;$(ProjectDir)FFmpeg-lgpl-win64\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)SDL3\lib\x64;$(ProjectDir)SDL3_image\lib\x64;$(ProjectDir)FFmpeg-lgpl-win64\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)dependencies\SDL3\include;$(ProjectDir)include;$(ProjectDir)dependencies\SDL3_image\include;$(ProjectDir)dependencies\FFmpeg_lgpl\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)dependencies\SDL3\lib\win_amd64;$(ProjectDir)dependencies\SDL3_image\lib\win_amd64;$(ProjectDir)FFmpeg-lgpl\lib\win_amd64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
