@@ -120,10 +120,7 @@
     <ClCompile Include="source\Game\Sprite\TextSprite.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="include\Game\Layton1\Scene\Cinematic\IntroCinematic.h">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Game\Layton1\Scene\Cinematic\IntroCinematic.cpp">
+    <ClCompile Include="source\Game\Layton1\Scene\Cinematic.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -483,6 +480,9 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="include\Game\Sprite\TextSprite.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Game\Layton1\Scene\Cinematic.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

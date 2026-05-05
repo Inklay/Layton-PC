@@ -3,7 +3,7 @@
 #include "Game/Layton1/Scene/TitleScreen.h"
 #include "Game/Layton1/Scene/CreateSave.h"
 #include "Game/Layton1/Scene/Intro.h"
-#include "Game/Layton1/Scene/Cinematic/IntroCinematic.h"
+#include "Game/Layton1/Scene/Cinematic.h"
 
 Layton1::Layton1(const fileUtils::path& assetsPath, SDL_Window& window) :
 	Game(assetsPath, "LAYTON1", window)
@@ -17,7 +17,7 @@ void Layton1::init() {
 	m_scenes["titleScreen"] = std::make_unique<Layton1Scene::TitleScreen>(this);
 	m_scenes["createSave"] = std::make_unique<Layton1Scene::CreateSave>(this);
 	m_scenes["intro"] = std::make_unique<Layton1Scene::Intro>(this);
-	m_scenes["cinematic_intro"] = std::make_unique<Layton1Scene::IntroCinematic>(this);
+	m_scenes["cinematic_intro"] = std::make_unique<Layton1Scene::Cinematic>(this, "video/m1.mp4", "stream/M1.wav");
 
 	m_sfx = {
 		{ "level5Logo", "0"},
