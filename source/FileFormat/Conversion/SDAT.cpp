@@ -24,7 +24,7 @@ void SDAT::convertToMdi(const fileUtils::path& filePath, const fileUtils::path& 
 	system(stream.str().c_str());
 	MID::convert(filePath.parent_path() / "extracted", outputFolder);
 
-	stream.clear();
+	stream.str("");
 	stream << sdatxtract << " -c " << filePath << nullOutput;
 	system(stream.str().c_str());
 
