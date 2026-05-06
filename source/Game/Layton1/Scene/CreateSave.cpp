@@ -106,7 +106,11 @@ namespace Layton1Scene {
 		} else if (spriteName == "okButton" && m_name.length() != 0) {
 			playSFX("keyboardOk");
 			m_game->addSave(m_name);
+#ifdef _DEBUG
+			fadeToNextScene("cinematic_intro");
+#else
 			fadeToNextScene("intro");
+#endif
 		}
 	}
 

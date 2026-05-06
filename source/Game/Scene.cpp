@@ -45,6 +45,8 @@ void Scene::unload() {
 	m_fading = false;
 	m_fadeProgress = 0;
 	m_sprites.clear();
+
+	customUnload();
 }
 
 void Scene::playBGM(const fileUtils::path& inputFile) {

@@ -14,6 +14,7 @@ public:
 	bool hasSave();
 	void changeScene(const std::string& newScene);
 	virtual void addSave(const std::u32string name) = 0;
+	void setFrameDuration(int duration);
 	
 	std::vector<std::unique_ptr<Save>> m_saves;
 	float m_windowMultiplier;
@@ -45,4 +46,5 @@ private:
 
 	const fileUtils::path& m_assetsPath;
 	std::string m_sceneName;
+	int m_frameDuration = 16;
 };

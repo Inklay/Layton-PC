@@ -123,7 +123,7 @@ void Game::run() {
 			currentScene()->handleEvent(event);
 		}
 
-		SDL_Delay(16);
+		SDL_Delay(m_frameDuration);
 	}
 
 	SDL_DestroyRenderer(m_renderer);
@@ -149,4 +149,8 @@ bool Game::hasSave() {
 	}
 
 	return false;
+}
+
+void Game::setFrameDuration(int duration) {
+	m_frameDuration = duration;
 }

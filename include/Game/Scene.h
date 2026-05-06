@@ -16,6 +16,7 @@ public:
 	void handleEvent(SDL_Event event);
 	virtual void handleClick(const std::string& spriteName, SDL_Event event) = 0;
 	void unload();
+	virtual void customUnload() {};
 
 	Game* m_game;
 	uint64_t m_lastTick;
