@@ -23,10 +23,11 @@ Game::Game(const fileUtils::path& assetsPath, const std::string& name, SDL_Windo
 	m_sceneName = "titleScreen";
 
 	m_windowMultiplier = sdlUtils::scaleWindow(&window);
-	m_bgmStream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, NULL, sdlUtils::bgmCallback, &m_bgmData);
+	m_bgmData.emplace_back(std::make_unique<AudioData>());
+	m_bgmStreams.emplace_back(SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, NULL, sdlUtils::bgmCallback, m_bgmData.at(0).get()));
 	m_sfxStream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, NULL, NULL, nullptr);
 
-	if (m_bgmStream == NULL) {
+	if (m_bgmStreams.at(0) == NULL) {
 		std::cerr << SDL_GetError() << std::endl;
 	}
 
@@ -127,7 +128,7 @@ void Game::run() {
 	}
 
 	SDL_DestroyRenderer(m_renderer);
-	SDL_DestroyAudioStream(m_bgmStream);
+	SDL_DestroyAudioStream(m_bgmStreams.at(0));
 }
 
 void Game::changeScene(const std::string& newScene) {

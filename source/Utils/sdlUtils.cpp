@@ -47,6 +47,8 @@ namespace sdlUtils {
 
 		int available = audioData->bufferLen - audioData->position;
 		int toWrite = std::min(additionalAmount, available);
+		
+		std::cout << audioData->bufferLen << std::endl;
 
 		if (audioData->fading) {
 			int bytesPerSample = SDL_AUDIO_BYTESIZE(audioData->spec.format) * audioData->spec.channels;

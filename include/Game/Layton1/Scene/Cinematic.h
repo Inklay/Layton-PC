@@ -13,14 +13,14 @@ namespace Layton1Scene {
 
 	class Cinematic : public Scene {
 	public:
-		Cinematic(Game* game, const fileUtils::path& videoFile, const fileUtils::path& audioFile);
+		Cinematic(Game* game, const fileUtils::path& videoFile, const std::vector<fileUtils::path> audioFiles);
 		void load();
 		void render();
 		void handleClick(const std::string& spriteName, SDL_Event event) {};
 		void customUnload() override;
 	
 	private:
-		const fileUtils::path m_audioFile;
+		const std::vector<fileUtils::path> m_audioFiles;
 		AVFormatContext* m_fmtCtx = nullptr;
 		AVCodecContext* m_codecCtx = nullptr;
 		SDL_Texture* m_texture = nullptr;

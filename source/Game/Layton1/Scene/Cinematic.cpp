@@ -2,9 +2,9 @@
 #include "Game/Game.h"
 
 namespace Layton1Scene {
-	Cinematic::Cinematic(Game* game, const fileUtils::path& videoFile, const fileUtils::path& audioFile) :
+	Cinematic::Cinematic(Game* game, const fileUtils::path& videoFile, const std::vector<fileUtils::path> audioFiles) :
 		Scene(game),
-		m_audioFile(audioFile)
+		m_audioFiles(audioFiles)
 	{
 		m_fmtCtx = NULL;
 		avformat_open_input(&m_fmtCtx, (m_game->m_gameFolder / videoFile).string().c_str(), NULL, NULL);
@@ -34,7 +34,10 @@ namespace Layton1Scene {
 
 	void Cinematic::load() {
 		m_game->setFrameDuration((int)m_frameDuration);
-		playBGM(m_audioFile);
+
+		for (size_t i = 0; i < m_audioFiles.size(); i++) {
+			playBGM(m_audioFiles.at(i), i);
+		}
 	}
 
 	void Cinematic::render() {

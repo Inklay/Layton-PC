@@ -17,7 +17,7 @@ void Layton1::init() {
 	m_scenes["titleScreen"] = std::make_unique<Layton1Scene::TitleScreen>(this);
 	m_scenes["createSave"] = std::make_unique<Layton1Scene::CreateSave>(this);
 	m_scenes["intro"] = std::make_unique<Layton1Scene::Intro>(this);
-	m_scenes["cinematic_intro"] = std::make_unique<Layton1Scene::Cinematic>(this, "video/m1.mp4", "stream/M1.wav");
+	m_scenes["cinematic_intro"] = std::make_unique<Layton1Scene::Cinematic>(this, "video/m1.mp4", std::vector<fileUtils::path>{ "stream/M1.wav", "sound/SEQ_BG_017.wav" });
 
 	m_sfx = {
 		{ "level5Logo", "0"},

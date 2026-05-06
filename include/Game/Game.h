@@ -18,13 +18,13 @@ public:
 	
 	std::vector<std::unique_ptr<Save>> m_saves;
 	float m_windowMultiplier;
-	SDL_AudioStream* m_bgmStream;
+	std::vector<SDL_AudioStream*> m_bgmStreams;
 	SDL_AudioStream* m_sfxStream;
 	Save* m_save;
 	SDL_Window& m_window;
 	SDL_Renderer* m_renderer;
 	fileUtils::path m_gameFolder;
-	sdlUtils::AudioData m_bgmData;
+	std::vector<std::unique_ptr<sdlUtils::AudioData>> m_bgmData;
 	std::map<std::string, std::string> m_sfx;
 
 protected:
