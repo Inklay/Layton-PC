@@ -5,7 +5,7 @@
 
 namespace Layton1Scene {
 	Intro::Intro(Game* game) :
-		Scene(game)
+		Scene(game, 0.3f, 0.3f)
 	{
 	}
 
@@ -24,8 +24,6 @@ namespace Layton1Scene {
 		m_sprites.at("firstText")->m_opacity = 0;
 		m_bottomScreenRect = SDL_FRect{ 0, HALF_HEIGHT * m_game->m_windowMultiplier, WIDTH * m_game->m_windowMultiplier, HALF_HEIGHT * m_game->m_windowMultiplier };
 		m_fading = true;
-		m_fadeInSeconds = 0.3f;
-		m_fadeOutSeconds = 0.3f;
 	}
 
 	void Intro::render() {
@@ -86,7 +84,7 @@ namespace Layton1Scene {
 				m_sprites.at("fadingText5")->draw();
 				if (m_timer >= 10500) {
 					pauseBGM();
-					fadeToNextScene("cinematic_intro");
+					fadeToNextScene("intro_cinematic");
 				}
 				break;
 		} 

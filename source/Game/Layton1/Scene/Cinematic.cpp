@@ -2,9 +2,10 @@
 #include "Game/Game.h"
 
 namespace Layton1Scene {
-	Cinematic::Cinematic(Game* game, const fileUtils::path& videoFile, const std::vector<fileUtils::path> audioFiles) :
-		Scene(game),
-		m_audioFiles(audioFiles)
+	Cinematic::Cinematic(Game* game, const fileUtils::path& videoFile, const std::vector<fileUtils::path> audioFiles, const std::string& nextScene, float fadeIn, float fadeOut) :
+		Scene(game, fadeIn, fadeOut),
+		m_audioFiles(audioFiles),
+		m_nextSceneName(nextScene)
 	{
 		m_fmtCtx = NULL;
 		avformat_open_input(&m_fmtCtx, (m_game->m_gameFolder / videoFile).string().c_str(), NULL, NULL);
@@ -38,6 +39,8 @@ namespace Layton1Scene {
 		for (size_t i = 0; i < m_audioFiles.size(); i++) {
 			playBGM(m_audioFiles.at(i), i);
 		}
+
+		m_fading = true;
 	}
 
 	void Cinematic::render() {
@@ -48,6 +51,16 @@ namespace Layton1Scene {
 			}
 
 			avcodec_send_packet(m_codecCtx, m_packet);
+			
+			AVStream* stream = m_fmtCtx->streams[m_videoStream];
+			double currentTime = m_packet->pts * av_q2d(stream->time_base);
+			double totalDuration = m_fmtCtx->duration / (double)AV_TIME_BASE;
+			double remainingTime = totalDuration - currentTime;
+
+			if (remainingTime <= m_fadeOutSeconds && m_fadeOutSeconds > 0.0f) {
+				fadeToNextScene(m_nextSceneName);
+			}
+
 			av_packet_unref(m_packet);
 
 			if (avcodec_receive_frame(m_codecCtx, m_frame) == 0) {
@@ -60,8 +73,9 @@ namespace Layton1Scene {
 			}
 		}
 
-		m_lastTick = SDL_GetTicks();
 		SDL_RenderTexture(m_game->m_renderer, m_texture, NULL, reinterpret_cast<const SDL_FRect*>(&m_rect));
+		fade();
+		m_lastTick = SDL_GetTicks();
 	}
 
 	void Cinematic::customUnload() {

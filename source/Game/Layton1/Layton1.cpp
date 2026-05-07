@@ -4,6 +4,7 @@
 #include "Game/Layton1/Scene/CreateSave.h"
 #include "Game/Layton1/Scene/Intro.h"
 #include "Game/Layton1/Scene/Cinematic.h"
+#include "Game/Layton1/Scene/IntroCarDialogue1.h"
 
 Layton1::Layton1(const fileUtils::path& assetsPath, SDL_Window& window) :
 	Game(assetsPath, "LAYTON1", window)
@@ -16,8 +17,9 @@ Layton1::Layton1(const fileUtils::path& assetsPath, SDL_Window& window) :
 void Layton1::init() {
 	m_scenes["titleScreen"] = std::make_unique<Layton1Scene::TitleScreen>(this);
 	m_scenes["createSave"] = std::make_unique<Layton1Scene::CreateSave>(this);
-	m_scenes["intro"] = std::make_unique<Layton1Scene::Intro>(this);
-	m_scenes["cinematic_intro"] = std::make_unique<Layton1Scene::Cinematic>(this, "video/m1.mp4", std::vector<fileUtils::path>{ "stream/M1.wav", "sound/SEQ_BG_017.wav" });
+	m_scenes["intro_letter"] = std::make_unique<Layton1Scene::Intro>(this);
+	m_scenes["intro_cinematic"] = std::make_unique<Layton1Scene::Cinematic>(this, "video/m1.mp4", std::vector<fileUtils::path>{ "stream/M1.wav", "sound/SEQ_BG_017.wav" }, "intro_carDialogue1", 0.3f, 0.3f);
+	m_scenes["intro_carDialogue1"] = std::make_unique<Layton1Scene::IntroCarDialogue1>(this);
 
 	m_sfx = {
 		{ "level5Logo", "0"},

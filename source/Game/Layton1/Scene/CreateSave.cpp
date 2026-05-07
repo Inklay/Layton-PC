@@ -107,9 +107,9 @@ namespace Layton1Scene {
 			playSFX("keyboardOk");
 			m_game->addSave(m_name);
 #ifdef _DEBUG
-			fadeToNextScene("cinematic_intro");
+			fadeToNextScene("intro_carDialogue1");
 #else
-			fadeToNextScene("intro");
+			fadeToNextScene("intro_letter");
 #endif
 		}
 	}

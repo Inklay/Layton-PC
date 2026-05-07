@@ -1,15 +1,15 @@
 #include "Game/Scene.h"
 #include "Game/Game.h"
 
-Scene::Scene(Game* game) :
+Scene::Scene(Game* game, float fadeIn, float fadeOut) :
 	m_game(game),
 	m_lastTick(0),
 	m_fading(false),
 	m_faded(false),
 	m_fadeProgress(0),
 	m_nextScene("Unknown"),
-	m_fadeInSeconds(0),
-	m_fadeOutSeconds(0),
+	m_fadeInSeconds(fadeIn),
+	m_fadeOutSeconds(fadeOut),
 	m_sfxBuffer(nullptr)
 {
 }
@@ -147,7 +147,7 @@ void Scene::fadeIn() {
 	SDL_RenderFillRect(m_game->m_renderer, NULL);
 }
 
-void Scene::fadeToNextScene(const std::string&& name) {
+void Scene::fadeToNextScene(const std::string& name) {
 	m_nextScene = name;
 	m_fading = true;
 

@@ -123,6 +123,12 @@
     <ClCompile Include="source\Game\Layton1\Scene\Cinematic.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="source\Game\Layton1\Scene\IntroCardDialogue1.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Game\Layton1\Scene\IntroCarDialogue1.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Game\Game.h">
@@ -225,6 +231,9 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="include\Game\Layton1\Scene\Cinematic.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Game\Layton1\Scene\IntroCarDialogue1.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

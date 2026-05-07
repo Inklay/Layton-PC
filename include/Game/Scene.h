@@ -10,7 +10,7 @@ class Game;
 
 class Scene {
 public:
-	Scene(Game* game);
+	Scene(Game* game, float fadeIn = 0.0f, float fadeOut = 0.0f);
 	virtual void load();
 	virtual void render() = 0;
 	void handleEvent(SDL_Event event);
@@ -27,7 +27,7 @@ protected:
 	void pauseBGM();
 	void playBGM(const fileUtils::path& inputFile, size_t audioStreamIdx = 0);
 	void playSFX(const std::string& name);
-	void fadeToNextScene(const std::string&& name);
+	void fadeToNextScene(const std::string& name);
 	void fade();
 
 	std::pair<std::string, Sprite*> m_clickedSprite;

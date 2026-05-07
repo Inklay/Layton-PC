@@ -3,10 +3,10 @@
 #include "Game/Game.h"
 
 FadingSprite::FadingSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, int duration, int timer, SDL_FRect subTexture) :
-	Sprite(file, scene, transform, false, subTexture)
+	Sprite(file, scene, transform, false, subTexture),
+	m_duration(duration),
+	m_timer(timer)
 {
-	m_duration = duration;
-	m_timer = timer;
 }
 
 void FadingSprite::draw(int zIndex) {

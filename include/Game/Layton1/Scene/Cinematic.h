@@ -13,7 +13,7 @@ namespace Layton1Scene {
 
 	class Cinematic : public Scene {
 	public:
-		Cinematic(Game* game, const fileUtils::path& videoFile, const std::vector<fileUtils::path> audioFiles);
+		Cinematic(Game* game, const fileUtils::path& videoFile, const std::vector<fileUtils::path> audioFiles, const std::string& nextScene, float fadeIn = 0.0f, float fadeOut = 0.0f);
 		void load();
 		void render();
 		void handleClick(const std::string& spriteName, SDL_Event event) {};
@@ -31,5 +31,6 @@ namespace Layton1Scene {
 		int m_videoStream = -1;
 		SDL_FRect m_rect;
 		double m_frameDuration = 0.0;
+		std::string m_nextSceneName;
 	};
 };

@@ -111,6 +111,7 @@
     <ClCompile Include="source\Game\Layton1\Scene\CreateSave.cpp" />
     <ClCompile Include="source\Game\Layton1\Scene\Intro.cpp" />
     <ClCompile Include="source\Game\Layton1\Scene\Cinematic.cpp" />
+    <ClCompile Include="source\Game\Layton1\Scene\IntroCarDialogue1.cpp" />
     <ClCompile Include="source\Game\Layton1\Scene\TitleScreen.cpp" />
     <ClCompile Include="source\Game\Save.cpp" />
     <ClCompile Include="source\Game\Scene.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="include\Game\Layton1\Layton1Save.h" />
     <ClInclude Include="include\Game\Layton1\Scene\CreateSave.h" />
     <ClInclude Include="include\Game\Layton1\Scene\Cinematic.h" />
+    <ClInclude Include="include\Game\Layton1\Scene\IntroCarDialogue1.h" />
     <ClInclude Include="include\Game\Save.h" />
     <ClInclude Include="include\Game\Scene.h" />
     <ClInclude Include="include\Game\Layton1\Scene\TitleScreen.h" />
