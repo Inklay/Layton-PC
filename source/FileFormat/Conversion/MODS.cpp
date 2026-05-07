@@ -16,7 +16,7 @@ void MODS::convertToMP4(const fileUtils::path& filePath, const fileUtils::path& 
 	const std::string nullOutput = " > /dev/null 2>&1";
 #endif
 
-	stream << ffmpeg << " -y -i " << std::filesystem::absolute(filePath) << " -vf \"zscale=matrixin=ycgco:matrix=bt709,format=yuv420p\" " << outputFolder / filePath.filename().replace_extension("mp4") << nullOutput;
+	stream << ffmpeg << " -y -i " << std::filesystem::absolute(filePath) << " -vf \"zscale = matrixin = ycgco:matrix = bt709, format = gbrp, format = yuv420p, deblock = filter = strong : block = 8, fps = 24000 / 1001\" -c:v libsvtav1 " << outputFolder / filePath.filename().replace_extension("mp4") << nullOutput;
 	system(stream.str().c_str());
 }
 

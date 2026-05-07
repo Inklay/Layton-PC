@@ -66,7 +66,6 @@ void Scene::playBGM(const fileUtils::path& inputFile, size_t audioStreamIdx) {
 	}
 
 	SDL_LoadWAV((m_game->m_gameFolder / inputFile).string().c_str(), &m_game->m_bgmData.at(audioStreamIdx)->spec, &m_game->m_bgmData.at(audioStreamIdx)->buffer, &m_game->m_bgmData.at(audioStreamIdx)->bufferLen);
-	std::cout << audioStreamIdx << ": " << m_game->m_bgmData.at(audioStreamIdx)->bufferLen << std::endl;
 	SDL_SetAudioStreamFormat(m_game->m_bgmStreams.at(audioStreamIdx), &m_game->m_bgmData.at(audioStreamIdx)->spec, &m_game->m_bgmData.at(audioStreamIdx)->spec);
 	SDL_ResumeAudioStreamDevice(m_game->m_bgmStreams.at(audioStreamIdx));
 }
