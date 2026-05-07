@@ -9,8 +9,10 @@ For now I'm working on the data conversation from an unpacked DS roms, once the 
 ## Building
 
 You need to use C++17 or later to, build this project.
-The only dependencies needed for now are SDL3 (I'm specifically using SDL3-3.4.2) and SDL3_Image (3.4.2)
-You will also need ffmpeg in a bin folder next to the game's executable
+
+The only dependencies needed for now are SDL3 (I'm specifically using SDL3-3.4.2) and SDL3_Image (3.4.2) and some FFmpeg libs
+
+You'll also need to put the corresponding files in the bin/ folder (for now i've only added binaries and libs for Windows x64, i'll add more later)
 
 ## Thanks and credits:
 
