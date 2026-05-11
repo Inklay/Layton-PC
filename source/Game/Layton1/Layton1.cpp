@@ -37,6 +37,7 @@ void Layton1::init() {
 		{ "puzzleFailure", "15"},
 		{ "keyboardBackspace", "18"},
 		{ "keyboardOk", "19"},
+		{ "introBang", "43"},
 		{ "keyboardChar", "99"},
 	};
 }
