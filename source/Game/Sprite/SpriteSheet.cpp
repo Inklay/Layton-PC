@@ -3,7 +3,7 @@
 #include "Game/Game.h"
 
 SpriteSheet::SpriteSheet(const fileUtils::path& file, Scene* scene, SDL_FRect transform, SDL_FRect subTexture) :
-	AnimatedSprite(file, scene, transform, subTexture)
+	AnimatedSprite(file, scene, transform, false, subTexture)
 {
 }
 

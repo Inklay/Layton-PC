@@ -20,14 +20,23 @@ public:
 	Dialogue(Scene* scene);
 	void load(std::vector<Character> characters);
 	void draw();
+	void skip();
+	bool next();
+	bool waiting() const;
+	bool done() const;
 	void setVisible(bool visible);
-	void setDialogue(const fileUtils::path& textFilePath, const std::string& character, const fileUtils::path& audioFilePath);
+	void setDialogue(const fileUtils::path& textFilePath, const std::string& character, std::vector<fileUtils::path> audioFilesPath = {});
 
 private:
 	Scene* m_scene;
-	bool m_displayed = false;
 	std::vector<Character> m_characters;
-	std::u32string m_text;
-	int m_textProgression = 0;
+	std::vector<std::u32string> m_texts;
+	std::vector<fileUtils::path> m_audioFilesPath;
+	size_t m_textProgression = 0;
+	size_t m_audioStreamIdx = -1;
 	int m_delayCounter = 0;
+	int m_currentText = 0;
+	bool m_displayed = false;
+	bool m_waiting = false;
+	bool m_offscreen = false;
 };

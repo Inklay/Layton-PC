@@ -28,7 +28,7 @@ public:
 
 protected:
 	void pauseBGM();
-	void playBGM(const fileUtils::path& inputFile, size_t audioStreamIdx = 0);
+	void playBGM(const fileUtils::path& inputFile, size_t audioStreamIdx = 0, bool loop = true);
 	void playSFX(const std::string& name);
 	void fadeToNextScene(const std::string& name);
 	void fade();
@@ -37,9 +37,10 @@ protected:
 	std::map<std::string, std::unique_ptr<Sprite>> m_sprites;
 	size_t m_fadeProgress;
 	std::string m_nextScene;
+	Dialogue m_dialogue;
+	uint64_t m_timeElapsed;
 	float m_fadeOutSeconds;
 	float m_fadeInSeconds;
-	Dialogue m_dialogue;
 
 private:
 	void fadeOut();

@@ -6,7 +6,7 @@
 
 class AnimatedSprite : public Sprite {
 public:
-	AnimatedSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, SDL_FRect subTexture = { -1, -1, -1, -1 });
+	AnimatedSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, bool interactive = false, SDL_FRect subTexture = { -1, -1, -1, -1 });
 	void draw(int zIndex = 0) override;
 	void unload() override;
 

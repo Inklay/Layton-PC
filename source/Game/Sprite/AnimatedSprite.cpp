@@ -2,8 +2,8 @@
 #include "Game/Scene/Scene.h"
 #include "Game/Game.h"
 
-AnimatedSprite::AnimatedSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, SDL_FRect subTexture) :
-	Sprite(scene, transform, subTexture),
+AnimatedSprite::AnimatedSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, bool interactive, SDL_FRect subTexture) :
+	Sprite(scene, transform, subTexture, interactive),
 	m_anim(Anim(scene->m_game->m_gameFolder / file)),
 	m_frameIndex(0),
 	m_frames(0)

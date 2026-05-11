@@ -38,6 +38,22 @@ namespace sdlUtils {
 		return std::round((HEIGHT * 1.5f - size) / 2);
 	}
 
+	void clearAudioStream(SDL_AudioStream* stream, AudioData* audioData) {
+		audioData->bufferLen = 0;
+		audioData->position = 0;
+		audioData->fading = false;
+		audioData->volume = 1.0f;
+		audioData->fadeProression = 0;
+		audioData->finished = false;
+
+		if (audioData->buffer != nullptr) {
+			SDL_free(audioData->buffer);
+			audioData->buffer = nullptr;
+		}
+
+		SDL_ClearAudioStream(stream);
+	}
+
 	void SDLCALL bgmCallback(void* userData, SDL_AudioStream* stream, int additionalAmount, int totalAmount) {
 		AudioData* audioData = (AudioData*)userData;
 
@@ -76,7 +92,11 @@ namespace sdlUtils {
 		audioData->position += toWrite;
 
 		if (audioData->position >= (int)audioData->bufferLen) {
-			audioData->position = 0;
+			if (audioData->loop) {
+				audioData->position = 0;
+			} else {
+				audioData->finished = true;
+			}
 		}
 	}
 };

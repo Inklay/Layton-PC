@@ -16,13 +16,13 @@ Sprite::Sprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, b
 	sdlUtils::multiply(m_subTexture, scene->m_game->m_windowMultiplier);
 }
 
-Sprite::Sprite(Scene* scene, SDL_FRect transform, SDL_FRect subTexture) {
+Sprite::Sprite(Scene* scene, SDL_FRect transform, SDL_FRect subTexture, bool isInteractive) {
 	m_surface = nullptr;
 	m_texture = nullptr;
 	m_transform = transform;
 	m_subTexture = subTexture;
 	m_scene = scene;
-	m_interactive = false;
+	m_interactive = isInteractive;
 
 	sdlUtils::multiply(m_transform, scene->m_game->m_windowMultiplier);
 	sdlUtils::multiply(m_subTexture, scene->m_game->m_windowMultiplier);

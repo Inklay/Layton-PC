@@ -26,6 +26,6 @@ public:
 	bool m_interactive;
 
 protected:
-	Sprite(Scene* scene, SDL_FRect transform, SDL_FRect subTexture);
+	Sprite(Scene* scene, SDL_FRect transform, SDL_FRect subTexture, bool isInteractive = false);
 	bool m_isClicked = false;
 };

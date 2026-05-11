@@ -11,12 +11,14 @@ Scene::Scene(Game* game, float fadeIn, float fadeOut) :
 	m_fadeInSeconds(fadeIn),
 	m_fadeOutSeconds(fadeOut),
 	m_sfxBuffer(nullptr),
-	m_dialogue(this)
+	m_dialogue(this),
+	m_timeElapsed(0)
 {
 }
 
 void Scene::load() {
 	m_lastTick = SDL_GetTicks();
+	m_timeElapsed = 0;
 }
 
 void Scene::unload() {
@@ -26,18 +28,7 @@ void Scene::unload() {
 	}
 
 	for (size_t i = m_game->m_bgmStreams.size() - 1; i != SIZE_MAX; i--) {
-		m_game->m_bgmData.at(i)->bufferLen = 0;
-		m_game->m_bgmData.at(i)->position = 0;
-		m_game->m_bgmData.at(i)->fading = false;
-		m_game->m_bgmData.at(i)->volume = 1.0f;
-		m_game->m_bgmData.at(i)->fadeProression = 0;
-
-		if (m_game->m_bgmData.at(i)->buffer != nullptr) {
-			SDL_free(m_game->m_bgmData.at(i)->buffer);
-			m_game->m_bgmData.at(i)->buffer = nullptr;
-		}
-
-		SDL_ClearAudioStream(m_game->m_bgmStreams.at(i));
+		clearAudioStream(m_game->m_bgmStreams.at(i), m_game->m_bgmData.at(i).get());
 
 		if (i != 0) {
 			SDL_DestroyAudioStream(m_game->m_bgmStreams.at(i));
@@ -60,12 +51,14 @@ void Scene::unload() {
 
 void Scene::render() {
 	fade();
+	m_timeElapsed += SDL_GetTicks() - m_lastTick;
 	m_lastTick = SDL_GetTicks();
 }
 
-void Scene::playBGM(const fileUtils::path& inputFile, size_t audioStreamIdx) {
+void Scene::playBGM(const fileUtils::path& inputFile, size_t audioStreamIdx, bool loop) {
 	if (m_game->m_bgmStreams.size() <= audioStreamIdx) {
 		m_game->m_bgmData.emplace_back(std::make_unique<AudioData>());
+		m_game->m_bgmData.at(audioStreamIdx)->loop = loop;
 		m_game->m_bgmStreams.emplace_back(SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, NULL, sdlUtils::bgmCallback, m_game->m_bgmData.at(audioStreamIdx).get()));
 	}
 
