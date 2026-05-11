@@ -1,5 +1,4 @@
 #include "Game/Layton1/Scene/IntroCarDialogue1.h"
-#include "Game/Sprite/FadingSprite.h"
 #include "Game/Sprite/AnimatedSprite.h"
 #include "Game/Game.h"
 
@@ -10,12 +9,12 @@ namespace Layton1Scene {
 	}
 
 	void IntroCarDialogue1::load() {
-		m_sprites.insert({ "topBackground", std::make_unique<FadingSprite>("bg/I_car4.png", this, SDL_FRect{ 0, 0, WIDTH, HALF_HEIGHT }, FadingSprite::Mode::IN, 500, -1000) });
-		m_sprites.insert({ "topBackground2", std::make_unique<FadingSprite>("bg/I_car5.png", this, SDL_FRect{ 0, 0, WIDTH, HALF_HEIGHT }, FadingSprite::Mode::IN, 500, -1000) });
+		m_sprites.insert({ "topBackground", std::make_unique<Sprite>("bg/I_car4.png", this, SDL_FRect{ 0, 0, WIDTH, HALF_HEIGHT }) });
+		m_sprites.insert({ "topBackground2", std::make_unique<Sprite>("bg/I_car5.png", this, SDL_FRect{ 0, 0, WIDTH, HALF_HEIGHT }) });
 		m_sprites.insert({ "bottomBackground", std::make_unique<Sprite>("bg/ibg_2.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 		m_sprites.insert({ "anim1", std::make_unique<AnimatedSprite>("ani/intro2_wani1_new.gfx.anim", this, SDL_FRect{ WIDTH - 50, HALF_HEIGHT, 50, 70 }) });
 		m_sprites.insert({ "anim2", std::make_unique<AnimatedSprite>("ani/intro2_wani2_new.gfx.anim", this, SDL_FRect{ 101, HALF_HEIGHT + 19, 46, 38 }) });
-		m_sprites.insert({ "bottomFading", std::make_unique<FadingSprite>("bg/custom/black_screen.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, FadingSprite::Mode::OUT, 500, -2000) });
+		m_sprites.insert({ "bottomFading", std::make_unique<Sprite>("bg/custom/black_screen.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
 		m_sprites.insert({ "bottomBackground2", std::make_unique<Sprite>("bg/ibg_17.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 		m_sprites.insert({ "bottomBackground3", std::make_unique<Sprite>("bg/ibg_18.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 		m_sprites.insert({ "bottomBackground4", std::make_unique<Sprite>("bg/ibg_4.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
@@ -26,6 +25,9 @@ namespace Layton1Scene {
 			{ "layton_offscreen", "ani/fr/layton_n.png", "ani/event_window_1.0.png", "", "", SDL_FRect{ 43, HALF_HEIGHT + 25, 40, 48 } },
 			{ "layton2", "ani/fr/layton_n.png", "ani/event_window_1.1.png", "", "", SDL_FRect{ 43, HALF_HEIGHT + 25, 40, 48 } }
 		});
+
+		m_sprites.at("topBackground")->fade({ 500, -1000, Sprite::FadingMode::IN });
+		m_sprites.at("bottomFading")->fade({ 500, -2000, Sprite::FadingMode::OUT });
 
 		Scene::load();
 	}
