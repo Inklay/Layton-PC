@@ -54,9 +54,6 @@
     <ClCompile Include="source\Game\Layton1\Scene\TitleScreen.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="source\Game\Scene.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="source\Game\Sprite\Sprite.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -120,13 +117,16 @@
     <ClCompile Include="source\Game\Sprite\TextSprite.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="source\Game\Layton1\Scene\Cinematic.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Game\Layton1\Scene\IntroCardDialogue1.cpp">
+    <ClCompile Include="source\Game\Scene\Cinematic.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="source\Game\Layton1\Scene\IntroCarDialogue1.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Game\Scene\Scene.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Game\Scene\Dialogue.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -167,7 +167,7 @@
     <ClInclude Include="include\Game\Layton1\Layton1.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="include\Game\Scene.h">
+    <ClInclude Include="include\Game\Scene\Scene.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="include\Game\Layton1\Scene\TitleScreen.h">
@@ -230,10 +230,13 @@
     <ClInclude Include="include\Game\Sprite\TextSprite.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="include\Game\Layton1\Scene\Cinematic.h">
+    <ClInclude Include="include\Game\Scene\Cinematic.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="include\Game\Layton1\Scene\IntroCarDialogue1.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Game\Scene\Dialogue.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

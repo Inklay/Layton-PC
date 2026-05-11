@@ -1,5 +1,5 @@
 #include "Game/Sprite/FadingSprite.h"
-#include "Game/Scene.h"
+#include "Game/Scene/Scene.h"
 #include "Game/Game.h"
 
 FadingSprite::FadingSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, Mode mode, int duration, int timer, SDL_FRect subTexture) :

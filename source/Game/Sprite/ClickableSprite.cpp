@@ -1,5 +1,5 @@
 #include "Game/Sprite/ClickableSprite.h"
-#include "Game/Scene.h"
+#include "Game/Scene/Scene.h"
 #include "Game/Game.h"
 
 ClickableSprite::ClickableSprite(const fileUtils::path& file, const fileUtils::path& fileClicked, Scene* scene, SDL_FRect transform, SDL_FRect subTexture) :

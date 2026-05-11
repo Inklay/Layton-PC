@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Game/Scene.h"
+#include "Game/Scene/Scene.h"
 
 namespace Layton1Scene {
 
@@ -10,6 +10,8 @@ namespace Layton1Scene {
 		void load();
 		void render();
 		void handleClick(const std::string& spriteName, SDL_Event event);
-	};
 
+	private:
+		int m_dialogueProgression = 0;
+	};
 };

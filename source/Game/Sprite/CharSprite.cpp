@@ -1,5 +1,5 @@
 #include "Game/Sprite/CharSprite.h"
-#include "Game/Scene.h"
+#include "Game/Scene/Scene.h"
 #include "Game/Game.h"
 #include <algorithm>
 

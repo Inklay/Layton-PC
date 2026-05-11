@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Game/Sprite/Sprite.h"
+#include "Game/Scene/Dialogue.h"
 #include <map>
 #include <string>
 
@@ -9,6 +10,9 @@ using namespace sdlUtils;
 class Game;
 
 class Scene {
+
+friend class Dialogue;
+
 public:
 	Scene(Game* game, float fadeIn = 0.0f, float fadeOut = 0.0f);
 	virtual void load();
@@ -35,6 +39,7 @@ protected:
 	std::string m_nextScene;
 	float m_fadeOutSeconds;
 	float m_fadeInSeconds;
+	Dialogue m_dialogue;
 
 private:
 	void fadeOut();

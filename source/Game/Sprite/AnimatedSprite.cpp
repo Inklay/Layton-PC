@@ -1,5 +1,5 @@
 #include "Game/Sprite/AnimatedSprite.h"
-#include "Game/Scene.h"
+#include "Game/Scene/Scene.h"
 #include "Game/Game.h"
 
 AnimatedSprite::AnimatedSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, SDL_FRect subTexture) :

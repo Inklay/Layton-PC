@@ -1,5 +1,5 @@
 #include "Game/Sprite/TextSprite.h"
-#include "Game/Scene.h"
+#include "Game/Scene/Scene.h"
 #include "Game/Game.h"
 #include "Utils/StringUtils.h"
 #include <algorithm>

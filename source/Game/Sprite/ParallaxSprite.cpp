@@ -1,5 +1,5 @@
 #include "Game/Sprite/ParallaxSprite.h"
-#include "Game/Scene.h"
+#include "Game/Scene/Scene.h"
 #include "Game/Game.h"
 
 ParallaxSprite::ParallaxSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, int duration, sdlUtils::Dir dir, SDL_FRect subTexture) :

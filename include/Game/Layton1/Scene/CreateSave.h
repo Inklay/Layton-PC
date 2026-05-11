@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Game/Scene.h"
+#include "Game/Scene/Scene.h"
 
 namespace Layton1Scene {
 

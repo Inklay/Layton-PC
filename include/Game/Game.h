@@ -4,7 +4,7 @@
 #include <map>
 #include <SDL3/SDL.h>
 #include "Utils/FileUtils.h"
-#include "Game/Scene.h"
+#include "Game/Scene/Scene.h"
 #include "Game/Save.h"
 
 class Game {
@@ -16,6 +16,7 @@ public:
 	virtual void addSave(const std::u32string name) = 0;
 	void setFrameDuration(int duration);
 	
+	const std::string m_name;
 	std::vector<std::unique_ptr<Save>> m_saves;
 	float m_windowMultiplier;
 	std::vector<SDL_AudioStream*> m_bgmStreams;
@@ -33,7 +34,6 @@ protected:
 
 	Scene* currentScene();
 	std::map<std::string, std::unique_ptr<Scene>> m_scenes;
-	const std::string m_name;
 
 private:
 	void convertData() const;

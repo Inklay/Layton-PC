@@ -1,4 +1,4 @@
-#include "Game/Scene.h"
+#include "Game/Scene/Scene.h"
 #include "Game/Game.h"
 
 Scene::Scene(Game* game, float fadeIn, float fadeOut) :
@@ -10,7 +10,8 @@ Scene::Scene(Game* game, float fadeIn, float fadeOut) :
 	m_nextScene("Unknown"),
 	m_fadeInSeconds(fadeIn),
 	m_fadeOutSeconds(fadeOut),
-	m_sfxBuffer(nullptr)
+	m_sfxBuffer(nullptr),
+	m_dialogue(this)
 {
 }
 
