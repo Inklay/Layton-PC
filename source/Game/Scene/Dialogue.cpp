@@ -37,7 +37,6 @@ void Dialogue::setDialogue(const fileUtils::path& textFilePath, const std::strin
 
 		if (c.name == character) {
 			c.talking = true;
-			m_offscreen = c.talkAnim.empty();
 		}
 	}
 
@@ -73,16 +72,16 @@ void Dialogue::draw() {
 				m_scene->m_sprites.at(c.backgroundSprite.string())->draw();
 				m_scene->m_sprites.at(c.nameSprite.string())->draw();
 
-				if (m_scene->m_game->m_bgmData.at(m_audioStreamIdx)->finished && !m_offscreen) {
+				if (m_scene->m_game->m_bgmData.at(m_audioStreamIdx)->finished && c.visible && !c.noTalkAnim.empty()) {
 					m_scene->m_sprites.at(c.noTalkAnim.string())->draw();
 					continue;
 				}
 			}
 
-			if (!m_offscreen) {
+			if (c.visible && !c.talkAnim.empty()) {
 				m_scene->m_sprites.at(c.talkAnim.string())->draw();
 			}
-		} else if (!c.noTalkAnim.empty() && !m_offscreen) {
+		} else if (c.visible) {
 			m_scene->m_sprites.at(c.noTalkAnim.string())->draw();
 		}
 	}
@@ -132,4 +131,13 @@ bool Dialogue::next() {
 		return true;
 	}
 	return false;
+}
+
+void Dialogue::setCharacterVisible(std::string name, bool visible) {
+	for (auto& c : m_characters) {
+		if (c.name == name) {
+			c.visible = visible;
+			return;
+		}
+	}
 }

@@ -45,6 +45,8 @@ namespace Layton1Scene {
 			switch (m_dialogueProgression) {
 				case 0:
 					m_dialogue.setVisible(true);
+					m_dialogue.setCharacterVisible("luke", true);
+					m_dialogue.setCharacterVisible("layton", true);
 					m_dialogue.setDialogue("itext/fr/t_1.txt", "luke", { "stream/SP_V_OP_101.wav" });
 					m_dialogueProgression++;
 					break;
@@ -80,6 +82,9 @@ namespace Layton1Scene {
 					break;
 				case 2:
 					m_dialogue.setDialogue("itext/fr/t_3.txt", "layton_offscreen", { "stream/SP_V_OP_105.wav", "stream/SP_V_OP_106.wav" });
+					m_dialogue.setCharacterVisible("luke", false);
+					m_dialogue.setCharacterVisible("layton", false);
+					m_dialogue.setCharacterVisible("layton_offscreen", true);
 					playSFX("introBang");
 					m_dialogueProgression++;
 					break;
@@ -90,6 +95,8 @@ namespace Layton1Scene {
 					break;
 				case 4:
 					m_dialogue.setDialogue("itext/fr/t_5.txt", "layton2", { "stream/SP_V_OP_109.wav", "stream/SP_V_OP_110.wav" });
+					m_dialogue.setCharacterVisible("layton_offscreen", false);
+					m_dialogue.setCharacterVisible("layton2", true);
 					m_dialogueProgression++;
 					break;
 				}

@@ -15,6 +15,7 @@ public:
 		fileUtils::path talkAnim;
 		SDL_FRect rect;
 		bool talking = false;
+		bool visible = false;
 	};
 
 	Dialogue(Scene* scene);
@@ -23,9 +24,9 @@ public:
 	void skip();
 	bool next();
 	bool waiting() const;
-	bool done() const;
 	void setVisible(bool visible);
 	void setDialogue(const fileUtils::path& textFilePath, const std::string& character, std::vector<fileUtils::path> audioFilesPath = {});
+	void setCharacterVisible(std::string name, bool visible);
 
 private:
 	Scene* m_scene;
@@ -38,5 +39,4 @@ private:
 	int m_currentText = 0;
 	bool m_displayed = false;
 	bool m_waiting = false;
-	bool m_offscreen = false;
 };
