@@ -29,4 +29,5 @@ private:
 	std::vector<Character> m_characters;
 	std::u32string m_text;
 	int m_textProgression = 0;
+	int m_delayCounter = 0;
 };

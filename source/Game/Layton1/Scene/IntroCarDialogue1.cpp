@@ -1,7 +1,6 @@
 #include "Game/Layton1/Scene/IntroCarDialogue1.h"
 #include "Game/Sprite/FadingSprite.h"
 #include "Game/Sprite/AnimatedSprite.h"
-#include "Game/Sprite/TextSprite.h"
 #include "Game/Game.h"
 
 namespace Layton1Scene {
@@ -16,7 +15,6 @@ namespace Layton1Scene {
 		m_sprites.insert({ "anim1", std::make_unique<AnimatedSprite>("ani/intro2_wani1_new.gfx.anim", this, SDL_FRect{ WIDTH - 50, HALF_HEIGHT, 50, 70 }) });
 		m_sprites.insert({ "anim2", std::make_unique<AnimatedSprite>("ani/intro2_wani2_new.gfx.anim", this, SDL_FRect{ 101, HALF_HEIGHT + 19, 46, 38 }) });
 		m_sprites.insert({ "bottomFading", std::make_unique<FadingSprite>("bg/custom/black_screen.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, FadingSprite::Mode::OUT, 500, -2000) });
-		m_sprites.insert({ "bottomFading", std::make_unique<TextSprite>("bg/custom/black_screen.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, FadingSprite::Mode::OUT, 500, -2000) });
 		
 		m_dialogue.load({
 			{ "luke", "ani/fr/luke_n.png", "ani/event_window_1.1.png", "ani/luke_face_new.bg2notalk.anim", "ani/luke_face_new.bg2talk.anim", SDL_FRect{ 167, HALF_HEIGHT + 38, 40, 32 } },
@@ -33,7 +31,7 @@ namespace Layton1Scene {
 		m_sprites.at("anim2")->draw();
 		m_dialogue.draw();
 
-		m_sprites.at("bottomFading")->draw();
+		//m_sprites.at("bottomFading")->draw();
 
 		if (true) {
 			m_dialogue.setVisible(true);

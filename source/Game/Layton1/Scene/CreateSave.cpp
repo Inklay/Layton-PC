@@ -60,10 +60,13 @@ namespace Layton1Scene {
 			m_sprites.at("cursor")->draw();
 		}
 
-		m_sprites.at("char")->m_transform.x = 53 * m_game->m_windowMultiplier;
+		Sprite* c = m_sprites.at("char").get();
+		c->m_transform.x = 53 * m_game->m_windowMultiplier;
+
 		for (size_t i = 0; i < m_name.length(); i++) {
-			m_sprites.at("char")->drawText(m_name.substr(i, 1));
-			m_sprites.at("char")->m_transform.x += 16 * m_game->m_windowMultiplier;
+			c->setText(m_name.substr(i, 1));
+			c->draw();
+			c->m_transform.x += 16 * m_game->m_windowMultiplier;
 		}
 
 		m_cursorCount++;

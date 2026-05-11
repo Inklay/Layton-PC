@@ -5,7 +5,8 @@
 
 namespace Layton1Scene {
 	Intro::Intro(Game* game) :
-		Scene(game, 0.3f, 0.3f)
+		Scene(game, 0.3f, 0.3f),
+		m_bottomScreenRect(SDL_FRect{ 0, HALF_HEIGHT * game->m_windowMultiplier, WIDTH * game->m_windowMultiplier, HALF_HEIGHT * game->m_windowMultiplier })
 	{
 	}
 
@@ -20,7 +21,6 @@ namespace Layton1Scene {
 		m_sprites.insert({ "fadingText5", std::make_unique<FadingSprite>("ani/fr/op_message.4.png", this, SDL_FRect{ centerXPos(226), HALF_HEIGHT + 145, 226, 12}, FadingSprite::Mode::IN, 1000, -9000) });
 
 		m_sprites.at("firstText")->m_opacity = 0;
-		m_bottomScreenRect = SDL_FRect{ 0, HALF_HEIGHT * m_game->m_windowMultiplier, WIDTH * m_game->m_windowMultiplier, HALF_HEIGHT * m_game->m_windowMultiplier };
 		m_fading = true;
 
 		Scene::load();

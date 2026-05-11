@@ -12,18 +12,18 @@ public:
 	Sprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, bool isInteractive = false, SDL_FRect subTexture = { -1, -1, -1, -1 });
 	virtual void draw(int zIndex = 0);
 	virtual void unload();
-	virtual void drawText(const std::u32string& c) {};
+	virtual void setText(const std::u32string& str) {};
 
 	SDL_Surface* m_surface;
 	SDL_Texture* m_texture;
 	SDL_FRect m_transform;
 	SDL_FRect m_subTexture;
 	Scene* m_scene;
-	bool m_interactive;
 	virtual void setClicked(bool isClicked);
 	bool isHovered();
 	int m_zIndex = 0;
 	int m_opacity = 255;
+	bool m_interactive;
 
 protected:
 	Sprite(Scene* scene, SDL_FRect transform, SDL_FRect subTexture);

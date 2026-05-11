@@ -5,8 +5,8 @@
 class CharSprite : public Sprite {
 public:
 	CharSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform);
-	void draw(int zIndex = 0) {};
-	void drawText(const std::u32string& c) override;
+	void draw(int zIndex = 0);
+	void setText(const std::u32string& str) override;
 
 protected:
 	std::vector<std::u32string> m_fontChars = {

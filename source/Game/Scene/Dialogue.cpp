@@ -2,11 +2,11 @@
 #include "Game/Scene/Scene.h"
 #include "Game/Game.h"
 #include "Game/Sprite/AnimatedSprite.h"
+#include "Game/Sprite/TextSprite.h"
 
 Dialogue::Dialogue(Scene* scene) :
 	m_scene(scene)
 {
-
 }
 
 void Dialogue::load(std::vector<Character> characters) {
@@ -21,6 +21,9 @@ void Dialogue::load(std::vector<Character> characters) {
 			m_scene->m_sprites.insert({ c.backgroundSprite.string(), std::make_unique<Sprite>(c.backgroundSprite, m_scene, SDL_FRect{ 2, HEIGHT - 66, 252, 64 }) });
 		}
 	}
+
+	m_scene->m_sprites.insert({ "dialogue_cursor", std::make_unique<AnimatedSprite>("ani/cursor_wait.touch.anim", m_scene, SDL_FRect{ WIDTH - 23, HEIGHT - 20, 16, 16 }) });
+	m_scene->m_sprites.insert({ "dialogue_text", std::make_unique<TextSprite>("font/fontevent.png", std::u32string(U""), m_scene, SDL_FRect{ 14, HEIGHT - 51, 234, 60 }, SDL_Color{0, 0, 0}) });
 }
 
 void Dialogue::setDialogue(const fileUtils::path& textFilePath, const std::string& character, const fileUtils::path& audioFilePath) {
@@ -34,8 +37,9 @@ void Dialogue::setDialogue(const fileUtils::path& textFilePath, const std::strin
 		}
 	}
 
-	m_text = fileUtils::readText(textFilePath);
+	m_text = fileUtils::readText(m_scene->m_game->m_gameFolder / textFilePath);
 	m_textProgression = 0;
+	m_delayCounter = 0;
 }
 
 void Dialogue::draw() {
@@ -49,6 +53,18 @@ void Dialogue::draw() {
 			}
 		} else {
 			m_scene->m_sprites.at(c.noTalkAnim.string())->draw();
+		}
+	}
+
+	if (m_displayed) {
+		m_scene->m_sprites.at("dialogue_text")->draw();
+		m_scene->m_sprites.at("dialogue_cursor")->draw();
+		m_delayCounter++;
+
+		if (m_delayCounter == 2 && m_textProgression <= m_text.length()) {
+			m_delayCounter = 0;
+			m_scene->m_sprites.at("dialogue_text")->setText(m_text.substr(0, m_textProgression));
+			m_textProgression++;
 		}
 	}
 }

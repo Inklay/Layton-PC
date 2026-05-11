@@ -5,21 +5,28 @@
 #include <algorithm>
 
 TextSprite::TextSprite(const fileUtils::path& fontFile, const fileUtils::path& textFile, Scene* scene, SDL_FRect transform, SDL_Color color) :
-	CharSprite(fontFile, scene, transform)
+	CharSprite(fontFile, scene, transform),
+	m_color(color)
 {
-	m_color = color;
 	m_str = fileUtils::readText(scene->m_game->m_gameFolder / textFile);
 }
 
 TextSprite::TextSprite(const fileUtils::path& fontFile, const fileUtils::path& textFile, Scene* scene, SDL_FRect transform, SDL_Color color, const std::u32string& toReplace, const std::u32string& replaceWith) :
-	CharSprite(fontFile, scene, transform)
+	CharSprite(fontFile, scene, transform),
+	m_color(color)
 {
-	m_color = color;
 	m_str = fileUtils::readText(scene->m_game->m_gameFolder / textFile);
 
 	if (!toReplace.empty()) {
 		stringUtils::replace(m_str, toReplace, replaceWith);
 	}
+}
+
+TextSprite::TextSprite(const fileUtils::path& fontFile, const std::u32string& text, Scene* scene, SDL_FRect transform, SDL_Color color) :
+	CharSprite(fontFile, scene, transform),
+	m_color(color)
+{
+	m_str = text;
 }
 
 void TextSprite::draw(int) {
@@ -53,8 +60,14 @@ void TextSprite::draw(int) {
 	m_transform.w = width * m_scene->m_game->m_windowMultiplier;
 
 	for (size_t i = 0; i < m_str.length(); i++) {
-		const std::vector<std::u32string>::iterator charIt = std::find(m_fontChars.begin(), m_fontChars.end(), std::u32string(1, m_str.at(i)));
+		if (m_str.at(i) == U'\n') {
+			m_transform.y += 16 * m_scene->m_game->m_windowMultiplier;
+			m_transform.x = baseRect.x;
+			continue;
+		}
 
+		const std::vector<std::u32string>::iterator charIt = std::find(m_fontChars.begin(), m_fontChars.end(), std::u32string(1, m_str.at(i)));
+	
 		if (charIt == m_fontChars.end()) {
 			return;
 		}
