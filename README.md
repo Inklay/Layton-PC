@@ -10,7 +10,7 @@ For now I'm working on adding the basics of the gameplay (puzzles, maps, dialogu
 
 You need to use C++17 or later to, build this project.
 
-The only dependencies needed for now are SDL3 (I'm specifically using SDL3-3.4.2) and SDL3_Image (3.4.2) and some FFmpeg libs
+The only dependencies needed for now are SDL3 (I'm specifically using SDL3-3.4.8) and SDL3_Image (3.4.4) and some FFmpeg libs
 
 You'll also need to put the corresponding files in the bin/ folder (for now i've only added binaries and libs for Windows x64, i'll add more later)
 

@@ -46,7 +46,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(ProjectDir)dependencies\SDL3\include;$(ProjectDir)include;$(ProjectDir)dependencies\SDL3_image\include;$(ProjectDir)dependencies\FFmpeg_lgpl\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)dependencies\SDL3\lib\win_amd64;$(ProjectDir)dependencies\SDL3_image\lib\win_amd64;$(ProjectDir)dependencies\FFmpeg_lgpl\lib\win_amd64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)dependencies\SDL3\lib\win_x64;$(ProjectDir)dependencies\SDL3_image\lib\win_x64;$(ProjectDir)dependencies\FFmpeg_lgpl\lib\win_x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)dependencies\SDL3\include;$(ProjectDir)include;$(ProjectDir)dependencies\SDL3_image\include;$(ProjectDir)dependencies\FFmpeg_lgpl\include;$(IncludePath)</IncludePath>

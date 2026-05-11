@@ -1,7 +1,7 @@
 # SDL3_image CMake version configuration file:
-# This file is meant to be placed in a cmake subfolder of SDL3_image-devel-3.4.2-VC.zip
+# This file is meant to be placed in a cmake subfolder of SDL3_image-devel-3.4.4-VC.zip
 
-set(PACKAGE_VERSION "3.4.2")
+set(PACKAGE_VERSION "3.4.4")
 
 if(PACKAGE_FIND_VERSION_RANGE)
     # Package version must be in the requested version range
