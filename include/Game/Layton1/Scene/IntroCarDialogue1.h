@@ -10,9 +10,6 @@ namespace Layton1Scene {
 		void load();
 		void render();
 		void handleClick(const std::string& spriteName, SDL_Event event);
-
-	private:
-		bool m_hasSave;
 	};
 
 };

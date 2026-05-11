@@ -28,6 +28,8 @@ namespace Layton1Scene {
 		m_fading = true;
 		m_fadeInSeconds = 0.8f;
 		m_fadeOutSeconds = 0.3f;
+
+		Scene::load();
 	}
 
 	void CreateSave::render() {
@@ -70,8 +72,7 @@ namespace Layton1Scene {
 			m_displayCursor = !m_displayCursor;
 		}
 
-		fade();
-		m_lastTick = SDL_GetTicks();
+		Scene::render();
 	}
 
 	void CreateSave::handleClick(const std::string& spriteName, SDL_Event event) {

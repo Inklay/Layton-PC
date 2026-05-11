@@ -15,7 +15,7 @@ Scene::Scene(Game* game, float fadeIn, float fadeOut) :
 }
 
 void Scene::load() {
-	m_lastTick = 0;
+	m_lastTick = SDL_GetTicks();
 }
 
 void Scene::unload() {
@@ -55,8 +55,11 @@ void Scene::unload() {
 	m_fading = false;
 	m_fadeProgress = 0;
 	m_sprites.clear();
+}
 
-	customUnload();
+void Scene::render() {
+	fade();
+	m_lastTick = SDL_GetTicks();
 }
 
 void Scene::playBGM(const fileUtils::path& inputFile, size_t audioStreamIdx) {

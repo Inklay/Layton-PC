@@ -1,4 +1,3 @@
-games/
 .vs/
 x64/
 *.user
@@ -7,3 +6,11 @@ NDS_UNPACK/
 saves/
 bin/*
 !bin/win_amd64/
+
+# LAYTON1 custom assets
+games/*
+!games/LAYTON1/
+games/LAYTON1/*
+!games/LAYTON1/bg
+games/LAYTON1/bg/*
+!games/LAYTON1/bg/custom/

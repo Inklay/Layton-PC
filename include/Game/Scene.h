@@ -12,11 +12,10 @@ class Scene {
 public:
 	Scene(Game* game, float fadeIn = 0.0f, float fadeOut = 0.0f);
 	virtual void load();
-	virtual void render() = 0;
+	virtual void render();
+	virtual void unload();
 	void handleEvent(SDL_Event event);
 	virtual void handleClick(const std::string& spriteName, SDL_Event event) = 0;
-	void unload();
-	virtual void customUnload() {};
 
 	Game* m_game;
 	uint64_t m_lastTick;

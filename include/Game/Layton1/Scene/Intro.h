@@ -9,7 +9,7 @@ namespace Layton1Scene {
 		Intro(Game* game);
 		void load();
 		void render();
-		void handleClick(const std::string& spriteName, SDL_Event event);
+		void handleClick(const std::string& spriteName, SDL_Event event) {};
 
 	private:
 		int m_step = 0;

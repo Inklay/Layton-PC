@@ -17,7 +17,7 @@ namespace Layton1Scene {
 		void load();
 		void render();
 		void handleClick(const std::string& spriteName, SDL_Event event) {};
-		void customUnload() override;
+		void unload();
 	
 	private:
 		const std::vector<fileUtils::path> m_audioFiles;

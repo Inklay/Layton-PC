@@ -41,6 +41,8 @@ namespace Layton1Scene {
 		}
 
 		m_fading = true;
+
+		Scene::load();
 	}
 
 	void Cinematic::render() {
@@ -74,11 +76,11 @@ namespace Layton1Scene {
 		}
 
 		SDL_RenderTexture(m_game->m_renderer, m_texture, NULL, reinterpret_cast<const SDL_FRect*>(&m_rect));
-		fade();
-		m_lastTick = SDL_GetTicks();
+
+		Scene::render();
 	}
 
-	void Cinematic::customUnload() {
+	void Cinematic::unload() {
 		av_freep(&m_frameRGB->data[0]);
 		av_frame_free(&m_frame);
 		av_frame_free(&m_frameRGB);
@@ -88,5 +90,7 @@ namespace Layton1Scene {
 		avformat_close_input(&m_fmtCtx);
 		SDL_DestroyTexture(m_texture);
 		m_game->setFrameDuration(16);
+
+		Scene::unload();
 	}
 };

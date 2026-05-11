@@ -2,10 +2,11 @@
 #include "Game/Scene.h"
 #include "Game/Game.h"
 
-FadingSprite::FadingSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, int duration, int timer, SDL_FRect subTexture) :
+FadingSprite::FadingSprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, Mode mode, int duration, int timer, SDL_FRect subTexture) :
 	Sprite(file, scene, transform, false, subTexture),
 	m_duration(duration),
-	m_timer(timer)
+	m_timer(timer),
+	m_mode(mode)
 {
 }
 
@@ -14,11 +15,21 @@ void FadingSprite::draw(int zIndex) {
 
 	if (m_timer < m_duration) {
 		m_timer += (int)(SDL_GetTicks() - m_scene->m_lastTick);
-		int opacity = (int)(m_timer < 0 ? 0 : (m_timer * 255) / m_duration);
+		int opacity = 0;
 
-		if (opacity > 255) {
-			opacity = 255;
+		if (m_mode == IN) {
+			opacity = (int)(m_timer < 0 ? 0 : (m_timer * 255) / m_duration);
+
+			if (opacity > 255) {
+				opacity = 255;
+			}
+		} else {
+			opacity = (int)(m_timer < 0 ? 255 : (255 - (m_timer * 255) / m_duration));
+			if (opacity < 0) {
+				opacity = 0;
+			}
 		}
+
 		SDL_SetTextureAlphaMod(m_texture, opacity);
 	}
 

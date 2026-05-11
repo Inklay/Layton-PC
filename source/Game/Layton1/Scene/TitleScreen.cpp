@@ -13,12 +13,10 @@ namespace Layton1Scene {
 	}
 
 	void TitleScreen::load() {
-		Scene::load();
-
 		float startButtonYOffset = m_hasSave ? 50.0f : 30.0f;
 
 		m_sprites.insert({ "topBackground", std::make_unique<Sprite>("bg/select_title.png", this, SDL_FRect{ 0, 0, WIDTH, HALF_HEIGHT }) });
-		m_sprites.insert({ "gameLogo", std::make_unique<FadingSprite>("ani/fr/sub_title_logo.png", this, SDL_FRect{ centerXPos(168), centerTopPos(80), 168, 80}, 800, -1500)});
+		m_sprites.insert({ "gameLogo", std::make_unique<FadingSprite>("ani/fr/sub_title_logo.png", this, SDL_FRect{ centerXPos(168), centerTopPos(80), 168, 80}, FadingSprite::Mode::IN, 800, -1500)});
 		m_sprites.insert({ "parallax1", std::make_unique<ParallaxSprite>("bg/start_select2.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, 192 }, 10000, RIGHT) });
 		m_sprites.insert({ "parallax2", std::make_unique<ParallaxSprite>("bg/start_select.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, 5000, RIGHT) });
 		m_sprites.insert({ "car", std::make_unique<AnimatedSprite>("ani/start_car.gfx.anim", this, SDL_FRect{ centerXPos(98), 321, 98, 62})});
@@ -26,6 +24,8 @@ namespace Layton1Scene {
 
 		playBGM("sound/SEQ_BG_001.wav");
 		m_fadeOutSeconds = 0.8f;
+
+		Scene::load();
 	}
 
 	void TitleScreen::render() {
@@ -36,8 +36,7 @@ namespace Layton1Scene {
 		m_sprites.at("car")->draw();
 		m_sprites.at("startButton")->draw();
 
-		fade();
-		m_lastTick = SDL_GetTicks();
+		Scene::render();
 	}
 
 	void TitleScreen::handleClick(const std::string& spriteName, SDL_Event event) {
