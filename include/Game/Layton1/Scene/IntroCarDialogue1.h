@@ -13,5 +13,7 @@ namespace Layton1Scene {
 
 	private:
 		int m_dialogueProgression = 0;
+		int m_topBackground = 0;
+		int m_bottomBackground = 0;
 	};
 };

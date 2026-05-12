@@ -19,62 +19,71 @@ namespace Layton1Scene {
 		m_sprites.insert({ "anim5", std::make_unique<AnimatedSprite>("ani/intro3_wani3_new.gfx.anim", this, SDL_FRect{ 102, HALF_HEIGHT + 42, 62, 50 }) });
 		m_sprites.insert({ "anim6", std::make_unique<AnimatedSprite>("ani/intro3_wani1_new.gfx.anim", this, SDL_FRect{ 0, HALF_HEIGHT + 14, 46, 80 }) });
 		m_sprites.insert({ "anim7", std::make_unique<AnimatedSprite>("ani/intro3_wani2_new.gfx.anim", this, SDL_FRect{ 210, HALF_HEIGHT + 15, 46, 80}) });
+		m_sprites.insert({ "anim8", std::make_unique<AnimatedSprite>("ani/intro1_wani1_new.gfx.anim", this, SDL_FRect{ 40, HALF_HEIGHT + 20, 166, 50}) });
 		m_sprites.insert({ "bottomFading", std::make_unique<Sprite>("bg/custom/black_screen.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
 		m_sprites.insert({ "bottomBackground2", std::make_unique<Sprite>("bg/ibg_17.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 		m_sprites.insert({ "bottomBackground3", std::make_unique<Sprite>("bg/ibg_18.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 		m_sprites.insert({ "bottomBackground4", std::make_unique<Sprite>("bg/ibg_4.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 		m_sprites.insert({ "bottomBackground5", std::make_unique<Sprite>("bg/ibg_3.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+		m_sprites.insert({ "bottomBackground6", std::make_unique<Sprite>("bg/ibg_1.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+		m_sprites.insert({ "bottomBackground7", std::make_unique<Sprite>("bg/ibg_5.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 		
 		m_dialogue.load({
 			{ "luke", "ani/fr/luke_n.png", "ani/event_window_1.1.png", "ani/luke_face_new.bg2notalk.anim", "ani/luke_face_new.bg2talk.anim", SDL_FRect{ 167, HALF_HEIGHT + 38, 40, 32 } },
+			{ "luke2", "ani/fr/luke_n.png", "ani/event_window_1.2.png", "", "", SDL_FRect{ 0, 0, 0 } },
+			{ "luke3", "ani/fr/luke.png", "ani/event_window_1.1.png", "ani/luke_face_new.bg1notalk.anim", "ani/luke_face_new.bg1notalk.anim", SDL_FRect{ 175, HALF_HEIGHT + 71, 32, 20 } },
+			{ "luke_offscreen", "ani/fr/luke_n.png", "ani/event_window_1.0.png", "", "", SDL_FRect{ 0, 0, 0, 0 } },
 			{ "layton", "ani/fr/layton_n.png", "ani/event_window_1.2.png", "ani/layton_face_new.bg2notalk.anim", "ani/layton_face_new.bg2talk.anim", SDL_FRect{ 43, HALF_HEIGHT + 25, 40, 48 } },
-			{ "layton_offscreen", "ani/fr/layton_n.png", "ani/event_window_1.0.png", "", "", SDL_FRect{ 0, 0, 0, 0 } },
 			{ "layton2", "ani/fr/layton_n.png", "ani/event_window_1.1.png", "ani/layton_face_new.bg4notalk.anim", "ani/layton_face_new.bg4talk.anim", SDL_FRect{ 169, HALF_HEIGHT + 64, 30, 24 } },
-			{ "luke2", "ani/fr/luke_n.png", "ani/event_window_1.2.png", "", "", SDL_FRect{ 0, 0, 0 } }
+			{ "layton3", "ani/fr/layton_n.png", "ani/event_window_1.2.png", "ani/layton_face_new.bg1notalk.anim", "ani/layton_face_new.bg1talk.anim", SDL_FRect{ 58, HALF_HEIGHT + 43, 32, 32 } },
+			{ "layton_offscreen", "ani/fr/layton_n.png", "ani/event_window_1.0.png", "", "", SDL_FRect{ 0, 0, 0, 0 } },
 		});
 
 		m_sprites.at("topBackground")->fade({ 500, -1000, Sprite::FadingMode::IN });
 		m_sprites.at("bottomFading")->fade({ 500, -2000, Sprite::FadingMode::OUT });
 
 		Scene::load();
-#ifdef _DEBUG
-		m_dialogueProgression = 5;
-		m_dialogue.setVisible(true);
-#endif
 	}
 
 	void IntroCarDialogue1::render() {
-		if (m_dialogueProgression < 6) {
+		if (m_topBackground == 0) {
 			m_sprites.at("topBackground")->draw();
-		} 
-		if (m_dialogueProgression >= 5) {
+		} else if (m_topBackground == 1) {
 			m_sprites.at("topBackground2")->draw();
-
 			if (!m_sprites.at("topBackground2")->m_fading && m_dialogueProgression == 5) {
 				m_dialogueProgression++;
 				m_dialogue.setDialogue("itext/fr/t_5.txt", "layton2", { "stream/SP_V_OP_109.wav", "stream/SP_V_OP_110.wav" });
 				m_dialogue.setCharacterVisible("layton_offscreen", false);
 				m_dialogue.setCharacterVisible("layton2", true);
+				m_bottomBackground = 3;
+			}
+			if (m_dialogueProgression == 5) {
+				m_sprites.at("topBackground")->draw();
 			}
 		}
-		
-		if (m_dialogueProgression < 3 || (m_dialogueProgression >= 10 && m_dialogueProgression < 14)) {
+
+		if (m_bottomBackground == 0) {
 			m_sprites.at("bottomBackground")->draw();
 			m_sprites.at("anim1")->draw();
 			m_sprites.at("anim2")->draw();
-		} else if (m_dialogueProgression == 3) {
+		} else if (m_bottomBackground == 1) {
 			m_sprites.at("bottomBackground2")->draw();
-		} else if (m_dialogueProgression == 4 || m_dialogueProgression == 5) {
+		} else if (m_bottomBackground == 2) {
 			m_sprites.at("bottomBackground3")->draw();
-		} else if (m_dialogueProgression == 6) {
+		} else if (m_bottomBackground == 3) {
 			m_sprites.at("bottomBackground4")->draw();
 			m_sprites.at("anim3")->draw();
 			m_sprites.at("anim4")->draw();
-		} else if (m_dialogueProgression >= 7 || m_dialogueProgression >= 14) {
+		} else if (m_bottomBackground == 4) {
 			m_sprites.at("bottomBackground5")->draw();
 			m_sprites.at("anim5")->draw();
 			m_sprites.at("anim6")->draw();
 			m_sprites.at("anim7")->draw();
+		} else if (m_bottomBackground == 5) {
+			m_sprites.at("bottomBackground6")->draw();
+			m_sprites.at("anim8")->draw();
+		} else if (m_bottomBackground == 6) {
+			m_sprites.at("bottomBackground7")->draw();
 		}
 
 		if (m_timeElapsed >= 2500 && m_dialogueProgression == 0) {
@@ -109,21 +118,25 @@ namespace Layton1Scene {
 					m_dialogue.setCharacterVisible("layton", false);
 					m_dialogue.setCharacterVisible("layton_offscreen", true);
 					playSFX("introBang");
+					m_bottomBackground = 1;
 					m_dialogueProgression++;
 					break;
 				case 3:
 					m_dialogue.setDialogue("itext/fr/t_4.txt", "layton_offscreen", { "stream/SP_V_OP_107.wav", "stream/SP_V_OP_108.wav" });
 					playSFX("introBang");
+					m_bottomBackground = 2;
 					m_dialogueProgression++;
 					break;
 				case 4:
 					m_sprites.at("topBackground")->fade({ 500, 0, Sprite::FadingMode::OUT });
 					m_sprites.at("topBackground2")->fade({ 500, -500, Sprite::FadingMode::IN });
+					m_topBackground = 1;
 					m_dialogueProgression++;
 					break;
 				case 6:
 					m_dialogue.setCharacterVisible("layton2", false);
 					m_dialogue.setDialogue("itext/fr/t_6.txt", "layton2", { "stream/SP_V_OP_111.wav" });
+					m_bottomBackground = 4;
 					m_dialogueProgression++;
 					break;
 				case 7:
@@ -138,6 +151,7 @@ namespace Layton1Scene {
 					m_dialogue.setCharacterVisible("layton", true);
 					m_dialogue.setCharacterVisible("luke", true);
 					m_dialogue.setDialogue("itext/fr/t_9.txt", "luke", { "stream/SP_V_OP_115.wav", "stream/SP_V_OP_116.wav" });
+					m_bottomBackground = 0;
 					m_dialogueProgression++;
 					break;
 				case 10:
@@ -156,6 +170,7 @@ namespace Layton1Scene {
 					m_dialogue.setCharacterVisible("luke", false);
 					m_dialogue.setCharacterVisible("layton", false);
 					m_dialogue.setDialogue("itext/fr/t_13.txt", "luke2", { "stream/SP_V_OP_121.wav", "stream/SP_V_OP_122.wav" });
+					m_bottomBackground = 4;
 					m_dialogueProgression++;
 					break;
 				case 14:
@@ -173,6 +188,49 @@ namespace Layton1Scene {
 				case 17:
 					m_dialogue.setDialogue("itext/fr/t_15.txt", "luke2", { "stream/SP_V_OP_128.wav" });
 					m_dialogueProgression++;
+					break;
+				case 18:
+					m_dialogue.setDialogue("itext/fr/t_16.txt", "layton3", { "stream/SP_V_OP_129.wav" });
+					m_dialogueProgression++;
+					m_bottomBackground = 5;
+					m_dialogue.setCharacterVisible("layton", false);
+					m_dialogue.setCharacterVisible("luke", false);
+					m_dialogue.setCharacterVisible("layton3", true);
+					m_dialogue.setCharacterVisible("luke3", true);
+					break;
+				case 19:
+					m_dialogue.setDialogue("itext/fr/t_17.txt", "luke3", { "stream/SP_V_OP_130.wav" });
+					m_dialogueProgression++;
+					break;
+				case 20:
+					m_dialogue.setCharacterVisible("layton3", false);
+					m_dialogue.setCharacterVisible("luke3", false);
+					m_dialogue.setCharacterVisible("luke_offscreen", true);
+					m_dialogue.setDialogue("itext/fr/t_37.txt", "luke_offscreen", { "stream/SP_V_OP_131.wav" });
+					m_dialogueProgression++;
+					m_bottomBackground = 6;
+					m_sprites.at("bottomBackground7")->shake(500);
+					playSFX("introSmallBang");
+					break;
+				case 21:
+					m_dialogue.setCharacterVisible("luke_offscreen", false);
+					m_dialogue.setCharacterVisible("layton2", true);
+					m_dialogue.setDialogue("itext/fr/t_18.txt", "layton2", { "stream/SP_V_OP_132.wav", "stream/SP_V_OP_133.wav", "stream/SP_V_OP_134.wav" });
+					m_dialogueProgression++;
+					m_bottomBackground = 3;
+					break;
+				case 22:
+					m_dialogue.setCharacterVisible("layton2", false);
+					m_dialogue.setCharacterVisible("layton", true);
+					m_dialogue.setCharacterVisible("luke", true);
+					m_dialogue.setDialogue("itext/fr/t_19.txt", "luke", { "stream/SP_V_OP_135.wav" });
+					m_dialogueProgression++;
+					m_bottomBackground = 0;
+					break;
+				case 23:
+					m_dialogue.setDialogue("itext/fr/t_20.txt", "layton", { "stream/SP_V_OP_136.wav" });
+					m_dialogueProgression++;
+					m_bottomBackground = 0;
 					break;
 				}
 			} else {

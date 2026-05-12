@@ -31,7 +31,27 @@ Sprite::Sprite(Scene* scene, SDL_FRect transform, SDL_FRect subTexture, bool isI
 void Sprite::draw(int zIndex) {
 	m_zIndex = zIndex;
 	const SDL_FRect* subTexture = m_subTexture.h < 0 || m_subTexture.w < 0 ? nullptr : reinterpret_cast<const SDL_FRect*>(&m_subTexture);
-	
+
+	if (m_shaking) {
+		m_shakeInfo.duration -= (int)(SDL_GetTicks() - m_scene->m_lastTick);
+		m_shakeInfo.timer++;
+
+		if (m_shakeInfo.duration <= 0) {
+			m_shakeInfo.duration = 0;
+			m_shakeInfo.timer = 0;
+			m_shaking = false;
+
+			m_transform.x -= m_shakeInfo.offset * m_scene->m_game->m_windowMultiplier;
+			m_transform.y -= m_shakeInfo.offset * m_scene->m_game->m_windowMultiplier;
+		} else if (m_shakeInfo.timer == 5) {
+			m_shakeInfo.timer = 0;
+			m_shakeInfo.offset = m_shakeInfo.offset > 0 ? -1 : 1;
+
+			m_transform.x += m_shakeInfo.offset * m_scene->m_game->m_windowMultiplier;
+			m_transform.y += m_shakeInfo.offset * m_scene->m_game->m_windowMultiplier;
+		}
+	}
+
 	computeOpacity();
 	SDL_SetTextureAlphaMod(m_texture, m_opacity);
 	SDL_RenderTexture(m_scene->m_game->m_renderer, m_texture, subTexture, reinterpret_cast<const SDL_FRect*>(&m_transform));
@@ -84,4 +104,9 @@ void Sprite::computeOpacity() {
 			}
 		}
 	}
+}
+
+void Sprite::shake(int duration) {
+	m_shaking = true;
+	m_shakeInfo.duration = duration;
 }
