@@ -23,7 +23,7 @@ namespace Layton1Scene {
 
 		playBGM("sound/SEQ_BG_001.wav");
 		m_fadeOutSeconds = 0.8f;
-		m_sprites.at("gameLogo")->fade({ 800, -1500, Sprite::FadingMode::IN });
+		m_sprites.at("gameLogo")->fade({ 800, -1000, Sprite::FadingMode::IN });
 
 		Scene::load();
 	}
