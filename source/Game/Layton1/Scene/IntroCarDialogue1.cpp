@@ -4,7 +4,7 @@
 
 namespace Layton1Scene {
 	IntroCarDialogue1::IntroCarDialogue1(Game* game) :
-		Scene(game)
+		Scene(game, 0, 0.2f)
 	{
 	}
 
@@ -232,6 +232,8 @@ namespace Layton1Scene {
 					m_dialogueProgression++;
 					m_bottomBackground = 0;
 					break;
+				case 24:
+					fadeToNextScene("puzzle1");
 				}
 			} else {
 				m_dialogue.skip();

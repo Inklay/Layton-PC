@@ -52,6 +52,10 @@ void Sprite::draw(int zIndex) {
 		}
 	}
 
+	if (m_translating) {
+		computeTranslation();
+	}
+
 	computeOpacity();
 	SDL_SetTextureAlphaMod(m_texture, m_opacity);
 	SDL_RenderTexture(m_scene->m_game->m_renderer, m_texture, subTexture, reinterpret_cast<const SDL_FRect*>(&m_transform));
@@ -106,7 +110,29 @@ void Sprite::computeOpacity() {
 	}
 }
 
+void Sprite::computeTranslation() {
+	int elapsed = (int)(SDL_GetTicks() - m_scene->m_lastTick);
+
+	m_transform.x += m_translationInfo.x * ((float)elapsed / m_translationInfo.duration) * m_scene->m_game->m_windowMultiplier;
+	m_transform.y += m_translationInfo.y * ((float)elapsed / m_translationInfo.duration) * m_scene->m_game->m_windowMultiplier;
+	m_translationInfo.elapsed += elapsed;
+
+	if (m_translationInfo.elapsed > m_translationInfo.duration) {
+		m_transform.x = m_translationInfo.newX;
+		m_transform.y = m_translationInfo.newY;
+		m_translationInfo.elapsed = 0;
+		m_translating = false;
+	}
+}
+
 void Sprite::shake(int duration) {
 	m_shaking = true;
 	m_shakeInfo.duration = duration;
+}
+
+void Sprite::translate(TranslationInfo translationInfo) {
+	m_translating = true;
+	m_translationInfo = translationInfo;
+	m_translationInfo.newX = m_transform.x + m_translationInfo.x * m_scene->m_game->m_windowMultiplier;
+	m_translationInfo.newY = m_transform.y + m_translationInfo.y * m_scene->m_game->m_windowMultiplier;
 }

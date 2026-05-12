@@ -45,7 +45,7 @@ void TextSprite::draw(int) {
 			}
 
 			const uint64_t charIdx = charIt - m_fontChars.begin();
-			m_transform.x -= (m_glyphWidths.at(charIdx) + 1) / 2;
+			m_transform.x -= (m_glyphWidths.at(charIdx) + 2) / 2;
 		}
 
 		m_transform.x *= m_scene->m_game->m_windowMultiplier;
@@ -53,6 +53,10 @@ void TextSprite::draw(int) {
 
 	if (m_transform.y == -1 * m_scene->m_game->m_windowMultiplier) {
 		m_transform.y = (HALF_HEIGHT * 1.5f - height) * m_scene->m_game->m_windowMultiplier;
+	}
+
+	if (m_translating) {
+		computeTranslation();
 	}
 
 	const SDL_FRect baseRect = m_transform;

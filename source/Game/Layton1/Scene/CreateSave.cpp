@@ -5,7 +5,7 @@
 
 namespace Layton1Scene {
 	CreateSave::CreateSave(Game* game) :
-		Scene(game)
+		Scene(game, 0.8f, 0.5f)
 	{
 	}
 
@@ -26,9 +26,6 @@ namespace Layton1Scene {
 		m_sprites.insert({ "char", std::make_unique<CharSprite>("font/fontevent.png", this, SDL_FRect{ 53, 210, 9, 12}) });
 
 		m_fading = true;
-		m_fadeInSeconds = 0.8f;
-		m_fadeOutSeconds = 0.3f;
-
 		Scene::load();
 	}
 
@@ -111,7 +108,7 @@ namespace Layton1Scene {
 			playSFX("keyboardOk");
 			m_game->addSave(m_name);
 #ifdef _DEBUG
-			fadeToNextScene("intro_carDialogue1");
+			fadeToNextScene("puzzle1");
 #else
 			fadeToNextScene("intro_letter");
 #endif

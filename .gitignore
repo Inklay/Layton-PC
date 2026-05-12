@@ -5,7 +5,7 @@ Layton PC/
 NDS_UNPACK/
 saves/
 bin/*
-!bin/win_amd64/
+!bin/win_x64/
 
 # LAYTON1 custom assets
 games/*

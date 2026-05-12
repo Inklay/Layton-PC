@@ -4,7 +4,7 @@
 
 namespace Layton1Scene {
 	Intro::Intro(Game* game) :
-		Scene(game, 0.3f, 0.3f),
+		Scene(game, 0.5f, 0.5f),
 		m_bottomScreenRect(SDL_FRect{ 0, HALF_HEIGHT * game->m_windowMultiplier, WIDTH * game->m_windowMultiplier, HALF_HEIGHT * game->m_windowMultiplier })
 	{
 	}

@@ -69,9 +69,6 @@
     <ClCompile Include="source\Game\Sprite\ParallaxSprite.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="source\Game\Sprite\FadingSprite.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="source\Game\Sprite\AnimatedSprite.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -127,6 +124,12 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="source\Game\Scene\Dialogue.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Game\Layton1\Scene\Puzzle\Puzzle.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Game\Layton1\Scene\Puzzle\Puzzle1.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -188,9 +191,6 @@
     <ClInclude Include="include\Game\Sprite\ParallaxSprite.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="include\Game\Sprite\FadingSprite.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="include\Game\Sprite\AnimatedSprite.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -237,6 +237,18 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="include\Game\Scene\Dialogue.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Game\Layton1\Scene\Puzzle\Puzzle.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Game\Layton1\Scene\Puzzle\Puzzle1.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Game\Layton1\Scene\Puzzle\Puzzles.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Game\Layton1\Scene\Scenes.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
