@@ -20,6 +20,7 @@ Layton1Save::Layton1Save(const std::u32string name, fileUtils::path file) {
 	m_id = LAYTON1;
 	m_picarats = 0;
 	m_playTime = 0;
+	m_hintCoins = 10;
 	m_filePath = file;
 
 	m_puzzles.reserve(m_puzzleCount);

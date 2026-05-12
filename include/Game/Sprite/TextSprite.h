@@ -10,5 +10,8 @@ public:
 	void draw(int zIndex = 0) override;
 
 private:
+	void getFontSize(const fileUtils::path& fontFile);
 	SDL_Color m_color;
+	float m_width;
+	float m_height;
 };

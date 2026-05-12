@@ -6,7 +6,7 @@ namespace Layton1Scene {
 
 	class Puzzle : public Scene {
 	public:
-		Puzzle(Game* game, int picarat, int number, const fileUtils::path& nameFilePath);
+		Puzzle(Game* game, int picarat, int number, const std::string& internalName);
 		void load();
 		void render();
 		void handleClick(const std::string& spriteName, SDL_Event event);
@@ -14,11 +14,16 @@ namespace Layton1Scene {
 	protected:
 		std::vector<fileUtils::path> getNumberSprites(int number, const std::string& font, int padding = 0);
 
+		std::string m_internalName;
+		std::u32string m_text;
 		int m_picarat;
 		int m_currentPicarat;
 		int m_number;
-		fileUtils::path m_nameFilePath;
+		int m_textProgression = 0;
 		bool m_isIntro = true;
 		bool m_movedTitleCard = false;
+		bool m_fadingToPuzzle = false;
+		bool m_canClear = false;
+		bool m_canValidate = false;
 	};
 };

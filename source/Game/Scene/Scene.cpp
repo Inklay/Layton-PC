@@ -168,8 +168,6 @@ void Scene::fade() {
 	}
 }
 
-void Scene::pauseBGM() {
-	for (const auto& i : m_game->m_bgmStreams) {
-		SDL_PauseAudioStreamDevice(i);
-	}
+void Scene::pauseBGM(size_t audioStreamIdx) {
+	SDL_PauseAudioStreamDevice(m_game->m_bgmStreams.at(audioStreamIdx));
 }

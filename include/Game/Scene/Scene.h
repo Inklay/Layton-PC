@@ -27,7 +27,7 @@ public:
 	bool m_faded;
 
 protected:
-	void pauseBGM();
+	void pauseBGM(size_t audioStreamIdx = 0);
 	void playBGM(const fileUtils::path& inputFile, size_t audioStreamIdx = 0, bool loop = true);
 	void playSFX(const std::string& name);
 	void fadeToNextScene(const std::string& name);
