@@ -25,11 +25,13 @@ namespace Layton1Scene {
 		int m_currentPicarat;
 		int m_number;
 		int m_textProgression = 0;
+		int m_currentHint = 0;
 		bool m_isIntro = true;
 		bool m_movedTitleCard = false;
 		bool m_fadingToPuzzle = false;
 		bool m_canClear = false;
 		bool m_canValidate = false;
 		bool m_bottomUIHidden = false;
+		bool m_displayHint = false;
 	};
 };
