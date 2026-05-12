@@ -1,7 +1,7 @@
 #include "Game/Layton1/Scene/Puzzle/Puzzle.h"
 #include "Game/Game.h"
 #include "Game/Sprite/TextSprite.h"
-#include "Game/Sprite/ClickableSprite.h"
+#include "Game/Sprite/AnimatedSprite.h"
 
 namespace Layton1Scene {
 	Puzzle::Puzzle(Game* game, int picarat, int number, const std::string& internalName) :
@@ -45,10 +45,10 @@ namespace Layton1Scene {
 		// puzzle
 		m_sprites.insert({ "topBackground", std::make_unique<Sprite>("bg/fr/q_bg.png", this, SDL_FRect{ 0, 0, WIDTH, HALF_HEIGHT }) });
 		m_sprites.insert({ "puzzleText", std::make_unique<TextSprite>("font/fontq.png", std::u32string(U""), this, SDL_FRect{5, 23, WIDTH - 10, HALF_HEIGHT - 30}, SDL_Color{0, 0, 0})});
-		m_sprites.insert({ "hint0", std::make_unique<ClickableSprite>("ani/fr/hint_buttons.3.png", "ani/fr/hint_buttons.5.png", this, SDL_FRect{ WIDTH - 72 ,HALF_HEIGHT, 72, 18}) });
-		m_sprites.insert({ "hint1", std::make_unique<ClickableSprite>("ani/fr/hint_buttons.2.png", "ani/fr/hint_buttons.5.png", this, SDL_FRect{ WIDTH - 72 ,HALF_HEIGHT, 72, 18}) });
-		m_sprites.insert({ "hint2", std::make_unique<ClickableSprite>("ani/fr/hint_buttons.1.png", "ani/fr/hint_buttons.5.png", this, SDL_FRect{ WIDTH - 72 ,HALF_HEIGHT, 72, 18}) });
-		m_sprites.insert({ "hint3", std::make_unique<ClickableSprite>("ani/fr/hint_buttons.0.png", "ani/fr/hint_buttons.5.png", this, SDL_FRect{ WIDTH - 72 ,HALF_HEIGHT, 72, 18}) });
+		m_sprites.insert({ "hint0", std::make_unique<AnimatedSprite>("ani/fr/hint_buttons.hintb4.anim", this, SDL_FRect{ WIDTH - 72 ,HALF_HEIGHT, 72, 18}) });
+		m_sprites.insert({ "hint1", std::make_unique<AnimatedSprite>("ani/fr/hint_buttons.hintb3.anim", this, SDL_FRect{ WIDTH - 72 ,HALF_HEIGHT, 72, 18}) });
+		m_sprites.insert({ "hint2", std::make_unique<AnimatedSprite>("ani/fr/hint_buttons.hintb2.anim", this, SDL_FRect{ WIDTH - 72 ,HALF_HEIGHT, 72, 18}) });
+		m_sprites.insert({ "hint3", std::make_unique<AnimatedSprite>("ani/fr/hint_buttons.hintb1.anim", this, SDL_FRect{ WIDTH - 72 ,HALF_HEIGHT, 72, 18}) });
 
 
 		numberSprites = getNumberSprites(m_number, "q_numbers", 3);
@@ -67,11 +67,11 @@ namespace Layton1Scene {
 		}
 
 		if (m_canClear) {
-			m_sprites.insert({ "clearButton", std::make_unique<Sprite>("ani/fr/clear_btn.png", this, SDL_FRect{ WIDTH - 64, HALF_HEIGHT + 45, 64, 18}) });
+			m_sprites.insert({ "clearButton", std::make_unique<Sprite>("ani/fr/clear_btn.png", this, SDL_FRect{ WIDTH - 64, HALF_HEIGHT + 45, 64, 18}, true) });
 		}
 
 		if (m_canValidate) {
-			m_sprites.insert({ "validateButton", std::make_unique<Sprite>("ani/fr/submit.png", this, SDL_FRect{ WIDTH - 70, HEIGHT - 36, 66, 26}) });
+			m_sprites.insert({ "validateButton", std::make_unique<Sprite>("ani/fr/submit.png", this, SDL_FRect{ WIDTH - 70, HEIGHT - 36, 66, 26}, true) });
 		}
 
 		m_text = fileUtils::readText(m_game->m_gameFolder / "qtext/fr" / ("q_" + m_internalName + ".txt"));
@@ -152,21 +152,21 @@ namespace Layton1Scene {
 				}
 			}
 
-			if (m_canClear) {
-				m_sprites.at("clearButton")->draw();
+			if (m_canClear && !m_bottomUIHidden) {
+				m_sprites.at("clearButton")->draw(1);
 			}
 
-			if (m_canValidate) {
-				m_sprites.at("validateButton")->draw();
+			if (m_canValidate && !m_bottomUIHidden) {
+				m_sprites.at("validateButton")->draw(1);
 			}
 
-			if ((m_game->m_save->m_puzzles.at(m_number) & 2) == 0) {
+			if ((m_game->m_save->m_puzzles.at(m_number) & 2) == 0 && !m_bottomUIHidden) {
 				m_sprites.at("hint3")->draw();
-			} else if ((m_game->m_save->m_puzzles.at(m_number) & 4) == 0) {
+			} else if ((m_game->m_save->m_puzzles.at(m_number) & 4) == 0 && !m_bottomUIHidden) {
 				m_sprites.at("hint2")->draw();
-			} else if ((m_game->m_save->m_puzzles.at(m_number) & 8) == 0) {
+			} else if ((m_game->m_save->m_puzzles.at(m_number) & 8) == 0 && !m_bottomUIHidden) {
 				m_sprites.at("hint1")->draw();
-			} else {
+			} else if (!m_bottomUIHidden) {
 				m_sprites.at("hint0")->draw();
 			}
 		}
@@ -179,9 +179,12 @@ namespace Layton1Scene {
 	}
 
 	void Puzzle::handleClick(const std::string& spriteName, SDL_Event event) {
-		if (m_isIntro && !m_fadingToPuzzle && m_movedTitleCard && !m_sprites.at("intro_fading")->m_fading) {
+		if (m_isIntro && !m_fadingToPuzzle && m_movedTitleCard && !m_sprites.at("intro_fading")->m_fading && !m_sprites.at("intro_title")->m_translating) {
 			m_sprites.at("intro_fading")->fade({ 300, 0, Sprite::FadingMode::IN });
 			m_fadingToPuzzle = true;
+		} else if (!m_isIntro && m_textProgression <= m_text.length()) {
+			m_textProgression = (int)m_text.length();
+			m_game->m_bgmData.at(1)->loop = false;
 		}
 	}
 
@@ -205,5 +208,50 @@ namespace Layton1Scene {
 		}
 
 		return vec;
+	}
+
+	void Puzzle::showBottomUI() {
+		m_bottomUIHidden = false;
+	}
+
+	void Puzzle::hideBottomUI() {
+		m_bottomUIHidden = true;
+	}
+
+	bool Puzzle::isClosedShape(std::vector<SDL_FPoint> points) {
+		if (points.size() < 10) {
+			return false;
+		}
+
+		float dx = points.front().x - points.back().x;
+		float dy = points.front().y - points.back().y;
+		float distEndToStart = sqrtf(dx * dx + dy * dy);
+		float totalLength = 0;
+
+		for (int i = 1; i < points.size(); i++) {
+			float ldx = points.at(i).x - points.at(i - 1).x;
+			float ldy = points.at(i).y - points.at(i - 1).y;
+			totalLength += sqrtf(ldx * ldx + ldy * ldy);
+		}
+
+		float closingRatio = distEndToStart / totalLength;
+		return closingRatio < 0.15f;
+	}
+
+	SDL_FPoint Puzzle::getShapeCenter(std::vector<SDL_FPoint> points) {
+		float sumX = 0, sumY = 0;
+
+		for (auto& p : points) {
+			sumX += p.x;
+			sumY += p.y;
+		}
+		return { sumX / points.size(), sumY / points.size() };
+	}
+
+	void Puzzle::unload() {
+		m_internalName.clear();
+		m_text.clear();
+
+		Scene::unload();
 	}
 };

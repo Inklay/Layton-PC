@@ -95,14 +95,14 @@ void Sprite::computeOpacity() {
 		if (m_fadeInfo.mode == IN) {
 			m_opacity = (int)(m_fadeInfo.timeout < 0 ? 0 : (m_fadeInfo.timeout * 255) / m_fadeInfo.duration);
 
-			if (m_opacity > 255) {
+			if (m_opacity >= 255) {
 				m_opacity = 255;
 				m_fading = false;
 			}
 		} else {
 			m_opacity = (int)(m_fadeInfo.timeout < 0 ? 255 : (255 - (m_fadeInfo.timeout * 255) / m_fadeInfo.duration));
 
-			if (m_opacity < 0) {
+			if (m_opacity <= 0) {
 				m_opacity = 0;
 				m_fading = false;
 			}

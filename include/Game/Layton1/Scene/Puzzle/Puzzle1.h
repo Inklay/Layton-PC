@@ -9,6 +9,18 @@ namespace Layton1Scene {
 		Puzzle1(Game* game);
 		void load();
 		void render();
+		void unload();
 		void handleClick(const std::string& spriteName, SDL_Event event);
+		void handleEvent(SDL_Event event);
+
+	private:
+		std::vector<SDL_FPoint> m_points;
+		int m_tutoState = 0;
+		int m_touchTextState = 0;
+		int m_touchTextTimer = 0;
+		SDL_Texture* m_drawTexture;
+		SDL_FRect m_drawTextureRect;
+		std::vector<SDL_FPoint> m_villages;
+		bool m_drawing = false;
 	};
 };

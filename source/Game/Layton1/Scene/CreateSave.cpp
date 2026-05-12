@@ -97,7 +97,7 @@ namespace Layton1Scene {
 		} else if (spriteName == "keyboardSpecial") {
 			checkKeyPressed(m_specialKeyPos);
 		} else if (spriteName == "backSpaceButton") {
-			playSFX("keyboardBackspace");
+			playSFX("clear");
 			if (m_name.length() != 0) {
 				m_name.pop_back();
 				m_sprites.at("cursor")->m_transform.x -= 16 * m_game->m_windowMultiplier;

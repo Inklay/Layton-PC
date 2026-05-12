@@ -1,6 +1,8 @@
 #include "Utils/sdlUtils.h"
 #include <iostream>
 #include <cmath>
+#include <vector>
+#include <numbers>
 
 namespace sdlUtils {
 	float scaleWindow(SDL_Window* window) {
@@ -98,5 +100,60 @@ namespace sdlUtils {
 				audioData->finished = true;
 			}
 		}
+	}
+
+	void renderLine(SDL_Renderer* renderer, float x1, float y1, float x2, float y2, float thickness, SDL_FColor color) {
+		float dx = x2 - x1;
+		float dy = y2 - y1;
+		float len = sqrtf(dx * dx + dy * dy);
+
+		if (len < 0.001f) {
+			return;
+		}
+
+		float nx = (-dy / len) * (thickness * 0.5f);
+		float ny = (dx / len) * (thickness * 0.5f);
+
+		SDL_Vertex verts[4] = {
+			{ {x1 + nx, y1 + ny}, color },
+			{ {x1 - nx, y1 - ny}, color },
+			{ {x2 + nx, y2 + ny}, color },
+			{ {x2 - nx, y2 - ny}, color },
+		};
+
+		int indices[] = { 0, 1, 2,  1, 2, 3 };
+
+		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+		SDL_RenderGeometry(renderer, NULL, verts, 4, indices, 6);
+	}
+
+	void renderFilledCircle(SDL_Renderer* renderer, float cx, float cy, float radius, SDL_FColor color) {
+		int segments = 20;
+		std::vector<SDL_Vertex> verts;
+		std::vector<int> indices;
+
+		SDL_Vertex center;
+		center.position = { cx, cy };
+		center.color = color;
+		center.tex_coord = { 0, 0 };
+		verts.push_back(center);
+
+		for (int i = 0; i <= segments; i++) {
+			float angle = (2.0f * std::numbers::pi_v<float> * i) / segments;
+			SDL_Vertex v;
+
+			v.position = { cx + cosf(angle) * radius, cy + sinf(angle) * radius };
+			v.color = color;
+			v.tex_coord = { 0, 0 };
+			verts.push_back(v);
+		}
+
+		for (int i = 1; i <= segments; i++) {
+			indices.push_back(0);
+			indices.push_back(i);
+			indices.push_back(i + 1);
+		}
+
+		SDL_RenderGeometry(renderer, NULL, verts.data(), (int)verts.size(), indices.data(), (int)indices.size());
 	}
 };

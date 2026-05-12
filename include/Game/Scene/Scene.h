@@ -18,7 +18,7 @@ public:
 	virtual void load();
 	virtual void render();
 	virtual void unload();
-	void handleEvent(SDL_Event event);
+	virtual void handleEvent(SDL_Event event);
 	virtual void handleClick(const std::string& spriteName, SDL_Event event) = 0;
 
 	Game* m_game;
