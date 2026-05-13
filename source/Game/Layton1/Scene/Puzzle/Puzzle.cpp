@@ -16,12 +16,16 @@ namespace Layton1Scene {
 	}
 
 	void Puzzle::load() {
+		m_sprites.insert({ "bottomFading", std::make_unique<Sprite>("bg/custom/black_screen.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+		m_sprites.insert({ "fading", std::make_unique<Sprite>("bg/custom/black_screen.png", this, SDL_FRect{ 0, 0, WIDTH, HEIGHT }, true) });
+		m_sprites.insert({ "touch", std::make_unique<Sprite>("ani/fr/qend_touch.png", this, SDL_FRect{ centerXPos(128), centerBottomPos(64), 128, 64}) });
+
+		m_sprites.at("touch")->m_opacity = 180;
+
 		// intro
 		m_sprites.insert({ "intro_title", std::make_unique<Sprite>("bg/q_alt_sub_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
 		m_sprites.insert({ "intro_picaratBackground", std::make_unique<Sprite>("bg/fr/picarat_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
 		m_sprites.insert({ "intro_puzzleText", std::make_unique<Sprite>("ani/fr/pazzle_mes.png", this, SDL_FRect{ centerXPos(88), HALF_HEIGHT + 30, 88, 14})});
-		m_sprites.insert({ "intro_bottomFading", std::make_unique<Sprite>("bg/custom/black_screen.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
-		m_sprites.insert({ "fading", std::make_unique<Sprite>("bg/custom/black_screen.png", this, SDL_FRect{ 0, 0, WIDTH, HEIGHT }, true) });
 		m_sprites.insert({ "intro_puzzleName", std::make_unique<TextSprite>("font/fontevent.png", "qtext/fr/t_" + m_internalName + ".txt", this, SDL_FRect{-1, HALF_HEIGHT + 120, WIDTH, 12}, SDL_Color{0, 0, 0})});
 
 		std::vector<fileUtils::path> numberSprites = getNumberSprites(m_currentPicarat, "picarat_number_big");
@@ -119,7 +123,7 @@ namespace Layton1Scene {
 			m_sprites.insert({ "validateFail2", std::make_unique<Sprite>("bg/judge_r108_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 			m_sprites.insert({ "validateFail3", std::make_unique<Sprite>("bg/judge_r109_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 			m_sprites.insert({ "validateFail4", std::make_unique<Sprite>("bg/judge_r110_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
-			m_sprites.insert({ "validateFail5", std::make_unique<Sprite>("bg/judge_r111.bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateFail5", std::make_unique<Sprite>("bg/judge_r111_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 			m_sprites.insert({ "validateFail6", std::make_unique<Sprite>("bg/judge_r112_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 			m_sprites.insert({ "validateFail7", std::make_unique<Sprite>("bg/judge_r113_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 		}
@@ -127,263 +131,59 @@ namespace Layton1Scene {
 		m_text = fileUtils::readText(m_game->m_gameFolder / "qtext/fr" / ("q_" + m_internalName + ".txt"));
 		m_fading = true;
 		playSFX("puzzleStart");
-		m_sprites.at("intro_bottomFading")->fade({ 300, -1000, Sprite::FadingMode::OUT });
 		Scene::load();
 	}
 
 	void Puzzle::render() {
-		if (m_isIntro) {
-			if (!m_fading && !m_movedTitleCard) {
-				m_sprites.at("intro_title")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
-				m_sprites.at("intro_puzzleText")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
-				m_sprites.at("intro_puzzleName")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
-				m_sprites.at("intro_puzzleNumber0")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
-				m_sprites.at("intro_puzzleNumber1")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
-				m_sprites.at("intro_puzzleNumber2")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
-				m_movedTitleCard = true;
-			}
-
-			if (m_movedTitleCard && !m_sprites.at("intro_title")->m_translating) {
-				m_sprites.at("intro_picaratBackground")->draw();
-
-				m_sprites.at("intro_currentPicarat0")->draw();
-				m_sprites.at("intro_currentPicarat1")->draw();
-
-				m_sprites.at("intro_picarat0")->draw();
-				m_sprites.at("intro_picarat1")->draw();
-
-				m_sprites.at("intro_totalPicarat0")->draw();
-				if (m_game->m_save->m_picarats > 10) {
-					m_sprites.at("intro_totalPicarat2")->draw();
-				}
-				if (m_game->m_save->m_picarats > 100) {
-					m_sprites.at("intro_totalPicarat3")->draw();
-				}
-				if (m_game->m_save->m_picarats > 1000) {
-					m_sprites.at("intro_totalPicarat4")->draw();
-				}
-			}
-			m_sprites.at("intro_bottomFading")->draw();
-			m_sprites.at("intro_title")->draw();
-			m_sprites.at("intro_puzzleText")->draw();
-			m_sprites.at("intro_puzzleName")->draw();
-			m_sprites.at("intro_puzzleNumber0")->draw();
-			m_sprites.at("intro_puzzleNumber1")->draw();
-			m_sprites.at("intro_puzzleNumber2")->draw();
-
-			if (m_fadingToPuzzle && !m_sprites.at("fading")->m_fading) {
-				m_fadingToPuzzle = false;
-				m_isIntro = false;
-				m_sprites.at("fading")->fade({ 300, 0, Sprite::FadingMode::OUT });
-				playBGM("sound/SEQ_BG_003.wav");
-			}
-		} else if (m_validating) {
-			if (m_fadingToValidation && !m_sprites.at("fading")->m_fading) {
-				m_fadingToValidation = false;
-				m_sprites.at("fading")->fade({ 300, 0, Sprite::FadingMode::OUT });
-				playSFX("puzzleEnd");
-			} else if (!m_fadingToValidation) {
-				if (m_validationTimer >= 2350) {
-					if (validate()) {
-						m_sprites.at("validateSuccess7")->draw();
-					} else {
-						m_sprites.at("validateFail7")->draw();
-					}
-				} else if (m_validationTimer >= 2250) {
-					if (validate()) {
-						m_sprites.at("validateSuccess6")->draw();
-					} else {
-						m_sprites.at("validateFail6")->draw();
-					}
-				} else if (m_validationTimer >= 2150) {
-					if (validate()) {
-						m_sprites.at("validateSuccess5")->draw();
-					} else {
-						m_sprites.at("validateFail5")->draw();
-					}
-				} else if (m_validationTimer >= 2100) {
-					if (validate()) {
-						m_sprites.at("validateSuccess4")->draw();
-					} else {
-						m_sprites.at("validateFail4")->draw();
-					}
-				} else if (m_validationTimer >= 1600) {
-					if (validate()) {
-						m_sprites.at("validateSuccess3")->draw();
-					} else {
-						m_sprites.at("validateFail3")->draw();
-					}
-				} else if (m_validationTimer >= 1500) {
-					if (validate()) {
-						m_sprites.at("validateSuccess2")->draw();
-					} else {
-						m_sprites.at("validateFail2")->draw();
-					}
-				} else if (m_validationTimer >= 1400) {
-					if (validate()) {
-						m_sprites.at("validateSuccess1")->draw();
-					} else {
-						m_sprites.at("validateFail1")->draw();
-					}
-				} else if (m_validationTimer >= 900) {
-					m_sprites.at("validate6")->draw();
-				} else if (m_validationTimer >= 800) {
-					m_sprites.at("validate5")->draw();
-				} else if (m_validationTimer >= 700) {
-					m_sprites.at("validate4")->draw();
-				} else if (m_validationTimer >= 200) {
-					m_sprites.at("validate3")->draw();
-				} else if (m_validationTimer >= 100) {
-					m_sprites.at("validate2")->draw();
-				} else {
-					m_sprites.at("validate1")->draw();
-				}
-				
-				m_validationTimer += (int)(SDL_GetTicks() - m_lastTick);
-			}
-		} else {
-			m_sprites.at("topBackground")->draw();
-			m_sprites.at("puzzleNumber0")->draw();
-			m_sprites.at("puzzleNumber1")->draw();
-			m_sprites.at("puzzleNumber2")->draw();
-			m_sprites.at("picarat0")->draw();
-			m_sprites.at("picarat1")->draw();
-			m_sprites.at("puzzleText")->draw();
-			m_sprites.at("hintCoins0")->draw();
-
-			if (m_game->m_save->m_hintCoins > 9) {
-				m_sprites.at("hintCoins1")->draw();
-			}
-
-			if (m_textProgression <= m_text.length()) {
-				if (m_textProgression == 0) {
-					playBGM("sound/sfx/99.wav", 1);
-				}
-
-				m_sprites.at("puzzleText")->setText(m_text.substr(0, m_textProgression));
-				m_textProgression += 2;
-
-				if (m_textProgression > m_text.length()) {
-					m_textProgression--;
-					m_game->m_bgmData.at(1)->loop = false;
-				}
-			}
-
-			if (m_canClear && !m_bottomUIHidden) {
-				m_sprites.at("clearButton")->draw(1);
-			}
-
-			if (m_canValidate && !m_bottomUIHidden) {
-				m_sprites.at("validateButton")->draw(1);
-			}
-
-			if ((m_game->m_save->m_puzzles.at(m_number) & 2) == 0 && !m_bottomUIHidden) {
-				m_sprites.at("hint3")->draw(1);
-			} else if ((m_game->m_save->m_puzzles.at(m_number) & 4) == 0 && !m_bottomUIHidden) {
-				m_sprites.at("hint2")->draw(1);
-			} else if ((m_game->m_save->m_puzzles.at(m_number) & 8) == 0 && !m_bottomUIHidden) {
-				m_sprites.at("hint1")->draw(1);
-			} else if (!m_bottomUIHidden) {
-				m_sprites.at("hint0")->draw(1);
-			}
-
-			if (m_displayHint) {
-				if (m_currentHint == 0) {
-					if (m_game->m_save->m_puzzles.at(m_number) & 2) {
-						m_sprites.at("bottomBackgroundHint1")->draw(10);
-						m_sprites.at("hint1Text")->draw(10);
-					} else if ((m_game->m_save->m_hintCoins != 0)) {
-						m_sprites.at("bottomBackgroundHint1Locked")->draw(10);
-						m_sprites.at("hintUnlockYesButton")->draw(11);
-						m_sprites.at("hintUnlockNoButton")->draw(11);
-						displayHintCoinsOnHintUnlockScreen();
-					} else {
-						m_sprites.at("bottomBackgroundHint1NoCoin")->draw(10);
-					}
-				} else if (m_currentHint == 1) {
-					if (m_game->m_save->m_puzzles.at(m_number) & 4) {
-						m_sprites.at("bottomBackgroundHint2")->draw(10);
-						m_sprites.at("hint2Text")->draw(10);
-					} else if ((m_game->m_save->m_hintCoins != 0)) {
-						m_sprites.at("bottomBackgroundHint2Locked")->draw(10);
-						m_sprites.at("hintUnlockYesButton")->draw(11);
-						m_sprites.at("hintUnlockNoButton")->draw(11);
-						displayHintCoinsOnHintUnlockScreen();
-					} else {
-						m_sprites.at("bottomBackgroundHint2NoCoin")->draw(10);
-					}
-				} else if (m_currentHint == 2) {
-					if (m_game->m_save->m_puzzles.at(m_number) & 8) {
-						m_sprites.at("bottomBackgroundHint3")->draw(10);
-						m_sprites.at("hint3Text")->draw(10);
-					} else if ((m_game->m_save->m_hintCoins != 0)) {
-						m_sprites.at("bottomBackgroundHint3Locked")->draw(10);
-						m_sprites.at("hintUnlockYesButton")->draw(11);
-						m_sprites.at("hintUnlockNoButton")->draw(11);
-						displayHintCoinsOnHintUnlockScreen();
-					} else {
-						m_sprites.at("bottomBackgroundHint3NoCoin")->draw(10);
-					}
-				}
-
-				if (m_game->m_save->m_puzzles.at(m_number) & 2) {
-					m_sprites.at("hint1Button")->draw(11);
-
-					if (m_game->m_save->m_puzzles.at(m_number) & 4) {
-						m_sprites.at("hint2Button")->draw(11);
-
-						if (m_game->m_save->m_puzzles.at(m_number) & 8) {
-							m_sprites.at("hint3Button")->draw(11);
-						} else {
-							m_sprites.at("hint3LockedButton")->draw(11);
-						}
-					} else {
-						m_sprites.at("hint2LockedButton")->draw(11);
-					}
-				} else {
-					m_sprites.at("hint1LockedButton")->draw(11);
-				}
-
-				m_sprites.at("hintBackButton")->draw(11);
-			}
+		if (m_state <= INTRO_FADING_OUT) {
+			renderIntro();
+		} else if (m_state >= PUZZLE_FADING_IN && m_state <= HINT) {
+			renderPuzzle();
+		} else if (m_state >= VALIDATING_FADING_IN && m_state <= VALIDATING_SOUND) {
+			renderValidation();
 		}
 
 		if (m_sprites.at("fading")->m_fading) {
 			m_sprites.at("fading")->draw();
 		}
 
+		if (m_sprites.at("bottomFading")->m_fading) {
+			m_sprites.at("bottomFading")->draw();
+		}
+
 		Scene::render();
 	}
 
 	void Puzzle::handleClick(const std::string& spriteName, SDL_Event event) {
-		if (m_isIntro && !m_fadingToPuzzle && m_movedTitleCard && !m_sprites.at("fading")->m_fading && !m_sprites.at("intro_title")->m_translating && !m_validating) {
+		if (m_state == INTRO_FULL) {
 			m_sprites.at("fading")->fade({ 300, 0, Sprite::FadingMode::IN });
-			m_fadingToPuzzle = true;
-		} else if (!m_isIntro && m_textProgression <= m_text.length() && !m_validating) {
+			m_state = INTRO_FADING_OUT;
+		} else if (m_state == PUZZLE_TOUCH) {
 			m_textProgression = (int)m_text.length();
 			m_game->m_bgmData.at(1)->loop = false;
-		} else if (!m_isIntro && !m_validating) {
-			if (spriteName == "hint0" || spriteName == "hint1" || spriteName == "hint2" || spriteName == "hint3") {
-				m_sprites.at("bottomBackgroundHint1")->m_interactive = true;
-				m_sprites.at("bottomBackgroundHint2")->m_interactive = true;
-				m_sprites.at("bottomBackgroundHint3")->m_interactive = true;
-				m_sprites.at("bottomBackgroundHint1Locked")->m_interactive = true;
-				m_sprites.at("bottomBackgroundHint2Locked")->m_interactive = true;
-				m_sprites.at("bottomBackgroundHint3Locked")->m_interactive = true;
-				m_sprites.at("bottomBackgroundHint1NoCoin")->m_interactive = true;
-				m_sprites.at("bottomBackgroundHint2NoCoin")->m_interactive = true;
-				m_sprites.at("bottomBackgroundHint3NoCoin")->m_interactive = true;
-				m_sprites.at("hintBackButton")->m_interactive = true;
-				m_sprites.at("hint1Button")->m_interactive = true;
-				m_sprites.at("hint2Button")->m_interactive = true;
-				m_sprites.at("hint3Button")->m_interactive = true;
-				m_sprites.at("hint1LockedButton")->m_interactive = true;
-				m_sprites.at("hint2LockedButton")->m_interactive = true;
-				m_sprites.at("hint3LockedButton")->m_interactive = true;
-				m_sprites.at("hintUnlockYesButton")->m_interactive = true;
-				m_sprites.at("hintUnlockNoButton")->m_interactive = true;
-				m_displayHint = true;
-			} else if ((spriteName == "hintBackButton" || spriteName == "hintUnlockNoButton") && m_displayHint) {
+			m_state = PUZZLE;
+		} else if (m_state == PUZZLE && (spriteName == "hint0" || spriteName == "hint1" || spriteName == "hint2" || spriteName == "hint3")) {
+			m_sprites.at("bottomBackgroundHint1")->m_interactive = true;
+			m_sprites.at("bottomBackgroundHint2")->m_interactive = true;
+			m_sprites.at("bottomBackgroundHint3")->m_interactive = true;
+			m_sprites.at("bottomBackgroundHint1Locked")->m_interactive = true;
+			m_sprites.at("bottomBackgroundHint2Locked")->m_interactive = true;
+			m_sprites.at("bottomBackgroundHint3Locked")->m_interactive = true;
+			m_sprites.at("bottomBackgroundHint1NoCoin")->m_interactive = true;
+			m_sprites.at("bottomBackgroundHint2NoCoin")->m_interactive = true;
+			m_sprites.at("bottomBackgroundHint3NoCoin")->m_interactive = true;
+			m_sprites.at("hintBackButton")->m_interactive = true;
+			m_sprites.at("hint1Button")->m_interactive = true;
+			m_sprites.at("hint2Button")->m_interactive = true;
+			m_sprites.at("hint3Button")->m_interactive = true;
+			m_sprites.at("hint1LockedButton")->m_interactive = true;
+			m_sprites.at("hint2LockedButton")->m_interactive = true;
+			m_sprites.at("hint3LockedButton")->m_interactive = true;
+			m_sprites.at("hintUnlockYesButton")->m_interactive = true;
+			m_sprites.at("hintUnlockNoButton")->m_interactive = true;
+			m_state = HINT;
+		} else if (m_state == HINT) {
+			if ((spriteName == "hintBackButton" || spriteName == "hintUnlockNoButton")) {
 				m_sprites.at("bottomBackgroundHint1")->m_interactive = false;
 				m_sprites.at("bottomBackgroundHint2")->m_interactive = false;
 				m_sprites.at("bottomBackgroundHint3")->m_interactive = false;
@@ -402,8 +202,8 @@ namespace Layton1Scene {
 				m_sprites.at("hint3LockedButton")->m_interactive = false;
 				m_sprites.at("hintUnlockYesButton")->m_interactive = false;
 				m_sprites.at("hintUnlockNoButton")->m_interactive = false;
-				m_displayHint = false;
-			} else if (spriteName == "hintUnlockYesButton" && m_displayHint) {
+				m_state = PUZZLE;
+			} else if (spriteName == "hintUnlockYesButton") {
 				for (size_t i = 0; i < 3; i++) {
 					if (m_sprites.count("hintCoins" + std::to_string(i)) != 0) {
 						m_sprites.at("hintCoins" + std::to_string(i))->unload();
@@ -531,8 +331,294 @@ namespace Layton1Scene {
 	}
 
 	void Puzzle::startValidation() {
-		m_validating = true;
-		m_fadingToValidation = true;
+		m_state = PUZZLE_FADING_OUT;
 		m_sprites.at("fading")->fade({ 300, 0, Sprite::FadingMode::IN });
+		m_valid = validate();
+		pauseBGM(1);
+	}
+
+	void Puzzle::renderIntro() {
+		if (!m_fading && m_state == INTRO) {
+			m_sprites.at("intro_title")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
+			m_sprites.at("intro_puzzleText")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
+			m_sprites.at("intro_puzzleName")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
+			m_sprites.at("intro_puzzleNumber0")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
+			m_sprites.at("intro_puzzleNumber1")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
+			m_sprites.at("intro_puzzleNumber2")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
+			m_state = INTRO_CARD_MOVING;
+		} else if (m_state == INTRO_CARD_MOVING && !m_sprites.at("intro_title")->m_translating) {
+			m_state = INTRO_PICARAT_FADING;
+			m_sprites.at("bottomFading")->fade({ 300, -200, Sprite::FadingMode::OUT });
+		} else if (m_state == INTRO_PICARAT_FADING && !m_sprites.at("bottomFading")->m_fading) {
+			m_state = INTRO_FULL;
+		} else if (m_state == INTRO_FADING_OUT && !m_sprites.at("fading")->m_fading) {
+			m_state = PUZZLE_FADING_IN;
+			m_sprites.at("fading")->fade({ 300, 0, Sprite::FadingMode::OUT });
+			playBGM("sound/SEQ_BG_003.wav");
+		}
+
+		if (m_state >= INTRO_PICARAT_FADING) {
+			m_sprites.at("intro_picaratBackground")->draw();
+			m_sprites.at("intro_currentPicarat0")->draw();
+			m_sprites.at("intro_currentPicarat1")->draw();
+			m_sprites.at("intro_picarat0")->draw();
+			m_sprites.at("intro_picarat1")->draw();
+			m_sprites.at("intro_totalPicarat0")->draw();
+
+			if (m_game->m_save->m_picarats > 10) {
+				m_sprites.at("intro_totalPicarat2")->draw();
+			}
+
+			if (m_game->m_save->m_picarats > 100) {
+				m_sprites.at("intro_totalPicarat3")->draw();
+			}
+
+			if (m_game->m_save->m_picarats > 1000) {
+				m_sprites.at("intro_totalPicarat4")->draw();
+			}
+		}
+
+		m_sprites.at("intro_title")->draw();
+		m_sprites.at("intro_puzzleText")->draw();
+		m_sprites.at("intro_puzzleName")->draw();
+		m_sprites.at("intro_puzzleNumber0")->draw();
+		m_sprites.at("intro_puzzleNumber1")->draw();
+		m_sprites.at("intro_puzzleNumber2")->draw();
+	}
+
+	void Puzzle::renderPuzzle() {
+		if (m_state == PUZZLE_FADING_IN && !m_sprites.at("fading")->m_fading) {
+			m_state = PUZZLE_TOUCH;
+		}
+			
+		if (m_state >= PUZZLE_FADING_IN && m_state <= PUZZLE_FADING_OUT) {
+			if (m_canClear && !m_bottomUIHidden) {
+				m_sprites.at("clearButton")->draw(1);
+			}
+
+			if (m_canValidate && !m_bottomUIHidden) {
+				m_sprites.at("validateButton")->draw(1);
+			}
+
+			if ((m_game->m_save->m_puzzles.at(m_number) & 2) == 0 && !m_bottomUIHidden) {
+				m_sprites.at("hint3")->draw(1);
+			} else if ((m_game->m_save->m_puzzles.at(m_number) & 4) == 0 && !m_bottomUIHidden) {
+				m_sprites.at("hint2")->draw(1);
+			} else if ((m_game->m_save->m_puzzles.at(m_number) & 8) == 0 && !m_bottomUIHidden) {
+				m_sprites.at("hint1")->draw(1);
+			} else if (!m_bottomUIHidden) {
+				m_sprites.at("hint0")->draw(1);
+			}
+
+			if (m_state == PUZZLE_TOUCH) {
+				m_sprites.at("touch")->draw();
+				computeTouchTextOpacity();
+			} else if (m_state == PUZZLE_FADING_OUT && !m_sprites.at("fading")->m_fading) {
+				m_sprites.at("fading")->fade({ 300, 0, Sprite::FadingMode::OUT });
+				m_state = VALIDATING_FADING_IN;
+			}
+		} else if (m_state == HINT) {
+			renderHint();
+		}
+
+		m_sprites.at("topBackground")->draw();
+		m_sprites.at("puzzleNumber0")->draw();
+		m_sprites.at("puzzleNumber1")->draw();
+		m_sprites.at("puzzleNumber2")->draw();
+		m_sprites.at("picarat0")->draw();
+		m_sprites.at("picarat1")->draw();
+		m_sprites.at("puzzleText")->draw();
+		m_sprites.at("hintCoins0")->draw();
+
+		if (m_game->m_save->m_hintCoins > 9) {
+			m_sprites.at("hintCoins1")->draw();
+		}
+
+		if (m_textProgression <= m_text.length()) {
+			if (m_textProgression == 0) {
+				playBGM("sound/sfx/99.wav", 1);
+			}
+
+			m_sprites.at("puzzleText")->setText(m_text.substr(0, m_textProgression));
+			m_textProgression += 2;
+
+			if (m_textProgression > m_text.length()) {
+				m_textProgression--;
+				m_game->m_bgmData.at(1)->loop = false;
+			}
+		}
+	}
+
+	void Puzzle::renderHint() {
+		if (m_currentHint == 0) {
+			if (m_game->m_save->m_puzzles.at(m_number) & 2) {
+				m_sprites.at("bottomBackgroundHint1")->draw(10);
+				m_sprites.at("hint1Text")->draw(10);
+			} else if ((m_game->m_save->m_hintCoins != 0)) {
+				m_sprites.at("bottomBackgroundHint1Locked")->draw(10);
+				m_sprites.at("hintUnlockYesButton")->draw(11);
+				m_sprites.at("hintUnlockNoButton")->draw(11);
+				displayHintCoinsOnHintUnlockScreen();
+			} else {
+				m_sprites.at("bottomBackgroundHint1NoCoin")->draw(10);
+			}
+		} else if (m_currentHint == 1) {
+			if (m_game->m_save->m_puzzles.at(m_number) & 4) {
+				m_sprites.at("bottomBackgroundHint2")->draw(10);
+				m_sprites.at("hint2Text")->draw(10);
+			} else if ((m_game->m_save->m_hintCoins != 0)) {
+				m_sprites.at("bottomBackgroundHint2Locked")->draw(10);
+				m_sprites.at("hintUnlockYesButton")->draw(11);
+				m_sprites.at("hintUnlockNoButton")->draw(11);
+				displayHintCoinsOnHintUnlockScreen();
+			} else {
+				m_sprites.at("bottomBackgroundHint2NoCoin")->draw(10);
+			}
+		} else if (m_currentHint == 2) {
+			if (m_game->m_save->m_puzzles.at(m_number) & 8) {
+				m_sprites.at("bottomBackgroundHint3")->draw(10);
+				m_sprites.at("hint3Text")->draw(10);
+			} else if ((m_game->m_save->m_hintCoins != 0)) {
+				m_sprites.at("bottomBackgroundHint3Locked")->draw(10);
+				m_sprites.at("hintUnlockYesButton")->draw(11);
+				m_sprites.at("hintUnlockNoButton")->draw(11);
+				displayHintCoinsOnHintUnlockScreen();
+			} else {
+				m_sprites.at("bottomBackgroundHint3NoCoin")->draw(10);
+			}
+		}
+
+		if (m_game->m_save->m_puzzles.at(m_number) & 2) {
+			m_sprites.at("hint1Button")->draw(11);
+
+			if (m_game->m_save->m_puzzles.at(m_number) & 4) {
+				m_sprites.at("hint2Button")->draw(11);
+
+				if (m_game->m_save->m_puzzles.at(m_number) & 8) {
+					m_sprites.at("hint3Button")->draw(11);
+				} else {
+					m_sprites.at("hint3LockedButton")->draw(11);
+				}
+			} else {
+				m_sprites.at("hint2LockedButton")->draw(11);
+			}
+		} else {
+			m_sprites.at("hint1LockedButton")->draw(11);
+		}
+
+		m_sprites.at("hintBackButton")->draw(11);
+	}
+
+	void Puzzle::renderValidation() {
+		if (m_state == VALIDATING_FADING_IN && !m_sprites.at("fading")->m_fading) {
+			m_state = VALIDATING;
+			playSFX("puzzleEnd");
+		} else if (m_state == VALIDATING || VALIDATING_SOUND) {
+			if (m_validationTimer >= 2350) {
+				if (m_valid) {
+					m_sprites.at("validateSuccess7")->draw();
+				} else {
+					m_sprites.at("validateFail7")->draw();
+				}
+			} else if (m_validationTimer >= 2250) {
+				if (m_valid) {
+					m_sprites.at("validateSuccess6")->draw();
+				} else {
+					m_sprites.at("validateFail6")->draw();
+				}
+			} else if (m_validationTimer >= 2150) {
+				if (m_valid) {
+					m_sprites.at("validateSuccess5")->draw();
+				} else {
+					m_sprites.at("validateFail5")->draw();
+				}
+			} else if (m_validationTimer >= 2100) {
+				if (m_state == VALIDATING) {
+					m_state = VALIDATING_SOUND;
+					if (m_valid) {
+						playSFX("puzzleSuccess");
+					} else {
+						playSFX("puzzleFailure");
+					}
+				}
+				if (m_valid) {
+					m_sprites.at("validateSuccess4")->draw();
+				} else {
+					m_sprites.at("validateFail4")->draw();
+				}
+			} else if (m_validationTimer >= 1600) {
+				if (m_valid) {
+					m_sprites.at("validateSuccess3")->draw();
+				} else {
+					m_sprites.at("validateFail3")->draw();
+				}
+			} else if (m_validationTimer >= 1500) {
+				if (m_valid) {
+					m_sprites.at("validateSuccess2")->draw();
+				} else {
+					m_sprites.at("validateFail2")->draw();
+				}
+			} else if (m_validationTimer >= 1400) {
+				if (m_valid) {
+					m_sprites.at("validateSuccess1")->draw();
+				} else {
+					m_sprites.at("validateFail1")->draw();
+				}
+			} else if (m_validationTimer >= 900) {
+				m_sprites.at("validate6")->draw();
+			} else if (m_validationTimer >= 800) {
+				m_sprites.at("validate5")->draw();
+			} else if (m_validationTimer >= 700) {
+				m_sprites.at("validate4")->draw();
+			} else if (m_validationTimer >= 200) {
+				m_sprites.at("validate3")->draw();
+			} else if (m_validationTimer >= 100) {
+				m_sprites.at("validate2")->draw();
+			} else {
+				m_sprites.at("validate1")->draw();
+			}
+				
+			m_validationTimer += (int)(SDL_GetTicks() - m_lastTick);
+		}
+	}
+
+	void Puzzle::renderSuccess() {
+
+	}
+
+	void Puzzle::renderFail() {
+	
+	}
+
+	void Puzzle::computeTouchTextOpacity() {
+		m_touchTextTimer += (int)(SDL_GetTicks() - m_lastTick);
+
+		if (m_touchTextState == 0 && m_touchTextTimer >= 1000) {
+			m_touchTextState = 1;
+			m_touchTextTimer = 0;
+		} else if (m_touchTextState == 1) {
+			int opacity = 180 - ((m_touchTextTimer * 110) / 350);
+
+			if (opacity <= 70) {
+				opacity = 70;
+				m_touchTextState = 2;
+				m_touchTextTimer = 0;
+			}
+
+			m_sprites.at("touch")->m_opacity = opacity;
+		} else if (m_touchTextState == 2 && m_touchTextTimer >= 300) {
+			m_touchTextState = 3;
+			m_touchTextTimer = 0;
+		} else if (m_touchTextState == 3) {
+			int opacity = 70 + ((m_touchTextTimer * 110) / 350);
+
+			if (opacity >= 180) {
+				opacity = 180;
+				m_touchTextState = 0;
+				m_touchTextTimer = 0;
+			}
+
+			m_sprites.at("touch")->m_opacity = opacity;
+		}
 	}
 };

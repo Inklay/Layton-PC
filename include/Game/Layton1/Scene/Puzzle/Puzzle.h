@@ -11,6 +11,26 @@ namespace Layton1Scene {
 			LUKE
 		};
 
+		enum State {
+			INTRO,
+			INTRO_CARD_MOVING,
+			INTRO_PICARAT_FADING,
+			INTRO_FULL,
+			INTRO_FADING_OUT,
+			PUZZLE_FADING_IN,
+			PUZZLE_TOUCH,
+			PUZZLE,
+			PUZZLE_FADING_OUT,
+			HINT,
+			VALIDATING_FADING_IN,
+			VALIDATING,
+			VALIDATING_SOUND,
+			END,
+			END_CARD_MOVING,
+			END_TEXT_FADING,
+			END_FULL
+		};
+
 		Puzzle(Game* game, int picarat, int number, const std::string& internalName, Character character);
 		void load();
 		void render();
@@ -29,23 +49,28 @@ namespace Layton1Scene {
 		std::string m_internalName;
 		std::u32string m_text;
 		Character m_character;
+		State m_state = INTRO;
 		int m_picarat;
 		int m_currentPicarat;
 		int m_number;
 		int m_textProgression = 0;
 		int m_currentHint = 0;
 		int m_validationTimer = 0;
-		bool m_isIntro = true;
-		bool m_movedTitleCard = false;
-		bool m_fadingToPuzzle = false;
+		int m_touchTextState = 0;
+		int m_touchTextTimer = 0;
 		bool m_canClear = false;
 		bool m_canValidate = false;
 		bool m_bottomUIHidden = false;
-		bool m_displayHint = false;
-		bool m_validating = false;
-		bool m_fadingToValidation = false;
+		bool m_valid = false;
 
 	private:
 		void displayHintCoinsOnHintUnlockScreen();
+		void computeTouchTextOpacity();
+		void renderIntro();
+		void renderPuzzle();
+		void renderHint();
+		void renderValidation();
+		void renderSuccess();
+		void renderFail();
 	};
 };
