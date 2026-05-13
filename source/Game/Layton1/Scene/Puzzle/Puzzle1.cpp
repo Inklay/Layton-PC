@@ -2,8 +2,8 @@
 #include "Game/Game.h"
 
 namespace Layton1Scene {
-	Puzzle1::Puzzle1(Game* game) :
-		Puzzle(game, 10, 1, "24", LUKE, 2)
+	Puzzle1::Puzzle1(Game* game, const std::string& nextScene) :
+		Puzzle(game, 10, 1, "24", LUKE, 2, nextScene)
 	{
 	}
 

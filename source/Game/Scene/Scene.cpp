@@ -46,7 +46,7 @@ void Scene::unload() {
 
 		if (i != 0) {
 			SDL_DestroyAudioStream(m_game->m_sfxStreams.at(i));
-			m_game->m_bgmStreams.pop_back();
+			m_game->m_sfxStreams.pop_back();
 			m_sfxBuffers.pop_back();
 		}
 	}
@@ -96,6 +96,10 @@ void Scene::playSFX(const std::string& name, size_t audioStreamIdx) {
 }
 
 void Scene::handleEvent(SDL_Event event) {
+	if (m_fading) {
+		return;
+	}
+
 	if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN && event.button.button == SDL_BUTTON_LEFT) {
 		int maxZIndex = -1;
 		for (auto& it : m_sprites) {

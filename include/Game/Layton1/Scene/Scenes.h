@@ -4,3 +4,4 @@
 #include "Intro.h"
 #include "CreateSave.h"
 #include "IntroCarDialogue1.h"
+#include "IntroCarDialogue2.h"

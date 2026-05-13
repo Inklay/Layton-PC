@@ -5,7 +5,7 @@
 #include "Game/Sprite/ClickableSprite.h"
 
 namespace Layton1Scene {
-	Puzzle::Puzzle(Game* game, int picarat, int number, const std::string& internalName, Character character, int picaratLost) :
+	Puzzle::Puzzle(Game* game, int picarat, int number, const std::string& internalName, Character character, int picaratLost, const std::string& nextScene) :
 		Scene(game, 0.5f, 0.5f),
 		m_picarat(picarat),
 		m_currentPicarat(picarat),
@@ -13,7 +13,8 @@ namespace Layton1Scene {
 		m_number(number),
 		m_internalName(internalName),
 		m_character(character),
-		m_picaratLost(picaratLost)
+		m_picaratLost(picaratLost),
+		m_nextSceneName(nextScene)
 	{
 	}
 
@@ -138,6 +139,8 @@ namespace Layton1Scene {
 
 		m_sprites.insert({ "successTitle", std::make_unique<Sprite>("bg/fr/judge_l14_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
 		m_sprites.insert({ "successTextBackground", std::make_unique<Sprite>("bg/qend_acorrect.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
+		m_sprites.insert({ "successPicaratBackground", std::make_unique<Sprite>("bg/fr/picarat_get_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
+		m_sprites.insert({ "successTopBackground", std::make_unique<Sprite>("bg/q" + m_internalName + "a_bg.png", this, SDL_FRect{ 0, 0, WIDTH, HALF_HEIGHT }) });
 
 		m_text = fileUtils::readText(m_game->m_gameFolder / "qtext/fr" / ("q_" + m_internalName + ".txt"));
 		m_failText = fileUtils::readText(m_game->m_gameFolder / "qtext/fr" / ("f_" + m_internalName + ".txt"));
@@ -254,13 +257,17 @@ namespace Layton1Scene {
 			}
 		} else if (m_state == END_FULL) {
 			if (m_valid) {
-
+				playSFX("keyboardSwitch");
+				fadeToNextScene(m_nextSceneName);
 			} else {
 				m_state = END_FADING_OUT;
 				m_sprites.at("fading")->fade({ 400, 0, Sprite::FadingMode::IN });
 				fadeBGM(400);
 				playSFX("keyboardSwitch");
 			}
+		} else if (m_state == END_PICARAT) {
+			m_state = END_PICARAT_FADING_OUT;
+			m_sprites.at("fading")->fade({ 300, 0, Sprite::FadingMode::IN });
 		}
 	}
 
@@ -366,7 +373,7 @@ namespace Layton1Scene {
 		m_valid = validate();
 		fadeBGM(0.3f, 0);
 		
-		int voiceLine = 1 + (rand() % 2);
+		int voiceLine = 1 + (rand() % 3);
 		
 		if (m_character == LUKE) {
 			playSFX("lukeAnswer" + std::to_string(voiceLine), 1);
@@ -654,7 +661,126 @@ namespace Layton1Scene {
 	}
 
 	void Puzzle::renderSuccess() {
-		
+		if (m_state >= END_PICARAT_FADING_IN && m_state < END_TEXT_FADING) {
+			m_sprites.at("successPicaratBackground")->draw();
+
+			if (m_sprites.count("endTotalPicarat0")) {
+				m_sprites.at("endTotalPicarat0")->draw();
+			}
+
+			if (m_sprites.count("endTotalPicarat1")) {
+				m_sprites.at("endTotalPicarat1")->draw();
+			}
+
+			if (m_sprites.count("endTotalPicarat2")) {
+				m_sprites.at("endTotalPicarat2")->draw();
+			}
+
+			if (m_sprites.count("endTotalPicarat3")) {
+				m_sprites.at("endTotalPicarat3")->draw();
+			}
+
+			if (m_sprites.count("endCurrentPicarat0")) {
+				m_sprites.at("endCurrentPicarat0")->draw();
+			}
+
+			if (m_sprites.count("endCurrentPicarat1")) {
+				m_sprites.at("endCurrentPicarat1")->draw();
+			}
+
+			if (m_sprites.count("endCurrentPicarat2")) {
+				m_sprites.at("endCurrentPicarat2")->draw();
+			}
+		} else if (m_state >= END_TEXT_FADING) {
+			m_sprites.at("successTextBackground")->draw();
+			m_sprites.at("successTopBackground")->draw();
+			m_sprites.at("puzzleNumber0")->draw();
+			m_sprites.at("puzzleNumber1")->draw();
+			m_sprites.at("puzzleNumber2")->draw();
+			m_sprites.at("hintCoins0")->draw();
+
+			if (m_game->m_save->m_hintCoins > 9) {
+				m_sprites.at("hintCoins1")->draw();
+			}
+		}
+
+		if (m_state < END_TEXT_FADING) {
+			m_sprites.at("successTitle")->draw();
+		}
+
+		if (m_state == END_FADING_IN && !m_sprites.at("fading")->m_fading) {
+			m_state = END_CARD_MOVING;
+			m_sprites.at("successTitle")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
+		} else if (m_state == END_CARD_MOVING && !m_sprites.at("successTitle")->m_translating) {
+			m_state = END_PICARAT_FADING_IN;
+			m_sprites.at("bottomFading")->fade({ 300, 0, Sprite::FadingMode::OUT });
+			int voiceLine = 1 + (rand() % 3);
+
+			if (m_character == LUKE) {
+				playSFX("lukeRight" + std::to_string(voiceLine), 1);
+			} else {
+				playSFX("laytonRight" + std::to_string(voiceLine), 1);
+			}
+		} else if (m_state == END_PICARAT_FADING_IN && !m_sprites.at("bottomFading")->m_fading) {
+			m_state = END_PICARAT_ADDING;
+			m_picaratChangeTimer = 0;
+		} else if (m_state == END_PICARAT_ADDING) {
+			if (m_currentPicarat == 0) {
+				m_state = END_PICARAT;
+			} else {
+				m_picaratChangeTimer++;
+
+				if (m_picaratChangeTimer == 3) {
+					m_currentPicarat--;
+					m_game->m_save->m_picarats++;
+					m_picaratChangeTimer = 0;
+
+					std::vector<fileUtils::path> numberSprites = getNumberSprites(m_game->m_save->m_picarats, "picarat_get_number_big");
+					updateNumberSprite(numberSprites, "endTotalPicarat", SDL_FRect{ 165, HEIGHT - 65, 26, 44 }, 30);
+
+					numberSprites = getNumberSprites(m_currentPicarat, "picarat_get_number_small");
+					updateNumberSprite(numberSprites, "endCurrentPicarat", SDL_FRect{ 130, HALF_HEIGHT + 40, 22, 36 }, 26);
+					playSFX("puzzlePicaratDecrease", 2);
+				}
+			}
+		} else if (m_state == END_PICARAT_FADING_OUT && !m_sprites.at("fading")->m_fading) {
+			m_state = END_TEXT_FADING;
+			m_sprites.at("fading")->fade({ 300, 0, Sprite::FadingMode::OUT });
+			m_sprites.at("puzzleNumber0")->m_transform.y += HALF_HEIGHT * m_game->m_windowMultiplier;
+			m_sprites.at("puzzleNumber1")->m_transform.y += HALF_HEIGHT * m_game->m_windowMultiplier;
+			m_sprites.at("puzzleNumber2")->m_transform.y += HALF_HEIGHT * m_game->m_windowMultiplier;
+			m_sprites.at("hintCoins0")->m_transform.y += HALF_HEIGHT * m_game->m_windowMultiplier;
+			m_sprites.at("endText")->m_transform.y += 2 * m_game->m_windowMultiplier;
+
+			if (m_game->m_save->m_hintCoins >= 10) {
+				m_sprites.at("hintCoins1")->m_transform.y += HALF_HEIGHT * m_game->m_windowMultiplier;
+			}
+		} else if (m_state == END_TEXT_FADING && !m_sprites.at("bottomFading")->m_fading) {
+			m_state = END_FULL;
+			m_textProgression = 0;
+			m_game->m_bgmData.at(1)->loop = true;
+			m_game->m_bgmData.at(0)->position = 0;
+			m_game->m_bgmData.at(0)->fading = false;
+			m_game->m_bgmData.at(0)->volume = 1.0f;
+		} else if (m_state == END_FULL) {
+			m_sprites.at("endText")->draw();
+			m_sprites.at("touch")->draw();
+			computeTouchTextOpacity();
+
+			if (m_textProgression <= m_successText.length()) {
+				if (m_textProgression == 0) {
+					playBGM("sound/sfx/99.wav", 1);
+				}
+
+				m_sprites.at("endText")->setText(m_successText.substr(0, m_textProgression));
+				m_textProgression += 2;
+
+				if (m_textProgression > m_successText.length()) {
+					m_textProgression--;
+					m_game->m_bgmData.at(1)->loop = false;
+				}
+			}
+		}
 	}
 
 	void Puzzle::renderFail() {
@@ -695,7 +821,7 @@ namespace Layton1Scene {
 		} else if (m_state == END_CARD_MOVING && !m_sprites.at("failTitle")->m_translating) {
 			m_state = END_TEXT_FADING;
 			m_sprites.at("bottomFading")->fade({ 300, 0, Sprite::FadingMode::OUT });
-			int voiceLine = 1 + (rand() % 2);
+			int voiceLine = 1 + (rand() % 3);
 
 			if (m_character == LUKE) {
 				playSFX("lukeWrong" + std::to_string(voiceLine), 1);

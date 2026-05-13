@@ -6,7 +6,7 @@ namespace Layton1Scene {
 
 	class Puzzle1 : public Puzzle {
 	public:
-		Puzzle1(Game* game);
+		Puzzle1(Game* game, const std::string& nextScene);
 		void load();
 		void render();
 		void unload();

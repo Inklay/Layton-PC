@@ -29,12 +29,16 @@ namespace Layton1Scene {
 			VALIDATING_FADING_OUT,
 			END_FADING_IN,
 			END_CARD_MOVING,
+			END_PICARAT_FADING_IN,
+			END_PICARAT_ADDING,
+			END_PICARAT,
+			END_PICARAT_FADING_OUT,
 			END_TEXT_FADING,
 			END_FULL,
 			END_FADING_OUT
 		};
 
-		Puzzle(Game* game, int picarat, int number, const std::string& internalName, Character character, int picaratLost);
+		Puzzle(Game* game, int picarat, int number, const std::string& internalName, Character character, int picaratLost, const std::string& nextScene);
 		void load();
 		void render();
 		void unload();
@@ -56,6 +60,7 @@ namespace Layton1Scene {
 		std::u32string m_successText;
 		Character m_character;
 		State m_state = INTRO;
+		const std::string m_nextSceneName;
 		int m_picarat;
 		int m_currentPicarat;
 		int m_number;

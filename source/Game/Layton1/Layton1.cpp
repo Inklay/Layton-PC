@@ -18,8 +18,9 @@ void Layton1::init() {
 	m_scenes["intro_letter"] = std::make_unique<Layton1Scene::Intro>(this);
 	m_scenes["intro_cinematic"] = std::make_unique<Cinematic>(this, "video/m1.mp4", std::vector<fileUtils::path>{ "stream/M1.wav", "sound/SEQ_BG_017.wav" }, "intro_carDialogue1", 0.5f, 0.5f);
 	m_scenes["intro_carDialogue1"] = std::make_unique<Layton1Scene::IntroCarDialogue1>(this);
+	m_scenes["intro_carDialogue2"] = std::make_unique<Layton1Scene::IntroCarDialogue2>(this);
 
-	m_scenes["puzzle1"] = std::make_unique<Layton1Scene::Puzzle1>(this);
+	m_scenes["puzzle1"] = std::make_unique<Layton1Scene::Puzzle1>(this, "intro_carDialogue2");
 
 	m_sfx = {
 		{ "level5Logo", "0"},
@@ -53,7 +54,7 @@ void Layton1::init() {
 		{ "lukeWrong2", "157"},
 		{ "lukeWrong3", "158"},
 		{ "lukeRight1", "159"},
-		{ "lukeRight2", "162"},
+		{ "lukeRight2", "160"},
 		{ "lukeRight3", "161"},
 		{ "laytonAnswer1", "162"},
 		{ "laytonAnswer2", "163"},

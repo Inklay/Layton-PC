@@ -110,6 +110,7 @@
     <ClCompile Include="source\Game\Layton1\Layton1Save.cpp" />
     <ClCompile Include="source\Game\Layton1\Scene\CreateSave.cpp" />
     <ClCompile Include="source\Game\Layton1\Scene\Intro.cpp" />
+    <ClCompile Include="source\Game\Layton1\Scene\IntroCarDialogue2.cpp" />
     <ClCompile Include="source\Game\Layton1\Scene\Puzzle\Puzzle.cpp" />
     <ClCompile Include="source\Game\Layton1\Scene\Puzzle\Puzzle1.cpp" />
     <ClCompile Include="source\Game\Scene\Cinematic.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="include\Game\Layton1\Layton1.h" />
     <ClInclude Include="include\Game\Layton1\Layton1Save.h" />
     <ClInclude Include="include\Game\Layton1\Scene\CreateSave.h" />
+    <ClInclude Include="include\Game\Layton1\Scene\IntroCarDialogue2.h" />
     <ClInclude Include="include\Game\Layton1\Scene\Puzzle\Puzzle.h" />
     <ClInclude Include="include\Game\Layton1\Scene\Puzzle\Puzzle1.h" />
     <ClInclude Include="include\Game\Layton1\Scene\Puzzle\Puzzles.h" />
