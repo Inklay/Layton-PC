@@ -20,7 +20,7 @@ public:
 	std::vector<std::unique_ptr<Save>> m_saves;
 	float m_windowMultiplier;
 	std::vector<SDL_AudioStream*> m_bgmStreams;
-	SDL_AudioStream* m_sfxStream;
+	std::vector<SDL_AudioStream*> m_sfxStreams;
 	Save* m_save;
 	SDL_Window& m_window;
 	SDL_Renderer* m_renderer;

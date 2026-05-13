@@ -30,7 +30,7 @@ protected:
 	void pauseBGM(size_t audioStreamIdx = 0);
 	void fadeBGM(float duration, size_t audioStreamIdx = 0);
 	void playBGM(const fileUtils::path& inputFile, size_t audioStreamIdx = 0, bool loop = true);
-	void playSFX(const std::string& name);
+	void playSFX(const std::string& name, size_t audioStreamIdx = 0);
 	void fadeToNextScene(const std::string& name);
 	void fade();
 
@@ -47,5 +47,5 @@ private:
 	void fadeOut();
 	void fadeIn();
 
-	uint8_t* m_sfxBuffer;
+	std::vector<uint8_t*> m_sfxBuffers;
 };

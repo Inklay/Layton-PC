@@ -45,7 +45,25 @@ void Layton1::init() {
 		{ "unlockHint", "83"},
 		{ "keyboardChar", "99"},
 		{ "puzzlePicaratDecrease", "130"},
-		{ "switchHint", "134"},
+		{ "switchHint", "131"},
+		{ "lukeAnswer1", "153"},
+		{ "lukeAnswer2", "154"},
+		{ "lukeAnswer3", "155"},
+		{ "lukeWrong1", "156"},
+		{ "lukeWrong2", "157"},
+		{ "lukeWrong3", "158"},
+		{ "lukeRight1", "159"},
+		{ "lukeRight2", "162"},
+		{ "lukeRight3", "161"},
+		{ "laytonAnswer1", "162"},
+		{ "laytonAnswer2", "163"},
+		{ "laytonAnswer3", "164"},
+		{ "laytonWrong1", "165"},
+		{ "laytonWrong2", "166"},
+		{ "laytonWrong3", "167"},
+		{ "laytonRight1", "168"},
+		{ "laytonRight1", "169"},
+		{ "laytonRight2", "170"}
 	};
 }
 

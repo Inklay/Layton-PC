@@ -365,6 +365,14 @@ namespace Layton1Scene {
 		m_sprites.at("fading")->fade({ 300, 0, Sprite::FadingMode::IN });
 		m_valid = validate();
 		fadeBGM(0.3f, 0);
+		
+		int voiceLine = 1 + (rand() % 2);
+		
+		if (m_character == LUKE) {
+			playSFX("lukeAnswer" + std::to_string(voiceLine), 1);
+		} else {
+			playSFX("laytonAnswer" + std::to_string(voiceLine), 1);
+		}
 	}
 
 	void Puzzle::renderIntro() {
@@ -687,6 +695,13 @@ namespace Layton1Scene {
 		} else if (m_state == END_CARD_MOVING && !m_sprites.at("failTitle")->m_translating) {
 			m_state = END_TEXT_FADING;
 			m_sprites.at("bottomFading")->fade({ 300, 0, Sprite::FadingMode::OUT });
+			int voiceLine = 1 + (rand() % 2);
+
+			if (m_character == LUKE) {
+				playSFX("lukeWrong" + std::to_string(voiceLine), 1);
+			} else {
+				playSFX("laytonWrong" + std::to_string(voiceLine), 1);
+			}
 		} else if (m_state == END_TEXT_FADING && !m_sprites.at("bottomFading")->m_fading) {
 			m_state = END_FULL;
 			m_textProgression = 0;

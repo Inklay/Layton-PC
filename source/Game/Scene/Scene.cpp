@@ -10,10 +10,10 @@ Scene::Scene(Game* game, float fadeIn, float fadeOut) :
 	m_nextScene("Unknown"),
 	m_fadeInSeconds(fadeIn),
 	m_fadeOutSeconds(fadeOut),
-	m_sfxBuffer(nullptr),
 	m_dialogue(this),
 	m_timeElapsed(0)
 {
+	m_sfxBuffers.emplace_back(nullptr);
 }
 
 void Scene::load() {
@@ -37,9 +37,17 @@ void Scene::unload() {
 		}
 	}
 
-	if (SDL_GetAudioStreamQueued(m_game->m_sfxStream)) {
-		if (m_sfxBuffer != nullptr) {
-			SDL_free(m_sfxBuffer);
+	for (size_t i = m_game->m_sfxStreams.size() - 1; i != SIZE_MAX; i--) {
+		if (SDL_GetAudioStreamQueued(m_game->m_sfxStreams.at(i))) {
+			if (m_sfxBuffers.at(i) != nullptr) {
+				SDL_free(m_sfxBuffers.at(i));
+			}
+		}
+
+		if (i != 0) {
+			SDL_DestroyAudioStream(m_game->m_sfxStreams.at(i));
+			m_game->m_bgmStreams.pop_back();
+			m_sfxBuffers.pop_back();
 		}
 	}
 
@@ -67,19 +75,24 @@ void Scene::playBGM(const fileUtils::path& inputFile, size_t audioStreamIdx, boo
 	SDL_ResumeAudioStreamDevice(m_game->m_bgmStreams.at(audioStreamIdx));
 }
 
-void Scene::playSFX(const std::string& name) {
+void Scene::playSFX(const std::string& name, size_t audioStreamIdx) {
 	SDL_AudioSpec spec;
 	uint32_t bufferLen;
 
-	if (m_sfxBuffer != nullptr) {
-		SDL_free(m_sfxBuffer);
+	if (m_game->m_sfxStreams.size() <= audioStreamIdx) {
+		m_game->m_sfxStreams.emplace_back(SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, NULL, NULL, nullptr));
+		m_sfxBuffers.emplace_back(nullptr);
 	}
 
-	SDL_LoadWAV((m_game->m_gameFolder / "sound/sfx" / (m_game->m_sfx.at(name) + ".wav")).string().c_str(), &spec, &m_sfxBuffer, &bufferLen);
-	SDL_SetAudioStreamFormat(m_game->m_sfxStream, &spec, &spec);
-	SDL_ClearAudioStream(m_game->m_sfxStream);
-	SDL_PutAudioStreamData(m_game->m_sfxStream, m_sfxBuffer, bufferLen);
-	SDL_ResumeAudioStreamDevice(m_game->m_sfxStream);
+	if (m_sfxBuffers.at(audioStreamIdx) != nullptr) {
+		SDL_free(m_sfxBuffers.at(audioStreamIdx));
+	}
+
+	SDL_LoadWAV((m_game->m_gameFolder / "sound/sfx" / (m_game->m_sfx.at(name) + ".wav")).string().c_str(), &spec, &m_sfxBuffers.at(audioStreamIdx), &bufferLen);
+	SDL_SetAudioStreamFormat(m_game->m_sfxStreams.at(audioStreamIdx), &spec, &spec);
+	SDL_ClearAudioStream(m_game->m_sfxStreams.at(audioStreamIdx));
+	SDL_PutAudioStreamData(m_game->m_sfxStreams.at(audioStreamIdx), m_sfxBuffers.at(audioStreamIdx), bufferLen);
+	SDL_ResumeAudioStreamDevice(m_game->m_sfxStreams.at(audioStreamIdx));
 }
 
 void Scene::handleEvent(SDL_Event event) {
