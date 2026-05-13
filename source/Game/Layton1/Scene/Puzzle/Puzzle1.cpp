@@ -3,7 +3,7 @@
 
 namespace Layton1Scene {
 	Puzzle1::Puzzle1(Game* game) :
-		Puzzle(game, 10, 1, "24")
+		Puzzle(game, 10, 1, "24", LUKE)
 	{
 	}
 
@@ -37,7 +37,7 @@ namespace Layton1Scene {
 	}
 
 	void Puzzle1::render() {
-		if (!m_isIntro) {
+		if (!m_isIntro && !m_validating) {
 			if (!m_sprites.at("tuto")->m_fading) {
 				m_sprites.at("bottomBackground")->draw();
 			}
@@ -95,18 +95,18 @@ namespace Layton1Scene {
 
 				if (m_points.size() > 0 && !m_drawing) {
 					SDL_FPoint center = getShapeCenter(m_points);
-					int targetedVillaged = -1;
+					m_targetedVillaged = -1;
 
 					for (int i = 0; i < m_villages.size(); i++) {
 						if (center.x > m_villages.at(i).x - 20 && center.x < m_villages.at(i).x + 20 && center.y > m_villages.at(i).y - 20 && center.y < m_villages.at(i).y + 20) {
-							targetedVillaged = i;
+							m_targetedVillaged = i;
 							break;
 						}
 					}
 
-					if (isClosedShape(m_points) && targetedVillaged != -1) {
-						m_sprites.at("pointer")->m_transform.y = (m_villages.at(targetedVillaged).y - 24 + HALF_HEIGHT) * m_game->m_windowMultiplier;
-						m_sprites.at("pointer")->m_transform.x = m_villages.at(targetedVillaged).x * m_game->m_windowMultiplier;
+					if (isClosedShape(m_points) && m_targetedVillaged != -1) {
+						m_sprites.at("pointer")->m_transform.y = (m_villages.at(m_targetedVillaged).y - 24 + HALF_HEIGHT) * m_game->m_windowMultiplier;
+						m_sprites.at("pointer")->m_transform.x = m_villages.at(m_targetedVillaged).x * m_game->m_windowMultiplier;
 						m_sprites.at("pointer")->draw();
 					} else {
 						m_sprites.at("redrawCircle")->draw();
@@ -119,7 +119,7 @@ namespace Layton1Scene {
 	}
 
 	void Puzzle1::handleClick(const std::string& spriteName, SDL_Event event) {
-		if (!m_isIntro) {
+		if (!m_isIntro && !m_validating) {
 			if (m_tutoState == 0) {
 				m_tutoState++;
 				hideBottomUI();
@@ -137,6 +137,14 @@ namespace Layton1Scene {
 				SDL_RenderClear(m_game->m_renderer);
 				SDL_SetRenderTarget(m_game->m_renderer, NULL);
 				playSFX("clear");
+			} else if (spriteName == "validateButton" && m_targetedVillaged != -1) {
+				m_points.clear();
+				SDL_SetRenderTarget(m_game->m_renderer, m_drawTexture);
+				SDL_SetRenderDrawColor(m_game->m_renderer, 0, 0, 0, 0);
+				SDL_RenderClear(m_game->m_renderer);
+				SDL_SetRenderTarget(m_game->m_renderer, NULL);
+				playSFX("keyboardOk");
+				startValidation();
 			}
 		}
 
@@ -144,7 +152,7 @@ namespace Layton1Scene {
 	}
 
 	void Puzzle1::handleEvent(SDL_Event event) {
-		if (!m_isIntro && m_tutoState == 3) {
+		if (!m_isIntro && m_tutoState == 3 && !m_validating) {
 			if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN && event.button.button == SDL_BUTTON_LEFT) {
 				m_drawing = true;
 				m_points.clear();
@@ -168,5 +176,9 @@ namespace Layton1Scene {
 		m_villages.clear();
 
 		Puzzle::unload();
+	}
+
+	bool Puzzle1::validate() {
+		return m_targetedVillaged == 0;
 	}
 };

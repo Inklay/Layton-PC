@@ -5,12 +5,13 @@
 #include "Game/Sprite/ClickableSprite.h"
 
 namespace Layton1Scene {
-	Puzzle::Puzzle(Game* game, int picarat, int number, const std::string& internalName) :
+	Puzzle::Puzzle(Game* game, int picarat, int number, const std::string& internalName, Character character) :
 		Scene(game, 0.5f, 0.5f),
 		m_picarat(picarat),
 		m_currentPicarat(picarat),
 		m_number(number),
-		m_internalName(internalName)
+		m_internalName(internalName),
+		m_character(character)
 	{
 	}
 
@@ -20,7 +21,7 @@ namespace Layton1Scene {
 		m_sprites.insert({ "intro_picaratBackground", std::make_unique<Sprite>("bg/fr/picarat_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
 		m_sprites.insert({ "intro_puzzleText", std::make_unique<Sprite>("ani/fr/pazzle_mes.png", this, SDL_FRect{ centerXPos(88), HALF_HEIGHT + 30, 88, 14})});
 		m_sprites.insert({ "intro_bottomFading", std::make_unique<Sprite>("bg/custom/black_screen.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
-		m_sprites.insert({ "intro_fading", std::make_unique<Sprite>("bg/custom/black_screen.png", this, SDL_FRect{ 0, 0, WIDTH, HEIGHT }, true) });
+		m_sprites.insert({ "fading", std::make_unique<Sprite>("bg/custom/black_screen.png", this, SDL_FRect{ 0, 0, WIDTH, HEIGHT }, true) });
 		m_sprites.insert({ "intro_puzzleName", std::make_unique<TextSprite>("font/fontevent.png", "qtext/fr/t_" + m_internalName + ".txt", this, SDL_FRect{-1, HALF_HEIGHT + 120, WIDTH, 12}, SDL_Color{0, 0, 0})});
 
 		std::vector<fileUtils::path> numberSprites = getNumberSprites(m_currentPicarat, "picarat_number_big");
@@ -97,6 +98,32 @@ namespace Layton1Scene {
 		m_sprites.insert({ "hint2Text", std::make_unique<TextSprite>("font/fontq.png", "qtext/fr/h_" + m_internalName + "_2.txt", this, SDL_FRect{ 4, HALF_HEIGHT + 20, WIDTH - 8, HALF_HEIGHT - 23 }, SDL_Color{0, 0, 0}) });
 		m_sprites.insert({ "hint3Text", std::make_unique<TextSprite>("font/fontq.png", "qtext/fr/h_" + m_internalName + "_3.txt", this, SDL_FRect{ 4, HALF_HEIGHT + 20, WIDTH - 8, HALF_HEIGHT - 23 }, SDL_Color{0, 0, 0}) });
 
+		// validation
+		if (m_character == LUKE) {
+			m_sprites.insert({ "validate1", std::make_unique<Sprite>("bg/judge_r1_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validate2", std::make_unique<Sprite>("bg/judge_r2_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validate3", std::make_unique<Sprite>("bg/judge_r3_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validate4", std::make_unique<Sprite>("bg/judge_r4_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validate5", std::make_unique<Sprite>("bg/judge_r5_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validate6", std::make_unique<Sprite>("bg/judge_r6_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			
+			m_sprites.insert({ "validateSuccess1", std::make_unique<Sprite>("bg/judge_r7_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateSuccess2", std::make_unique<Sprite>("bg/judge_r8_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateSuccess3", std::make_unique<Sprite>("bg/judge_r9_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateSuccess4", std::make_unique<Sprite>("bg/judge_r10_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateSuccess5", std::make_unique<Sprite>("bg/judge_r11.bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateSuccess6", std::make_unique<Sprite>("bg/judge_r12_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateSuccess7", std::make_unique<Sprite>("bg/judge_r13_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+
+			m_sprites.insert({ "validateFail1", std::make_unique<Sprite>("bg/judge_r107_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateFail2", std::make_unique<Sprite>("bg/judge_r108_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateFail3", std::make_unique<Sprite>("bg/judge_r109_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateFail4", std::make_unique<Sprite>("bg/judge_r110_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateFail5", std::make_unique<Sprite>("bg/judge_r111.bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateFail6", std::make_unique<Sprite>("bg/judge_r112_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateFail7", std::make_unique<Sprite>("bg/judge_r113_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+		}
+
 		m_text = fileUtils::readText(m_game->m_gameFolder / "qtext/fr" / ("q_" + m_internalName + ".txt"));
 		m_fading = true;
 		playSFX("puzzleStart");
@@ -144,11 +171,75 @@ namespace Layton1Scene {
 			m_sprites.at("intro_puzzleNumber1")->draw();
 			m_sprites.at("intro_puzzleNumber2")->draw();
 
-			if (m_fadingToPuzzle && !m_sprites.at("intro_fading")->m_fading) {
+			if (m_fadingToPuzzle && !m_sprites.at("fading")->m_fading) {
 				m_fadingToPuzzle = false;
 				m_isIntro = false;
-				m_sprites.at("intro_fading")->fade({ 300, 0, Sprite::FadingMode::OUT });
+				m_sprites.at("fading")->fade({ 300, 0, Sprite::FadingMode::OUT });
 				playBGM("sound/SEQ_BG_003.wav");
+			}
+		} else if (m_validating) {
+			if (m_fadingToValidation && !m_sprites.at("fading")->m_fading) {
+				m_fadingToValidation = false;
+				m_sprites.at("fading")->fade({ 300, 0, Sprite::FadingMode::OUT });
+				playSFX("puzzleEnd");
+			} else if (!m_fadingToValidation) {
+				if (m_validationTimer >= 2350) {
+					if (validate()) {
+						m_sprites.at("validateSuccess7")->draw();
+					} else {
+						m_sprites.at("validateFail7")->draw();
+					}
+				} else if (m_validationTimer >= 2250) {
+					if (validate()) {
+						m_sprites.at("validateSuccess6")->draw();
+					} else {
+						m_sprites.at("validateFail6")->draw();
+					}
+				} else if (m_validationTimer >= 2150) {
+					if (validate()) {
+						m_sprites.at("validateSuccess5")->draw();
+					} else {
+						m_sprites.at("validateFail5")->draw();
+					}
+				} else if (m_validationTimer >= 2100) {
+					if (validate()) {
+						m_sprites.at("validateSuccess4")->draw();
+					} else {
+						m_sprites.at("validateFail4")->draw();
+					}
+				} else if (m_validationTimer >= 1600) {
+					if (validate()) {
+						m_sprites.at("validateSuccess3")->draw();
+					} else {
+						m_sprites.at("validateFail3")->draw();
+					}
+				} else if (m_validationTimer >= 1500) {
+					if (validate()) {
+						m_sprites.at("validateSuccess2")->draw();
+					} else {
+						m_sprites.at("validateFail2")->draw();
+					}
+				} else if (m_validationTimer >= 1400) {
+					if (validate()) {
+						m_sprites.at("validateSuccess1")->draw();
+					} else {
+						m_sprites.at("validateFail1")->draw();
+					}
+				} else if (m_validationTimer >= 900) {
+					m_sprites.at("validate6")->draw();
+				} else if (m_validationTimer >= 800) {
+					m_sprites.at("validate5")->draw();
+				} else if (m_validationTimer >= 700) {
+					m_sprites.at("validate4")->draw();
+				} else if (m_validationTimer >= 200) {
+					m_sprites.at("validate3")->draw();
+				} else if (m_validationTimer >= 100) {
+					m_sprites.at("validate2")->draw();
+				} else {
+					m_sprites.at("validate1")->draw();
+				}
+				
+				m_validationTimer += (int)(SDL_GetTicks() - m_lastTick);
 			}
 		} else {
 			m_sprites.at("topBackground")->draw();
@@ -257,21 +348,21 @@ namespace Layton1Scene {
 			}
 		}
 
-		if (m_sprites.at("intro_fading")->m_fading) {
-			m_sprites.at("intro_fading")->draw();
+		if (m_sprites.at("fading")->m_fading) {
+			m_sprites.at("fading")->draw();
 		}
 
 		Scene::render();
 	}
 
 	void Puzzle::handleClick(const std::string& spriteName, SDL_Event event) {
-		if (m_isIntro && !m_fadingToPuzzle && m_movedTitleCard && !m_sprites.at("intro_fading")->m_fading && !m_sprites.at("intro_title")->m_translating) {
-			m_sprites.at("intro_fading")->fade({ 300, 0, Sprite::FadingMode::IN });
+		if (m_isIntro && !m_fadingToPuzzle && m_movedTitleCard && !m_sprites.at("fading")->m_fading && !m_sprites.at("intro_title")->m_translating && !m_validating) {
+			m_sprites.at("fading")->fade({ 300, 0, Sprite::FadingMode::IN });
 			m_fadingToPuzzle = true;
-		} else if (!m_isIntro && m_textProgression <= m_text.length()) {
+		} else if (!m_isIntro && m_textProgression <= m_text.length() && !m_validating) {
 			m_textProgression = (int)m_text.length();
 			m_game->m_bgmData.at(1)->loop = false;
-		} else if (!m_isIntro) {
+		} else if (!m_isIntro && !m_validating) {
 			if (spriteName == "hint0" || spriteName == "hint1" || spriteName == "hint2" || spriteName == "hint3") {
 				m_sprites.at("bottomBackgroundHint1")->m_interactive = true;
 				m_sprites.at("bottomBackgroundHint2")->m_interactive = true;
@@ -437,5 +528,11 @@ namespace Layton1Scene {
 			m_sprites.at("hintCoins1")->m_transform.x = x;
 			m_sprites.at("hintCoins1")->m_transform.y = y;
 		}
+	}
+
+	void Puzzle::startValidation() {
+		m_validating = true;
+		m_fadingToValidation = true;
+		m_sprites.at("fading")->fade({ 300, 0, Sprite::FadingMode::IN });
 	}
 };

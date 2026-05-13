@@ -13,11 +13,15 @@ namespace Layton1Scene {
 		void handleClick(const std::string& spriteName, SDL_Event event);
 		void handleEvent(SDL_Event event);
 
+	protected:
+		bool validate();
+
 	private:
 		std::vector<SDL_FPoint> m_points;
 		int m_tutoState = 0;
 		int m_touchTextState = 0;
 		int m_touchTextTimer = 0;
+		int m_targetedVillaged = -1;
 		SDL_Texture* m_drawTexture;
 		SDL_FRect m_drawTextureRect;
 		std::vector<SDL_FPoint> m_villages;

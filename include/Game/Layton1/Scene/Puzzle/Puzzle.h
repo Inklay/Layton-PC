@@ -6,26 +6,35 @@ namespace Layton1Scene {
 
 	class Puzzle : public Scene {
 	public:
-		Puzzle(Game* game, int picarat, int number, const std::string& internalName);
+		enum Character {
+			LAYTON,
+			LUKE
+		};
+
+		Puzzle(Game* game, int picarat, int number, const std::string& internalName, Character character);
 		void load();
 		void render();
 		void unload();
 		void handleClick(const std::string& spriteName, SDL_Event event);
+		void startValidation();
 
 	protected:
 		std::vector<fileUtils::path> getNumberSprites(int number, const std::string& font, int padding = 0);
 		void hideBottomUI();
 		void showBottomUI();
+		virtual bool validate() = 0;
 		bool isClosedShape(std::vector<SDL_FPoint> points);
 		SDL_FPoint getShapeCenter(std::vector<SDL_FPoint> points);
 
 		std::string m_internalName;
 		std::u32string m_text;
+		Character m_character;
 		int m_picarat;
 		int m_currentPicarat;
 		int m_number;
 		int m_textProgression = 0;
 		int m_currentHint = 0;
+		int m_validationTimer = 0;
 		bool m_isIntro = true;
 		bool m_movedTitleCard = false;
 		bool m_fadingToPuzzle = false;
@@ -33,6 +42,8 @@ namespace Layton1Scene {
 		bool m_canValidate = false;
 		bool m_bottomUIHidden = false;
 		bool m_displayHint = false;
+		bool m_validating = false;
+		bool m_fadingToValidation = false;
 
 	private:
 		void displayHintCoinsOnHintUnlockScreen();
