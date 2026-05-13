@@ -15,6 +15,7 @@ namespace Layton1Scene {
 			INTRO,
 			INTRO_CARD_MOVING,
 			INTRO_PICARAT_FADING,
+			INTRO_LOOSING_PICARAT,
 			INTRO_FULL,
 			INTRO_FADING_OUT,
 			PUZZLE_FADING_IN,
@@ -27,13 +28,13 @@ namespace Layton1Scene {
 			VALIDATING_SOUND,
 			VALIDATING_FADING_OUT,
 			END_FADING_IN,
-			END,
 			END_CARD_MOVING,
 			END_TEXT_FADING,
-			END_FULL
+			END_FULL,
+			END_FADING_OUT
 		};
 
-		Puzzle(Game* game, int picarat, int number, const std::string& internalName, Character character);
+		Puzzle(Game* game, int picarat, int number, const std::string& internalName, Character character, int picaratLost);
 		void load();
 		void render();
 		void unload();
@@ -42,6 +43,7 @@ namespace Layton1Scene {
 
 	protected:
 		std::vector<fileUtils::path> getNumberSprites(int number, const std::string& font, int padding = 0);
+		void updateNumberSprite(const std::vector<fileUtils::path>& sprites, const std::string& name, SDL_FRect baseRect, float spacing);
 		void hideBottomUI();
 		void showBottomUI();
 		virtual bool validate() = 0;
@@ -50,6 +52,8 @@ namespace Layton1Scene {
 
 		std::string m_internalName;
 		std::u32string m_text;
+		std::u32string m_failText;
+		std::u32string m_successText;
 		Character m_character;
 		State m_state = INTRO;
 		int m_picarat;
@@ -60,6 +64,8 @@ namespace Layton1Scene {
 		int m_validationTimer = 0;
 		int m_touchTextState = 0;
 		int m_touchTextTimer = 0;
+		int m_picaratLost;
+		int m_newPicarat;
 		bool m_canClear = false;
 		bool m_canValidate = false;
 		bool m_bottomUIHidden = false;

@@ -76,7 +76,7 @@ void TextSprite::draw(int) {
 
 	for (size_t i = 0; i < m_str.length(); i++) {
 		if (m_str.at(i) == U'\n') {
-			m_transform.y += 14 * m_scene->m_game->m_windowMultiplier;
+			m_transform.y += (m_height == 12 ? 16 : 12) * m_scene->m_game->m_windowMultiplier;
 			m_transform.x = baseRect.x;
 			continue;
 		}

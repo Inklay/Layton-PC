@@ -171,3 +171,8 @@ void Scene::fade() {
 void Scene::pauseBGM(size_t audioStreamIdx) {
 	SDL_PauseAudioStreamDevice(m_game->m_bgmStreams.at(audioStreamIdx));
 }
+
+void Scene::fadeBGM(float duration, size_t audioStreamIdx) {
+	m_game->m_bgmData.at(audioStreamIdx)->fading = true;
+	m_game->m_bgmData.at(audioStreamIdx)->fadingSeconds = duration;
+}

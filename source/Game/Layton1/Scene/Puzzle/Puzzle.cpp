@@ -5,13 +5,15 @@
 #include "Game/Sprite/ClickableSprite.h"
 
 namespace Layton1Scene {
-	Puzzle::Puzzle(Game* game, int picarat, int number, const std::string& internalName, Character character) :
+	Puzzle::Puzzle(Game* game, int picarat, int number, const std::string& internalName, Character character, int picaratLost) :
 		Scene(game, 0.5f, 0.5f),
 		m_picarat(picarat),
 		m_currentPicarat(picarat),
+		m_newPicarat(picarat),
 		m_number(number),
 		m_internalName(internalName),
-		m_character(character)
+		m_character(character),
+		m_picaratLost(picaratLost)
 	{
 	}
 
@@ -23,29 +25,29 @@ namespace Layton1Scene {
 		m_sprites.at("touch")->m_opacity = 180;
 
 		// intro
-		m_sprites.insert({ "intro_title", std::make_unique<Sprite>("bg/q_alt_sub_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
-		m_sprites.insert({ "intro_picaratBackground", std::make_unique<Sprite>("bg/fr/picarat_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
-		m_sprites.insert({ "intro_puzzleText", std::make_unique<Sprite>("ani/fr/pazzle_mes.png", this, SDL_FRect{ centerXPos(88), HALF_HEIGHT + 30, 88, 14})});
-		m_sprites.insert({ "intro_puzzleName", std::make_unique<TextSprite>("font/fontevent.png", "qtext/fr/t_" + m_internalName + ".txt", this, SDL_FRect{-1, HALF_HEIGHT + 120, WIDTH, 12}, SDL_Color{0, 0, 0})});
+		m_sprites.insert({ "introTitle", std::make_unique<Sprite>("bg/q_alt_sub_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
+		m_sprites.insert({ "introPicaratBackground", std::make_unique<Sprite>("bg/fr/picarat_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
+		m_sprites.insert({ "introPuzzleText", std::make_unique<Sprite>("ani/fr/pazzle_mes.png", this, SDL_FRect{ centerXPos(88), HALF_HEIGHT + 30, 88, 14})});
+		m_sprites.insert({ "introPuzzleName", std::make_unique<TextSprite>("font/fontevent.png", "qtext/fr/t_" + m_internalName + ".txt", this, SDL_FRect{-1, HALF_HEIGHT + 120, WIDTH, 12}, SDL_Color{0, 0, 0})});
 
 		std::vector<fileUtils::path> numberSprites = getNumberSprites(m_currentPicarat, "picarat_number_big");
 		for (size_t i = 0; i < numberSprites.size(); i++) {
-			m_sprites.insert({ "intro_currentPicarat" + std::to_string(i), std::make_unique<Sprite>(numberSprites.at(i), this, SDL_FRect{ 92.0f - i * 40, HALF_HEIGHT + 55, 36, 58})});
+			m_sprites.insert({ "introCurrentPicarat" + std::to_string(i), std::make_unique<Sprite>(numberSprites.at(i), this, SDL_FRect{ 92.0f - i * 40, HALF_HEIGHT + 55, 36, 58})});
 		}
 
 		numberSprites = getNumberSprites(m_picarat, "picarat_get_number_small");
 		for (size_t i = 0; i < numberSprites.size(); i++) {
-			m_sprites.insert({ "intro_picarat" + std::to_string(i), std::make_unique<Sprite>(numberSprites.at(i), this, SDL_FRect{ 183.0f - i * 28, HALF_HEIGHT + 77, 22, 36}) });
+			m_sprites.insert({ "introPicarat" + std::to_string(i), std::make_unique<Sprite>(numberSprites.at(i), this, SDL_FRect{ 183.0f - i * 28, HALF_HEIGHT + 77, 22, 36}) });
 		}
 
 		numberSprites = getNumberSprites(m_game->m_save->m_picarats, "picarat_number_small");
 		for (size_t i = 0; i < numberSprites.size(); i++) {
-			m_sprites.insert({ "intro_totalPicarat" + std::to_string(i), std::make_unique<Sprite>(numberSprites.at(i), this, SDL_FRect{ 188.0f - i * 16, HEIGHT - 22, 8, 14}) });
+			m_sprites.insert({ "introTotalPicarat" + std::to_string(i), std::make_unique<Sprite>(numberSprites.at(i), this, SDL_FRect{ 188.0f - i * 16, HEIGHT - 22, 8, 14}) });
 		}
 
 		numberSprites = getNumberSprites(m_number, "qintro_numbers", 3);
 		for (size_t i = 0; i < numberSprites.size(); i++) {
-			m_sprites.insert({ "intro_puzzleNumber" + std::to_string(i), std::make_unique<Sprite>(numberSprites.at(i), this, SDL_FRect{ 175.0f - i * 32, HALF_HEIGHT + 54, 32, 48}) });
+			m_sprites.insert({ "introPuzzleNumber" + std::to_string(i), std::make_unique<Sprite>(numberSprites.at(i), this, SDL_FRect{ 175.0f - i * 32, HALF_HEIGHT + 54, 32, 48}) });
 		}
 
 		// puzzle
@@ -128,10 +130,18 @@ namespace Layton1Scene {
 			m_sprites.insert({ "validateFail7", std::make_unique<Sprite>("bg/judge_r113_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 		}
 
-		// end - fail
-		m_sprites.insert({ "fail_title", std::make_unique<Sprite>("bg/fr/judge_l114_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
+		// end
+		m_sprites.insert({ "endText", std::make_unique<TextSprite>("font/fontq.png", std::u32string(U""), this, SDL_FRect{5, HALF_HEIGHT + 21, WIDTH - 10, HALF_HEIGHT - 30}, SDL_Color{0, 0, 0}) });
+
+		m_sprites.insert({ "failTitle", std::make_unique<Sprite>("bg/fr/judge_l114_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
+		m_sprites.insert({ "failTextBackground", std::make_unique<Sprite>("bg/qend_awrong.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
+
+		m_sprites.insert({ "successTitle", std::make_unique<Sprite>("bg/fr/judge_l14_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
+		m_sprites.insert({ "successTextBackground", std::make_unique<Sprite>("bg/qend_acorrect.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
 
 		m_text = fileUtils::readText(m_game->m_gameFolder / "qtext/fr" / ("q_" + m_internalName + ".txt"));
+		m_failText = fileUtils::readText(m_game->m_gameFolder / "qtext/fr" / ("f_" + m_internalName + ".txt"));
+		m_successText = fileUtils::readText(m_game->m_gameFolder / "qtext/fr" / ("c_" + m_internalName + ".txt"));
 		m_fading = true;
 		playSFX("puzzleStart");
 		Scene::load();
@@ -213,20 +223,9 @@ namespace Layton1Scene {
 				m_sprites.at("hintUnlockNoButton")->m_interactive = false;
 				m_state = PUZZLE;
 			} else if (spriteName == "hintUnlockYesButton") {
-				for (size_t i = 0; i < 3; i++) {
-					if (m_sprites.count("hintCoins" + std::to_string(i)) != 0) {
-						m_sprites.at("hintCoins" + std::to_string(i))->unload();
-						m_sprites.at("hintCoins" + std::to_string(i)).release();
-						m_sprites.erase("hintCoins" + std::to_string(i));
-					}
-				}
-
 				m_game->m_save->m_hintCoins--;
 				std::vector<fileUtils::path> numberSprites = getNumberSprites(m_game->m_save->m_hintCoins, "q_numbers");
-
-				for (size_t i = 0; i < numberSprites.size(); i++) {
-					m_sprites.insert({ "hintCoins" + std::to_string(i), std::make_unique<Sprite>(numberSprites.at(i), this, SDL_FRect{ 241.0f - i * 8, 6, 8, 10}) });
-				}
+				updateNumberSprite(numberSprites, "hintCoins", SDL_FRect{ 241.0, 6, 8, 10 }, 8);
 
 				if (m_currentHint == 0) {
 					m_game->m_save->m_puzzles.at(m_number) += 2;
@@ -241,6 +240,14 @@ namespace Layton1Scene {
 				m_currentHint = 1;
 			} else if (spriteName == "hint3Button" || spriteName == "hint3LockedButton") {
 				m_currentHint = 2;
+			}
+		} else if (m_state == END_FULL) {
+			if (m_valid) {
+
+			} else {
+				m_state = END_FADING_OUT;
+				m_sprites.at("fading")->fade({ 300, 0, Sprite::FadingMode::IN });
+				fadeBGM(300);
 			}
 		}
 	}
@@ -343,23 +350,33 @@ namespace Layton1Scene {
 		m_state = PUZZLE_FADING_OUT;
 		m_sprites.at("fading")->fade({ 300, 0, Sprite::FadingMode::IN });
 		m_valid = validate();
-		pauseBGM(1);
+		fadeBGM(0.3f, 0);
 	}
 
 	void Puzzle::renderIntro() {
-		if (!m_fading && m_state == INTRO) {
-			m_sprites.at("intro_title")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
-			m_sprites.at("intro_puzzleText")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
-			m_sprites.at("intro_puzzleName")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
-			m_sprites.at("intro_puzzleNumber0")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
-			m_sprites.at("intro_puzzleNumber1")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
-			m_sprites.at("intro_puzzleNumber2")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
+		if (!m_fading && m_state == INTRO && !m_sprites.at("fading")->m_fading) {
+			m_sprites.at("introTitle")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
+			m_sprites.at("introPuzzleText")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
+			m_sprites.at("introPuzzleName")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
+			m_sprites.at("introPuzzleNumber0")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
+			m_sprites.at("introPuzzleNumber1")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
+			m_sprites.at("introPuzzleNumber2")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
 			m_state = INTRO_CARD_MOVING;
-		} else if (m_state == INTRO_CARD_MOVING && !m_sprites.at("intro_title")->m_translating) {
+		} else if (m_state == INTRO_CARD_MOVING && !m_sprites.at("introTitle")->m_translating) {
 			m_state = INTRO_PICARAT_FADING;
 			m_sprites.at("bottomFading")->fade({ 300, -200, Sprite::FadingMode::OUT });
 		} else if (m_state == INTRO_PICARAT_FADING && !m_sprites.at("bottomFading")->m_fading) {
-			m_state = INTRO_FULL;
+			m_state = m_newPicarat == m_currentPicarat ? INTRO_FULL : INTRO_LOOSING_PICARAT;
+		} else if (m_state == INTRO_LOOSING_PICARAT) {
+			if (m_currentPicarat == m_newPicarat) {
+				m_state = INTRO_FULL;
+				std::vector<fileUtils::path> numberSprites = getNumberSprites(m_currentPicarat, "q_numbers");
+				updateNumberSprite(numberSprites, "picarat", SDL_FRect{ 87, 6, 8, 10 }, 8);
+			} else {
+				m_currentPicarat--;
+				std::vector<fileUtils::path> numberSprites = getNumberSprites(m_currentPicarat, "picarat_number_big");
+				updateNumberSprite(numberSprites, "introCurrentPicarat", SDL_FRect{ 92, HALF_HEIGHT + 55, 36, 58 }, 40);
+			}
 		} else if (m_state == INTRO_FADING_OUT && !m_sprites.at("fading")->m_fading) {
 			m_state = PUZZLE_FADING_IN;
 			m_sprites.at("fading")->fade({ 300, 0, Sprite::FadingMode::OUT });
@@ -367,32 +384,36 @@ namespace Layton1Scene {
 		}
 
 		if (m_state >= INTRO_PICARAT_FADING) {
-			m_sprites.at("intro_picaratBackground")->draw();
-			m_sprites.at("intro_currentPicarat0")->draw();
-			m_sprites.at("intro_currentPicarat1")->draw();
-			m_sprites.at("intro_picarat0")->draw();
-			m_sprites.at("intro_picarat1")->draw();
-			m_sprites.at("intro_totalPicarat0")->draw();
+			m_sprites.at("introPicaratBackground")->draw();
+			m_sprites.at("introPicarat0")->draw();
+			m_sprites.at("introPicarat1")->draw();
+			m_sprites.at("introTotalPicarat0")->draw();
 
-			if (m_game->m_save->m_picarats > 10) {
-				m_sprites.at("intro_totalPicarat2")->draw();
+			m_sprites.at("introCurrentPicarat0")->draw();
+
+			if (m_currentPicarat >= 10) {
+				m_sprites.at("introCurrentPicarat1")->draw();
 			}
 
-			if (m_game->m_save->m_picarats > 100) {
-				m_sprites.at("intro_totalPicarat3")->draw();
+			if (m_game->m_save->m_picarats >= 10) {
+				m_sprites.at("introTotalPicarat1")->draw();
 			}
 
-			if (m_game->m_save->m_picarats > 1000) {
-				m_sprites.at("intro_totalPicarat4")->draw();
+			if (m_game->m_save->m_picarats >= 100) {
+				m_sprites.at("introTotalPicarat2")->draw();
+			}
+
+			if (m_game->m_save->m_picarats >= 1000) {
+				m_sprites.at("introTotalPicarat3")->draw();
 			}
 		}
 
-		m_sprites.at("intro_title")->draw();
-		m_sprites.at("intro_puzzleText")->draw();
-		m_sprites.at("intro_puzzleName")->draw();
-		m_sprites.at("intro_puzzleNumber0")->draw();
-		m_sprites.at("intro_puzzleNumber1")->draw();
-		m_sprites.at("intro_puzzleNumber2")->draw();
+		m_sprites.at("introTitle")->draw();
+		m_sprites.at("introPuzzleText")->draw();
+		m_sprites.at("introPuzzleName")->draw();
+		m_sprites.at("introPuzzleNumber0")->draw();
+		m_sprites.at("introPuzzleNumber1")->draw();
+		m_sprites.at("introPuzzleNumber2")->draw();
 	}
 
 	void Puzzle::renderPuzzle() {
@@ -434,13 +455,17 @@ namespace Layton1Scene {
 		m_sprites.at("puzzleNumber0")->draw();
 		m_sprites.at("puzzleNumber1")->draw();
 		m_sprites.at("puzzleNumber2")->draw();
-		m_sprites.at("picarat0")->draw();
-		m_sprites.at("picarat1")->draw();
 		m_sprites.at("puzzleText")->draw();
 		m_sprites.at("hintCoins0")->draw();
 
 		if (m_game->m_save->m_hintCoins > 9) {
 			m_sprites.at("hintCoins1")->draw();
+		}
+
+		m_sprites.at("picarat0")->draw();
+
+		if (m_currentPicarat >= 10) {
+			m_sprites.at("picarat1")->draw();
 		}
 
 		if (m_textProgression <= m_text.length()) {
@@ -524,6 +549,7 @@ namespace Layton1Scene {
 			playSFX("puzzleEnd");
 		} else {
 			if (m_state == VALIDATING_FADING_OUT && !m_sprites.at("fading")->m_fading) {
+				m_sprites.at("fading")->fade({ 300,0, Sprite::FadingMode::OUT });
 				m_state = END_FADING_IN;
 			} else if (m_validationTimer >= 2350) {
 				if (m_state == VALIDATING_SOUND) {
@@ -599,11 +625,75 @@ namespace Layton1Scene {
 	}
 
 	void Puzzle::renderSuccess() {
-
+		
 	}
 
 	void Puzzle::renderFail() {
-	
+		if (m_state == END_FADING_OUT && !m_sprites.at("fading")->m_fading) {
+			playSFX("puzzleStart");
+			pauseBGM(0);
+
+			if ((m_game->m_save->m_puzzles.at(m_number) & 16) == 0) {
+				m_game->m_save->m_puzzles.at(m_number) += 16;
+				m_newPicarat -= m_picaratLost;
+			} else if ((m_game->m_save->m_puzzles.at(m_number) & 32) == 0) {
+				m_game->m_save->m_puzzles.at(m_number) += 32;
+				m_newPicarat -= m_picaratLost;
+			}
+
+			m_state = INTRO;
+			m_game->m_bgmData.at(0)->position = 0;
+			m_game->m_bgmData.at(0)->fading = false;
+			m_game->m_bgmData.at(0)->volume = 1.0f;
+			m_validationTimer = 0;
+
+			m_sprites.at("fading")->fade({ 300, -300, Sprite::FadingMode::OUT });
+			m_sprites.at("introTitle")->m_transform.y += HALF_HEIGHT * m_game->m_windowMultiplier;
+			m_sprites.at("introPuzzleText")->m_transform.y += HALF_HEIGHT * m_game->m_windowMultiplier;
+			m_sprites.at("introPuzzleName")->m_transform.y += HALF_HEIGHT * m_game->m_windowMultiplier;
+			m_sprites.at("introPuzzleNumber0")->m_transform.y += HALF_HEIGHT * m_game->m_windowMultiplier;
+			m_sprites.at("introPuzzleNumber1")->m_transform.y += HALF_HEIGHT * m_game->m_windowMultiplier;
+			m_sprites.at("introPuzzleNumber2")->m_transform.y += HALF_HEIGHT * m_game->m_windowMultiplier;
+			m_sprites.at("failTitle")->m_transform.y += HALF_HEIGHT * m_game->m_windowMultiplier;
+			return;
+		} else if (m_state >= END_TEXT_FADING) {
+			m_sprites.at("failTextBackground")->draw();
+		}
+
+		if (m_state == END_FADING_IN && !m_sprites.at("fading")->m_fading) {
+			m_state = END_CARD_MOVING;
+			m_sprites.at("failTitle")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
+		} else if (m_state == END_CARD_MOVING && !m_sprites.at("failTitle")->m_translating) {
+			m_state = END_TEXT_FADING;
+			m_sprites.at("bottomFading")->fade({ 300, 0, Sprite::FadingMode::OUT });
+		} else if (m_state == END_TEXT_FADING && !m_sprites.at("bottomFading")->m_fading) {
+			m_state = END_FULL;
+			m_textProgression = 0;
+			m_game->m_bgmData.at(1)->loop = true;
+			m_game->m_bgmData.at(0)->position = 0;
+			m_game->m_bgmData.at(0)->fading = false;
+			m_game->m_bgmData.at(0)->volume = 1.0f;
+		} else if (m_state == END_FULL) {
+			m_sprites.at("endText")->draw();
+			m_sprites.at("touch")->draw();
+			computeTouchTextOpacity();
+
+			if (m_textProgression <= m_failText.length()) {
+				if (m_textProgression == 0) {
+					playBGM("sound/sfx/99.wav", 1);
+				}
+
+				m_sprites.at("endText")->setText(m_failText.substr(0, m_textProgression));
+				m_textProgression += 2;
+
+				if (m_textProgression > m_failText.length()) {
+					m_textProgression--;
+					m_game->m_bgmData.at(1)->loop = false;
+				}
+			}
+		}
+
+		m_sprites.at("failTitle")->draw();
 	}
 
 	void Puzzle::computeTouchTextOpacity() {
@@ -635,6 +725,23 @@ namespace Layton1Scene {
 			}
 
 			m_sprites.at("touch")->m_opacity = opacity;
+		}
+	}
+	
+	void Puzzle::updateNumberSprite(const std::vector<fileUtils::path>& sprites, const std::string& name, SDL_FRect baseRect, float spacing) {
+		for (size_t i = 0; i < 4; i++) {
+			if (m_sprites.count(name + std::to_string(i)) != 0) {
+				m_sprites.at(name + std::to_string(i))->unload();
+				m_sprites.at(name + std::to_string(i)).release();
+				m_sprites.erase(name + std::to_string(i));
+			} else {
+				break;
+			}
+		}
+
+		for (size_t i = 0; i < sprites.size(); i++) {
+			baseRect.x -= i * spacing;
+			m_sprites.insert({ name + std::to_string(i), std::make_unique<Sprite>(sprites.at(i), this, baseRect) });
 		}
 	}
 };

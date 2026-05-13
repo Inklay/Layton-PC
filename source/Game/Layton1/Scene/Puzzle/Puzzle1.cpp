@@ -3,7 +3,7 @@
 
 namespace Layton1Scene {
 	Puzzle1::Puzzle1(Game* game) :
-		Puzzle(game, 10, 1, "24", LUKE)
+		Puzzle(game, 10, 1, "24", LUKE, 2)
 	{
 	}
 
