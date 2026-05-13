@@ -2,6 +2,7 @@
 #include "Game/Game.h"
 #include "Game/Sprite/TextSprite.h"
 #include "Game/Sprite/AnimatedSprite.h"
+#include "Game/Sprite/ClickableSprite.h"
 
 namespace Layton1Scene {
 	Puzzle::Puzzle(Game* game, int picarat, int number, const std::string& internalName) :
@@ -74,13 +75,27 @@ namespace Layton1Scene {
 		m_sprites.insert({ "hint1", std::make_unique<AnimatedSprite>("ani/fr/hint_buttons.hintb3.anim", this, SDL_FRect{ WIDTH - 72 ,HALF_HEIGHT, 72, 18}, true) });
 		m_sprites.insert({ "hint2", std::make_unique<AnimatedSprite>("ani/fr/hint_buttons.hintb2.anim", this, SDL_FRect{ WIDTH - 72 ,HALF_HEIGHT, 72, 18}, true) });
 		m_sprites.insert({ "hint3", std::make_unique<AnimatedSprite>("ani/fr/hint_buttons.hintb1.anim", this, SDL_FRect{ WIDTH - 72 ,HALF_HEIGHT, 72, 18}, true) });
+		m_sprites.insert({ "bottomBackgroundHint1", std::make_unique<Sprite>("bg/hint_1.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+		m_sprites.insert({ "bottomBackgroundHint2", std::make_unique<Sprite>("bg/hint_2.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+		m_sprites.insert({ "bottomBackgroundHint3", std::make_unique<Sprite>("bg/hint_3.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 		m_sprites.insert({ "bottomBackgroundHint1Locked", std::make_unique<Sprite>("bg/fr/hint_1_2.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 		m_sprites.insert({ "bottomBackgroundHint2Locked", std::make_unique<Sprite>("bg/fr/hint_2_2.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 		m_sprites.insert({ "bottomBackgroundHint3Locked", std::make_unique<Sprite>("bg/fr/hint_3_2.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 		m_sprites.insert({ "bottomBackgroundHint1NoCoin", std::make_unique<Sprite>("bg/fr/hint_1_3.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 		m_sprites.insert({ "bottomBackgroundHint2NoCoin", std::make_unique<Sprite>("bg/fr/hint_2_3.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 		m_sprites.insert({ "bottomBackgroundHint3NoCoin", std::make_unique<Sprite>("bg/fr/hint_3_3.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
-		m_sprites.insert({ "hintBackButton", std::make_unique<Sprite>("ani/fr/buttons.12.png", this, SDL_FRect{ WIDTH - 56, HALF_HEIGHT, 56, 20}, true) });
+		m_sprites.insert({ "hintBackButton", std::make_unique<Sprite>("ani/fr/buttons.12.png", this, SDL_FRect{ WIDTH - 56, HALF_HEIGHT, 56, 20 }, true) });
+		m_sprites.insert({ "hint1Button", std::make_unique<Sprite>("ani/fr/buttons.5.png", this, SDL_FRect{ 0, HALF_HEIGHT, 56, 16 }, true) });
+		m_sprites.insert({ "hint2Button", std::make_unique<Sprite>("ani/fr/buttons.6.png", this, SDL_FRect{ 56, HALF_HEIGHT, 56, 16 }, true) });
+		m_sprites.insert({ "hint3Button", std::make_unique<Sprite>("ani/fr/buttons.7.png", this, SDL_FRect{ 112, HALF_HEIGHT, 56, 16 }, true) });
+		m_sprites.insert({ "hint1LockedButton", std::make_unique<Sprite>("ani/fr/buttons.8.png", this, SDL_FRect{ 0, HALF_HEIGHT, 56, 16 }, true) });
+		m_sprites.insert({ "hint2LockedButton", std::make_unique<Sprite>("ani/fr/buttons.9.png", this, SDL_FRect{ 56, HALF_HEIGHT, 56, 16 }, true) });
+		m_sprites.insert({ "hint3LockedButton", std::make_unique<Sprite>("ani/fr/buttons.10.png", this, SDL_FRect{ 112, HALF_HEIGHT, 56, 16 }, true) });
+		m_sprites.insert({ "hintUnlockYesButton", std::make_unique<ClickableSprite>("ani/fr/yesnobuttons.0.png", "ani/fr/yesnobuttons.1.png", this, SDL_FRect{ 53, HALF_HEIGHT + 140, 64, 24 }) });
+		m_sprites.insert({ "hintUnlockNoButton", std::make_unique<ClickableSprite>("ani/fr/yesnobuttons.2.png", "ani/fr/yesnobuttons.3.png", this, SDL_FRect{ 137, HALF_HEIGHT + 140, 64, 24 }) });
+		m_sprites.insert({ "hint1Text", std::make_unique<TextSprite>("font/fontq.png", "qtext/fr/h_" + m_internalName + "_1.txt", this, SDL_FRect{ 4, HALF_HEIGHT + 20, WIDTH - 8, HALF_HEIGHT - 23 }, SDL_Color{0, 0, 0}) });
+		m_sprites.insert({ "hint2Text", std::make_unique<TextSprite>("font/fontq.png", "qtext/fr/h_" + m_internalName + "_2.txt", this, SDL_FRect{ 4, HALF_HEIGHT + 20, WIDTH - 8, HALF_HEIGHT - 23 }, SDL_Color{0, 0, 0}) });
+		m_sprites.insert({ "hint3Text", std::make_unique<TextSprite>("font/fontq.png", "qtext/fr/h_" + m_internalName + "_3.txt", this, SDL_FRect{ 4, HALF_HEIGHT + 20, WIDTH - 8, HALF_HEIGHT - 23 }, SDL_Color{0, 0, 0}) });
 
 		m_text = fileUtils::readText(m_game->m_gameFolder / "qtext/fr" / ("q_" + m_internalName + ".txt"));
 		m_fading = true;
@@ -142,9 +157,12 @@ namespace Layton1Scene {
 			m_sprites.at("puzzleNumber2")->draw();
 			m_sprites.at("picarat0")->draw();
 			m_sprites.at("picarat1")->draw();
-			m_sprites.at("hintCoins0")->draw();
-			m_sprites.at("hintCoins1")->draw();
 			m_sprites.at("puzzleText")->draw();
+			m_sprites.at("hintCoins0")->draw();
+
+			if (m_game->m_save->m_hintCoins > 9) {
+				m_sprites.at("hintCoins1")->draw();
+			}
 
 			if (m_textProgression <= m_text.length()) {
 				if (m_textProgression == 0) {
@@ -181,33 +199,60 @@ namespace Layton1Scene {
 			if (m_displayHint) {
 				if (m_currentHint == 0) {
 					if (m_game->m_save->m_puzzles.at(m_number) & 2) {
-
+						m_sprites.at("bottomBackgroundHint1")->draw(10);
+						m_sprites.at("hint1Text")->draw(10);
 					} else if ((m_game->m_save->m_hintCoins != 0)) {
 						m_sprites.at("bottomBackgroundHint1Locked")->draw(10);
+						m_sprites.at("hintUnlockYesButton")->draw(11);
+						m_sprites.at("hintUnlockNoButton")->draw(11);
+						displayHintCoinsOnHintUnlockScreen();
 					} else {
 						m_sprites.at("bottomBackgroundHint1NoCoin")->draw(10);
 					}
+				} else if (m_currentHint == 1) {
+					if (m_game->m_save->m_puzzles.at(m_number) & 4) {
+						m_sprites.at("bottomBackgroundHint2")->draw(10);
+						m_sprites.at("hint2Text")->draw(10);
+					} else if ((m_game->m_save->m_hintCoins != 0)) {
+						m_sprites.at("bottomBackgroundHint2Locked")->draw(10);
+						m_sprites.at("hintUnlockYesButton")->draw(11);
+						m_sprites.at("hintUnlockNoButton")->draw(11);
+						displayHintCoinsOnHintUnlockScreen();
+					} else {
+						m_sprites.at("bottomBackgroundHint2NoCoin")->draw(10);
+					}
+				} else if (m_currentHint == 2) {
+					if (m_game->m_save->m_puzzles.at(m_number) & 8) {
+						m_sprites.at("bottomBackgroundHint3")->draw(10);
+						m_sprites.at("hint3Text")->draw(10);
+					} else if ((m_game->m_save->m_hintCoins != 0)) {
+						m_sprites.at("bottomBackgroundHint3Locked")->draw(10);
+						m_sprites.at("hintUnlockYesButton")->draw(11);
+						m_sprites.at("hintUnlockNoButton")->draw(11);
+						displayHintCoinsOnHintUnlockScreen();
+					} else {
+						m_sprites.at("bottomBackgroundHint3NoCoin")->draw(10);
+					}
 				}
 
-				if (m_game->m_save->m_hintCoins != 0) {
-					float x1 = m_sprites.at("hintCoins0")->m_transform.x;
-					float y1 = m_sprites.at("hintCoins0")->m_transform.y;
-					float x2 = m_sprites.at("hintCoins1")->m_transform.x;
-					float y2 = m_sprites.at("hintCoins1")->m_transform.y;
+				if (m_game->m_save->m_puzzles.at(m_number) & 2) {
+					m_sprites.at("hint1Button")->draw(11);
 
-					m_sprites.at("hintCoins0")->m_transform.x = 190 * m_game->m_windowMultiplier;
-					m_sprites.at("hintCoins0")->m_transform.y = (HALF_HEIGHT + 107) * m_game->m_windowMultiplier;
-					m_sprites.at("hintCoins1")->m_transform.x = 182 * m_game->m_windowMultiplier;
-					m_sprites.at("hintCoins1")->m_transform.y = (HALF_HEIGHT + 107) * m_game->m_windowMultiplier;
+					if (m_game->m_save->m_puzzles.at(m_number) & 4) {
+						m_sprites.at("hint2Button")->draw(11);
 
-					m_sprites.at("hintCoins0")->draw();
-					m_sprites.at("hintCoins0")->draw();
-
-					m_sprites.at("hintCoins0")->m_transform.x = x1;
-					m_sprites.at("hintCoins0")->m_transform.y = y1;
-					m_sprites.at("hintCoins1")->m_transform.x = x2;
-					m_sprites.at("hintCoins1")->m_transform.y = y2;
+						if (m_game->m_save->m_puzzles.at(m_number) & 8) {
+							m_sprites.at("hint3Button")->draw(11);
+						} else {
+							m_sprites.at("hint3LockedButton")->draw(11);
+						}
+					} else {
+						m_sprites.at("hint2LockedButton")->draw(11);
+					}
+				} else {
+					m_sprites.at("hint1LockedButton")->draw(11);
 				}
+
 				m_sprites.at("hintBackButton")->draw(11);
 			}
 		}
@@ -228,6 +273,9 @@ namespace Layton1Scene {
 			m_game->m_bgmData.at(1)->loop = false;
 		} else if (!m_isIntro) {
 			if (spriteName == "hint0" || spriteName == "hint1" || spriteName == "hint2" || spriteName == "hint3") {
+				m_sprites.at("bottomBackgroundHint1")->m_interactive = true;
+				m_sprites.at("bottomBackgroundHint2")->m_interactive = true;
+				m_sprites.at("bottomBackgroundHint3")->m_interactive = true;
 				m_sprites.at("bottomBackgroundHint1Locked")->m_interactive = true;
 				m_sprites.at("bottomBackgroundHint2Locked")->m_interactive = true;
 				m_sprites.at("bottomBackgroundHint3Locked")->m_interactive = true;
@@ -235,8 +283,19 @@ namespace Layton1Scene {
 				m_sprites.at("bottomBackgroundHint2NoCoin")->m_interactive = true;
 				m_sprites.at("bottomBackgroundHint3NoCoin")->m_interactive = true;
 				m_sprites.at("hintBackButton")->m_interactive = true;
+				m_sprites.at("hint1Button")->m_interactive = true;
+				m_sprites.at("hint2Button")->m_interactive = true;
+				m_sprites.at("hint3Button")->m_interactive = true;
+				m_sprites.at("hint1LockedButton")->m_interactive = true;
+				m_sprites.at("hint2LockedButton")->m_interactive = true;
+				m_sprites.at("hint3LockedButton")->m_interactive = true;
+				m_sprites.at("hintUnlockYesButton")->m_interactive = true;
+				m_sprites.at("hintUnlockNoButton")->m_interactive = true;
 				m_displayHint = true;
-			} else if (spriteName == "hintBackButton" && m_displayHint) {
+			} else if ((spriteName == "hintBackButton" || spriteName == "hintUnlockNoButton") && m_displayHint) {
+				m_sprites.at("bottomBackgroundHint1")->m_interactive = false;
+				m_sprites.at("bottomBackgroundHint2")->m_interactive = false;
+				m_sprites.at("bottomBackgroundHint3")->m_interactive = false;
 				m_sprites.at("bottomBackgroundHint1Locked")->m_interactive = false;
 				m_sprites.at("bottomBackgroundHint2Locked")->m_interactive = false;
 				m_sprites.at("bottomBackgroundHint3Locked")->m_interactive = false;
@@ -244,7 +303,44 @@ namespace Layton1Scene {
 				m_sprites.at("bottomBackgroundHint2NoCoin")->m_interactive = false;
 				m_sprites.at("bottomBackgroundHint3NoCoin")->m_interactive = false;
 				m_sprites.at("hintBackButton")->m_interactive = false;
+				m_sprites.at("hint1Button")->m_interactive = false;
+				m_sprites.at("hint2Button")->m_interactive = false;
+				m_sprites.at("hint3Button")->m_interactive = false;
+				m_sprites.at("hint1LockedButton")->m_interactive = false;
+				m_sprites.at("hint2LockedButton")->m_interactive = false;
+				m_sprites.at("hint3LockedButton")->m_interactive = false;
+				m_sprites.at("hintUnlockYesButton")->m_interactive = false;
+				m_sprites.at("hintUnlockNoButton")->m_interactive = false;
 				m_displayHint = false;
+			} else if (spriteName == "hintUnlockYesButton" && m_displayHint) {
+				for (size_t i = 0; i < 3; i++) {
+					if (m_sprites.count("hintCoins" + std::to_string(i)) != 0) {
+						m_sprites.at("hintCoins" + std::to_string(i))->unload();
+						m_sprites.at("hintCoins" + std::to_string(i)).release();
+						m_sprites.erase("hintCoins" + std::to_string(i));
+					}
+				}
+
+				m_game->m_save->m_hintCoins--;
+				std::vector<fileUtils::path> numberSprites = getNumberSprites(m_game->m_save->m_hintCoins, "q_numbers");
+
+				for (size_t i = 0; i < numberSprites.size(); i++) {
+					m_sprites.insert({ "hintCoins" + std::to_string(i), std::make_unique<Sprite>(numberSprites.at(i), this, SDL_FRect{ 241.0f - i * 8, 6, 8, 10}) });
+				}
+
+				if (m_currentHint == 0) {
+					m_game->m_save->m_puzzles.at(m_number) += 2;
+				} else if (m_currentHint == 1) {
+					m_game->m_save->m_puzzles.at(m_number) += 4;
+				} else if (m_currentHint == 2) {
+					m_game->m_save->m_puzzles.at(m_number) += 8;
+				}
+			} else if (spriteName == "hint1Button") {
+				m_currentHint = 0;
+			} else if (spriteName == "hint2Button" || spriteName == "hint2LockedButton") {
+				m_currentHint = 1;
+			} else if (spriteName == "hint3Button" || spriteName == "hint3LockedButton") {
+				m_currentHint = 2;
 			}
 		}
 	}
@@ -314,5 +410,32 @@ namespace Layton1Scene {
 		m_text.clear();
 
 		Scene::unload();
+	}
+
+	void Puzzle::displayHintCoinsOnHintUnlockScreen() {
+		float x = m_sprites.at("hintCoins0")->m_transform.x;
+		float y = m_sprites.at("hintCoins0")->m_transform.y;
+
+		m_sprites.at("hintCoins0")->m_transform.x = 190 * m_game->m_windowMultiplier;
+		m_sprites.at("hintCoins0")->m_transform.y = (HALF_HEIGHT + 107) * m_game->m_windowMultiplier;
+
+		m_sprites.at("hintCoins0")->draw();
+
+		m_sprites.at("hintCoins0")->m_transform.x = x;
+		m_sprites.at("hintCoins0")->m_transform.y = y;
+
+
+		if (m_game->m_save->m_hintCoins > 9) {
+			x = m_sprites.at("hintCoins1")->m_transform.x;
+			y = m_sprites.at("hintCoins1")->m_transform.y;
+
+			m_sprites.at("hintCoins1")->m_transform.x = 182 * m_game->m_windowMultiplier;
+			m_sprites.at("hintCoins1")->m_transform.y = (HALF_HEIGHT + 107) * m_game->m_windowMultiplier;
+
+			m_sprites.at("hintCoins1")->draw();
+
+			m_sprites.at("hintCoins1")->m_transform.x = x;
+			m_sprites.at("hintCoins1")->m_transform.y = y;
+		}
 	}
 };

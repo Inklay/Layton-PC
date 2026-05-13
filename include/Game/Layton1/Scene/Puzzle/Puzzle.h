@@ -33,5 +33,8 @@ namespace Layton1Scene {
 		bool m_canValidate = false;
 		bool m_bottomUIHidden = false;
 		bool m_displayHint = false;
+
+	private:
+		void displayHintCoinsOnHintUnlockScreen();
 	};
 };
