@@ -4,15 +4,22 @@
 
 namespace Layton1Scene {
 
-	class TitleScreen : public Scene {
+	class TitleDrop : public Scene {
 	public:
-		TitleScreen(Game* game);
+		enum LogoState {
+			FADING,
+			TRANSLATING,
+			DONE
+		};
+
+		TitleDrop(Game* game);
 		void load();
 		void render();
 		void handleClick(const std::string& spriteName, SDL_Event event);
 
 	private:
-		bool m_hasSave;
+		LogoState m_logoState = FADING;
+		int m_touchCounter = -15;
 	};
 
 };
