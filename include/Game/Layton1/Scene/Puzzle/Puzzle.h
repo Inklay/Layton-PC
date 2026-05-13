@@ -59,6 +59,7 @@ namespace Layton1Scene {
 		int m_picarat;
 		int m_currentPicarat;
 		int m_number;
+		int m_picaratChangeTimer = 0;
 		int m_textProgression = 0;
 		int m_currentHint = 0;
 		int m_validationTimer = 0;

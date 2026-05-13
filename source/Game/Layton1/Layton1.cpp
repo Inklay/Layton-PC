@@ -25,9 +25,10 @@ void Layton1::init() {
 		{ "level5Logo", "0"},
 		{ "titleScreenClick", "1"},
 		{ "keyboardSwitch", "2"},
+		{ "hideHints", "3"},
 		{ "success", "4"},
 		{ "info", "5"},
-		{ "tutoDone", "7"},
+		{ "puzzleClicked", "7"},
 		{ "step", "8"},
 		{ "stepLoud", "9"},
 		{ "doorOpen", "10"},
@@ -36,11 +37,15 @@ void Layton1::init() {
 		{ "puzzleEnd", "13"},
 		{ "puzzleSuccess", "14"},
 		{ "puzzleFailure", "15"},
+		{ "showHints", "16"},
 		{ "clear", "18"},
 		{ "keyboardOk", "19"},
 		{ "introSmallBang", "39"},
 		{ "introBang", "43"},
+		{ "unlockHint", "83"},
 		{ "keyboardChar", "99"},
+		{ "puzzlePicaratDecrease", "130"},
+		{ "switchHint", "134"},
 	};
 }
 

@@ -88,11 +88,10 @@ namespace Layton1Scene {
 			if (m_tutoState == 0) {
 				m_tutoState++;
 				hideBottomUI();
-				playSFX("keyboardSwitch");
 			} else if (m_tutoState == 1) {
 				m_sprites.at("tuto")->fade({ 500, 0, Sprite::FadingMode::OUT });
 				m_tutoState++;
-				playSFX("tutoDone");
+				playSFX("keyboardSwitch");
 			}
 
 			if (spriteName == "clearButton") {

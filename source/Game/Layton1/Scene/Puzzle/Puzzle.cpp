@@ -181,6 +181,8 @@ namespace Layton1Scene {
 			m_textProgression = (int)m_text.length();
 			m_game->m_bgmData.at(1)->loop = false;
 			m_state = PUZZLE;
+
+			playSFX("puzzleClicked");
 		} else if (m_state == PUZZLE && (spriteName == "hint0" || spriteName == "hint1" || spriteName == "hint2" || spriteName == "hint3")) {
 			m_sprites.at("bottomBackgroundHint1")->m_interactive = true;
 			m_sprites.at("bottomBackgroundHint2")->m_interactive = true;
@@ -201,6 +203,8 @@ namespace Layton1Scene {
 			m_sprites.at("hintUnlockYesButton")->m_interactive = true;
 			m_sprites.at("hintUnlockNoButton")->m_interactive = true;
 			m_state = HINT;
+
+			playSFX("showHints");
 		} else if (m_state == HINT) {
 			if ((spriteName == "hintBackButton" || spriteName == "hintUnlockNoButton")) {
 				m_sprites.at("bottomBackgroundHint1")->m_interactive = false;
@@ -222,6 +226,8 @@ namespace Layton1Scene {
 				m_sprites.at("hintUnlockYesButton")->m_interactive = false;
 				m_sprites.at("hintUnlockNoButton")->m_interactive = false;
 				m_state = PUZZLE;
+
+				playSFX("hideHints");
 			} else if (spriteName == "hintUnlockYesButton") {
 				m_game->m_save->m_hintCoins--;
 				std::vector<fileUtils::path> numberSprites = getNumberSprites(m_game->m_save->m_hintCoins, "q_numbers");
@@ -234,20 +240,26 @@ namespace Layton1Scene {
 				} else if (m_currentHint == 2) {
 					m_game->m_save->m_puzzles.at(m_number) += 8;
 				}
-			} else if (spriteName == "hint1Button") {
+
+				playSFX("unlockHint");
+			} else if (spriteName == "hint1Button" && m_currentHint != 0) {
 				m_currentHint = 0;
-			} else if (spriteName == "hint2Button" || spriteName == "hint2LockedButton") {
+				playSFX("switchHint");
+			} else if ((spriteName == "hint2Button" || spriteName == "hint2LockedButton") && m_currentHint != 1) {
 				m_currentHint = 1;
-			} else if (spriteName == "hint3Button" || spriteName == "hint3LockedButton") {
+				playSFX("switchHint");
+			} else if ((spriteName == "hint3Button" || spriteName == "hint3LockedButton") && m_currentHint != 2) {
 				m_currentHint = 2;
+				playSFX("switchHint");
 			}
 		} else if (m_state == END_FULL) {
 			if (m_valid) {
 
 			} else {
 				m_state = END_FADING_OUT;
-				m_sprites.at("fading")->fade({ 300, 0, Sprite::FadingMode::IN });
-				fadeBGM(300);
+				m_sprites.at("fading")->fade({ 400, 0, Sprite::FadingMode::IN });
+				fadeBGM(400);
+				playSFX("keyboardSwitch");
 			}
 		}
 	}
@@ -315,6 +327,8 @@ namespace Layton1Scene {
 	void Puzzle::unload() {
 		m_internalName.clear();
 		m_text.clear();
+		m_failText.clear();
+		m_successText.clear();
 
 		Scene::unload();
 	}
@@ -373,9 +387,16 @@ namespace Layton1Scene {
 				std::vector<fileUtils::path> numberSprites = getNumberSprites(m_currentPicarat, "q_numbers");
 				updateNumberSprite(numberSprites, "picarat", SDL_FRect{ 87, 6, 8, 10 }, 8);
 			} else {
-				m_currentPicarat--;
-				std::vector<fileUtils::path> numberSprites = getNumberSprites(m_currentPicarat, "picarat_number_big");
-				updateNumberSprite(numberSprites, "introCurrentPicarat", SDL_FRect{ 92, HALF_HEIGHT + 55, 36, 58 }, 40);
+				m_picaratChangeTimer++;
+
+				if (m_picaratChangeTimer == 3) {
+					m_currentPicarat--;
+					m_picaratChangeTimer = 0;
+
+					std::vector<fileUtils::path> numberSprites = getNumberSprites(m_currentPicarat, "picarat_number_big");
+					updateNumberSprite(numberSprites, "introCurrentPicarat", SDL_FRect{ 92, HALF_HEIGHT + 55, 36, 58 }, 40);
+					playSFX("puzzlePicaratDecrease");
+				}
 			}
 		} else if (m_state == INTRO_FADING_OUT && !m_sprites.at("fading")->m_fading) {
 			m_state = PUZZLE_FADING_IN;
