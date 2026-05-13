@@ -128,6 +128,9 @@ namespace Layton1Scene {
 			m_sprites.insert({ "validateFail7", std::make_unique<Sprite>("bg/judge_r113_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 		}
 
+		// end - fail
+		m_sprites.insert({ "fail_title", std::make_unique<Sprite>("bg/fr/judge_l114_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
+
 		m_text = fileUtils::readText(m_game->m_gameFolder / "qtext/fr" / ("q_" + m_internalName + ".txt"));
 		m_fading = true;
 		playSFX("puzzleStart");
@@ -139,8 +142,14 @@ namespace Layton1Scene {
 			renderIntro();
 		} else if (m_state >= PUZZLE_FADING_IN && m_state <= HINT) {
 			renderPuzzle();
-		} else if (m_state >= VALIDATING_FADING_IN && m_state <= VALIDATING_SOUND) {
+		} else if (m_state >= VALIDATING_FADING_IN && m_state <= VALIDATING_FADING_OUT) {
 			renderValidation();
+		} else if (m_state >= END_FADING_IN) {
+			if (m_valid) {
+				renderSuccess();
+			} else {
+				renderFail();
+			}
 		}
 
 		if (m_sprites.at("fading")->m_fading) {
@@ -513,8 +522,15 @@ namespace Layton1Scene {
 		if (m_state == VALIDATING_FADING_IN && !m_sprites.at("fading")->m_fading) {
 			m_state = VALIDATING;
 			playSFX("puzzleEnd");
-		} else if (m_state == VALIDATING || VALIDATING_SOUND) {
-			if (m_validationTimer >= 2350) {
+		} else {
+			if (m_state == VALIDATING_FADING_OUT && !m_sprites.at("fading")->m_fading) {
+				m_state = END_FADING_IN;
+			} else if (m_validationTimer >= 2350) {
+				if (m_state == VALIDATING_SOUND) {
+					m_state = VALIDATING_FADING_OUT;
+					m_sprites.at("fading")->fade({ 300,-300, Sprite::FadingMode::IN });
+				}
+
 				if (m_valid) {
 					m_sprites.at("validateSuccess7")->draw();
 				} else {
