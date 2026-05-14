@@ -19,8 +19,8 @@ namespace Layton1Scene {
 
 		m_dialogue.load({
 			{ "layton", "ani/fr/layton_n.png", "ani/event_window_1.1.png", "", "", SDL_FRect{ 0, 0, 0, 0 } },
-			{ "luke", "ani/fr/luke_n.png", "ani/event_window_1.1.png", "ani/luke_e_face.notalk.anim", "ani/luke_e_face.talk.anim", SDL_FRect{ m_sprites.at("luke")->m_transform.x + 20, HEIGHT - 100, 19, 13}},
-			{ "luke2", "ani/fr/luke_n.png", "ani/event_window_1.1.png", "ani/luke_e_face.notalk.anim", "ani/luke_e_face.smile.anim", SDL_FRect{ m_sprites.at("luke")->m_transform.x + 20, HEIGHT - 100, 19, 13 } }
+			{ "luke", "ani/fr/luke_n.png", "ani/event_window_1.1.png", "ani/luke_e_face.notalk.anim", "ani/luke_e_face.talk.anim", SDL_FRect{ (m_sprites.at("luke")->m_transform.x / m_game->m_windowMultiplier) + 17, HEIGHT - 100, 19, 13 } },
+			{ "luke2", "ani/fr/luke_n.png", "ani/event_window_1.1.png", "ani/luke_e_face.notalk.anim", "ani/luke_e_face.smile.anim", SDL_FRect{ (m_sprites.at("luke")->m_transform.x / m_game->m_windowMultiplier) + 17, HEIGHT - 100, 19, 13 } }
 		});
 
 		playBGM("sound/SEQ_BG_002.wav");
@@ -96,7 +96,7 @@ namespace Layton1Scene {
 						m_sprites.at("layton2")->fade(Sprite::FadeInfo{ 300, 0, Sprite::FadingMode::IN });
 						m_dialogue.setCharacterVisible("luke", false);
 						m_dialogue.setCharacterVisible("luke2", true);
-						m_dialogue.setDialogue("etext/fr/e33_t2.txt", "luke", {}, "97.wav");
+						m_dialogue.setDialogue("etext/fr/e33_t2.txt", "luke2", {}, "97.wav");
 						m_dialogueProgression++;
 						break;
 					case 4:
