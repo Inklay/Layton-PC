@@ -6,4 +6,3 @@
 #include "IntroCarDialogue1.h"
 #include "IntroCarDialogue2.h"
 #include "TitleDrop.h"
-#include "StMystereEntry.h"

@@ -14,6 +14,7 @@ void Save::readCommonData(const fileUtils::buffer& buffer, size_t& offset) {
 	m_picarats = fileUtils::read2Byte(buffer, offset);
 	m_currentHintCoins = fileUtils::read2Byte(buffer, offset);
 	m_chapter = fileUtils::read1Byte(buffer, offset);
+	m_chapterProgression = fileUtils::read1Byte(buffer, offset);
 	uint8_t nameLength = fileUtils::read1Byte(buffer, offset);
 
 	for (size_t i = 0; i < nameLength; i++) {
@@ -24,6 +25,10 @@ void Save::readCommonData(const fileUtils::buffer& buffer, size_t& offset) {
 
 	for (size_t i = 0; i < m_puzzleCount; i++) {
 		m_puzzles.emplace_back(buffer.at(offset));
+
+		if (m_puzzles.at(i) & 1) {
+			m_solvedPuzzles++;
+		}
 	}
 
 	m_hintCoins.reserve(m_hintCoinCount);
@@ -40,6 +45,7 @@ void Save::writeCommonData(fileUtils::buffer& buffer) {
 	fileUtils::write2Byte(buffer, m_picarats);
 	fileUtils::write2Byte(buffer, m_currentHintCoins);
 	fileUtils::write1Byte(buffer, m_chapter);
+	fileUtils::write1Byte(buffer, m_chapterProgression);
 	fileUtils::write1Byte(buffer, (uint8_t)m_name.length());
 
 	for (uint8_t i = 0; i < m_name.length(); i++) {

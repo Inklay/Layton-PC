@@ -25,9 +25,10 @@ public:
 	void skip();
 	bool next();
 	bool fading();
+	bool visible();
 	bool waiting() const;
 	void setVisible(bool visible);
-	void setDialogue(const fileUtils::path& textFilePath, const std::string& character, std::vector<fileUtils::path> audioFilesPath = {}, const fileUtils::path& sfxSound = "99.wav");
+	void setDialogue(const fileUtils::path& textFilePath, const std::string& character, std::vector<fileUtils::path> audioFilesPath = {}, const std::string& sfxSound = "charBip3");
 	void setCharacterVisible(std::string name, bool visible);
 	void fade(Sprite::FadeInfo fadeInfo);
 
@@ -37,7 +38,7 @@ private:
 	std::vector<std::u32string> m_texts;
 	std::vector<fileUtils::path> m_audioFilesPath;
 	std::u32string m_writtenText;
-	fileUtils::path m_sfxSound = "99.wav";
+	std::string m_sfxSound = "charBip3";
 	size_t m_textProgression = 0;
 	size_t m_audioStreamIdx = -1;
 	int m_delayCounter = 0;

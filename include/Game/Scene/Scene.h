@@ -33,6 +33,7 @@ protected:
 	void playSFX(const std::string& name, size_t audioStreamIdx = 0);
 	void fadeToNextScene(const std::string& name);
 	void fade();
+	void switchSprites(const std::string& out, const std::string& in);
 
 	std::pair<std::string, Sprite*> m_clickedSprite;
 	std::map<std::string, std::unique_ptr<Sprite>> m_sprites;

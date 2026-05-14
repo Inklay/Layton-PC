@@ -21,8 +21,7 @@ void Layton1::init() {
 	m_scenes["intro_carDialogue1"] = std::make_unique<Layton1Scene::IntroCarDialogue1>(this);
 	m_scenes["intro_carDialogue2"] = std::make_unique<Layton1Scene::IntroCarDialogue2>(this);
 	m_scenes["titleDrop"] = std::make_unique<Layton1Scene::TitleDrop>(this);
-	m_scenes["arrivingAtStMystere_cinematic"] = std::make_unique<Cinematic>(this, "video/m2.mp4", std::vector<fileUtils::path>{ "stream/M2.wav" }, "stMystereEntry", 0.5f, 0.5f);
-	m_scenes["stMystereEntry"] = std::make_unique<Layton1Scene::StMystereEntry>(this);
+	m_scenes["arrivingAtStMystere_cinematic"] = std::make_unique<Cinematic>(this, "video/m2.mp4", std::vector<fileUtils::path>{ "stream/M2.wav" }, "map_drawBridge", 0.5f, 0.5f);
 
 	m_scenes["puzzle1"] = std::make_unique<Layton1Scene::Puzzle1>(this, "intro_carDialogue2");
 

@@ -266,6 +266,10 @@ namespace Layton1Scene {
 				playSFX("keyboardSwitch");
 			}
 		} else if (m_state == END_PICARAT) {
+			if (!m_game->m_save->m_puzzles.at(m_number) & 1) {
+				m_game->m_save->m_puzzles.at(m_number) += 1;
+				m_game->m_save->m_solvedPuzzles++;
+			}
 			m_state = END_PICARAT_FADING_OUT;
 			m_sprites.at("fading")->fade({ 300, 0, Sprite::FadingMode::IN });
 		}

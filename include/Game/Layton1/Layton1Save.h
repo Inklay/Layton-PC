@@ -9,6 +9,6 @@ public:
 	void save();
 
 protected:
-	uint16_t m_puzzleCount;
-	uint16_t m_hintCoinCount;
+	uint16_t m_puzzleCount = 162;
+	uint16_t m_hintCoinCount = 200;;
 };

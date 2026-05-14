@@ -193,3 +193,8 @@ void Scene::fadeBGM(float duration, size_t audioStreamIdx) {
 	m_game->m_bgmData.at(audioStreamIdx)->fading = true;
 	m_game->m_bgmData.at(audioStreamIdx)->fadingSeconds = duration;
 }
+
+void Scene::switchSprites(const std::string& out, const std::string& in) {
+	m_sprites.at(in)->fade(Sprite::FadeInfo{ 300, 0, Sprite::FadingMode::IN });
+	m_sprites.at(out)->fade(Sprite::FadeInfo{ 300, 0, Sprite::FadingMode::OUT });
+}

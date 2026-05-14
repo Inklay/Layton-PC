@@ -29,7 +29,7 @@ void Dialogue::load(std::vector<Character> characters) {
 	m_audioStreamIdx = m_scene->m_game->m_bgmStreams.size();
 }
 
-void Dialogue::setDialogue(const fileUtils::path& textFilePath, const std::string& character, std::vector<fileUtils::path> audioFilesPath, const fileUtils::path& sfxSound) {
+void Dialogue::setDialogue(const fileUtils::path& textFilePath, const std::string& character, std::vector<fileUtils::path> audioFilesPath, const std::string& sfxSound) {
 	for (auto& c : m_characters) {
 		if (c.talking && c.name != character) {
 			c.talking = false;
@@ -69,7 +69,7 @@ void Dialogue::setDialogue(const fileUtils::path& textFilePath, const std::strin
 void Dialogue::draw() {
 	for (auto& c : m_characters) {
 		if (c.talking) {
-			if (m_displayed) {
+			if (m_displayed || fading()) {
 				m_scene->m_sprites.at(c.backgroundSprite.string())->draw();
 				m_scene->m_sprites.at(c.nameSprite.string())->draw();
 
@@ -87,42 +87,47 @@ void Dialogue::draw() {
 		}
 	}
 
-	if (m_displayed) {
+	if (m_displayed || fading()) {
 		m_scene->m_sprites.at("dialogue_text")->draw();
 
-		if (!fading()) {
-			if (m_textProgression == 0 && m_delayCounter == 0) {
-				if (!m_audioFilesPath.empty()) {
-					m_scene->playBGM(m_audioFilesPath.at(m_currentText), m_audioStreamIdx, false);
-				} else {
-					m_scene->playBGM("sound/sfx" / m_sfxSound, m_audioStreamIdx, true);
-				}
+		if (m_textProgression == 0 && m_delayCounter == 0) {
+			if (!m_audioFilesPath.empty()) {
+				m_scene->playBGM(m_audioFilesPath.at(m_currentText), m_audioStreamIdx, false);
+			} else {
+				m_scene->playBGM(fileUtils::path("sound/sfx") / (m_scene->m_game->m_sfx.at(m_sfxSound) + ".wav"), m_audioStreamIdx, true);
 			}
-			m_delayCounter++;
+		}
+		m_delayCounter++;
 
-			if (m_delayCounter == 1 && m_textProgression < m_texts.at(m_currentText).length()) {
-				m_delayCounter = 0;
-				m_writtenText += m_texts.at(m_currentText).at(m_textProgression);
-				m_scene->m_sprites.at("dialogue_text")->setText(m_writtenText);
-				m_textProgression++;
+		if (m_delayCounter == 1 && m_textProgression < m_texts.at(m_currentText).length()) {
+			m_delayCounter = 0;
+			m_writtenText += m_texts.at(m_currentText).at(m_textProgression);
+			m_scene->m_sprites.at("dialogue_text")->setText(m_writtenText);
+			m_textProgression++;
+			if (!fading()) {
 				m_scene->m_game->m_bgmData.at(m_audioStreamIdx)->loop = true;
-			} else if (m_textProgression >= m_texts.at(m_currentText).length()) {
-				m_scene->m_sprites.at("dialogue_cursor")->draw();
-				m_waiting = true;
-				m_scene->m_game->m_bgmData.at(m_audioStreamIdx)->loop = false;
 			}
+		} else if (m_textProgression >= m_texts.at(m_currentText).length()) {
+			m_scene->m_sprites.at("dialogue_cursor")->m_opacity = m_scene->m_sprites.at("dialogue_text")->m_opacity;
+			m_scene->m_sprites.at("dialogue_cursor")->draw();
+			m_waiting = true;
+			m_scene->m_game->m_bgmData.at(m_audioStreamIdx)->loop = false;
 		}
 	}
 }
 
 void Dialogue::setVisible(bool visible) {
-	m_displayed = visible;
+	if (visible == m_displayed) {
+		return;
+	}
 
 	if (visible) {
 		fade(Sprite::FadeInfo{ 250, 0, Sprite::FadingMode::IN });
 	} else {
 		fade(Sprite::FadeInfo{ 250, 0, Sprite::FadingMode::OUT });
 	}
+
+	m_displayed = visible;
 }
 
 bool Dialogue::waiting() const {
@@ -131,6 +136,10 @@ bool Dialogue::waiting() const {
 
 bool Dialogue::fading() {
 	return m_scene->m_sprites.at("dialogue_text")->m_fading;
+}
+
+bool Dialogue::visible() {
+	return m_displayed;
 }
 
 void Dialogue::skip() {
@@ -179,14 +188,12 @@ void Dialogue::setCharacterVisible(std::string name, bool visible) {
 void Dialogue::fade(Sprite::FadeInfo fadeInfo) {
 	for (auto& c : m_characters) {
 		if (c.talking) {
-			if (m_displayed) {
-				m_scene->m_sprites.at(c.backgroundSprite.string())->fade(fadeInfo);
-				m_scene->m_sprites.at(c.nameSprite.string())->fade(fadeInfo);
+			m_scene->m_sprites.at(c.backgroundSprite.string())->fade(fadeInfo);
+			m_scene->m_sprites.at(c.nameSprite.string())->fade(fadeInfo);
 
-				if (m_scene->m_game->m_bgmData.size() > m_audioStreamIdx && m_scene->m_game->m_bgmData.at(m_audioStreamIdx)->finished && c.visible && !c.noTalkAnim.empty()) {
-					m_scene->m_sprites.at(c.noTalkAnim.string())->fade(fadeInfo);
-					continue;
-				}
+			if (m_scene->m_game->m_bgmData.size() > m_audioStreamIdx && m_scene->m_game->m_bgmData.at(m_audioStreamIdx)->finished && c.visible && !c.noTalkAnim.empty()) {
+				m_scene->m_sprites.at(c.noTalkAnim.string())->fade(fadeInfo);
+				continue;
 			}
 
 			if (c.visible && !c.talkAnim.empty()) {
@@ -197,10 +204,8 @@ void Dialogue::fade(Sprite::FadeInfo fadeInfo) {
 		}
 	}
 
-	if (m_displayed) {
-		m_scene->m_sprites.at("dialogue_text")->fade(fadeInfo);
-		if (m_texts.size() != 0 && m_textProgression >= m_texts.at(m_currentText).length()) {
-			m_scene->m_sprites.at("dialogue_cursor")->fade(fadeInfo);
-		}
+	m_scene->m_sprites.at("dialogue_text")->fade(fadeInfo);
+	if (m_texts.size() != 0 && m_textProgression >= m_texts.at(m_currentText).length()) {
+		m_scene->m_sprites.at("dialogue_cursor")->fade(fadeInfo);
 	}
 }

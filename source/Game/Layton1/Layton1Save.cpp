@@ -6,8 +6,6 @@ Layton1Save::Layton1Save(fileUtils::path inputFile) {
 
 	m_filePath = inputFile;
 	m_id = LAYTON1;
-	m_puzzleCount = 162;
-	m_hintCoinCount = 200;
 
 	readCommonData(buffer, offset);
 }

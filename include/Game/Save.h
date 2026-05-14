@@ -19,9 +19,11 @@ public:
 	uint16_t m_picarats = 0;
 	uint16_t m_currentHintCoins = 0;
 	uint8_t m_chapter = 0;
+	uint8_t m_chapterProgression = 0;
 	std::vector<uint8_t> m_puzzles;
 	std::vector<uint8_t> m_hintCoins;
 	GameId m_id = UNKNOWN;
+	int m_solvedPuzzles = 0;
 
 protected:
 	const uint32_t m_magicNumber = 0x454B554C; // LUKE

@@ -138,9 +138,6 @@
     <ClCompile Include="source\Game\Layton1\Scene\TitleDrop.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="source\Game\Layton1\Scene\StMystereEntry.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="source\Game\Layton1\Scene\Map\Map.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -270,9 +267,6 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="include\Game\Layton1\Scene\TitleDrop.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Game\Layton1\Scene\StMystereEntry.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="include\Game\Layton1\Scene\Map\Map.h">
