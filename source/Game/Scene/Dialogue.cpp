@@ -29,7 +29,7 @@ void Dialogue::load(std::vector<Character> characters) {
 	m_audioStreamIdx = m_scene->m_game->m_bgmStreams.size();
 }
 
-void Dialogue::setDialogue(const fileUtils::path& textFilePath, const std::string& character, std::vector<fileUtils::path> audioFilesPath) {
+void Dialogue::setDialogue(const fileUtils::path& textFilePath, const std::string& character, std::vector<fileUtils::path> audioFilesPath, const fileUtils::path& sfxSound) {
 	for (auto& c : m_characters) {
 		if (c.talking && c.name != character) {
 			c.talking = false;
@@ -41,27 +41,28 @@ void Dialogue::setDialogue(const fileUtils::path& textFilePath, const std::strin
 	}
 
 	std::u32string texts = fileUtils::readText(m_scene->m_game->m_gameFolder / textFilePath);
-	std::u32string::size_type pos = texts.find(U"@p@c\n");
+	std::u32string::size_type pos = texts.find(U"@p");
 	m_texts.clear();
 
 	while (pos != std::u32string::npos) {
 		m_texts.emplace_back(texts.substr(0, pos));
-		texts = texts.substr(pos + 5);
-		pos = texts.find(U"@p@c\n");
+		texts = texts.substr(pos + 2);
+		pos = texts.find(U"@p");
 	}
+
 	m_texts.emplace_back(texts);
 
+	m_sfxSound = sfxSound;
 	m_textProgression = 0;
 	m_currentText = 0;
 	m_delayCounter = 0;
 	m_waiting = false;
 	m_audioFilesPath = audioFilesPath;
+	m_writtenText = U"";
+	m_scene->m_sprites.at("dialogue_text")->setText(m_writtenText);
 
-	if (!m_audioFilesPath.empty()) {
-		if (m_scene->m_game->m_bgmStreams.size() > m_audioStreamIdx) {
-			clearAudioStream(m_scene->m_game->m_bgmStreams.at(m_audioStreamIdx), m_scene->m_game->m_bgmData.at(m_audioStreamIdx).get());
-		}
-		m_scene->playBGM(m_audioFilesPath.at(m_currentText), m_audioStreamIdx, false);
+	if (m_scene->m_game->m_bgmStreams.size() > m_audioStreamIdx) {
+		clearAudioStream(m_scene->m_game->m_bgmStreams.at(m_audioStreamIdx), m_scene->m_game->m_bgmData.at(m_audioStreamIdx).get());
 	}
 }
 
@@ -72,7 +73,7 @@ void Dialogue::draw() {
 				m_scene->m_sprites.at(c.backgroundSprite.string())->draw();
 				m_scene->m_sprites.at(c.nameSprite.string())->draw();
 
-				if (m_scene->m_game->m_bgmData.at(m_audioStreamIdx)->finished && c.visible && !c.noTalkAnim.empty()) {
+				if (m_scene->m_game->m_bgmData.size() > m_audioStreamIdx && m_scene->m_game->m_bgmData.at(m_audioStreamIdx)->finished && c.visible && !c.noTalkAnim.empty()) {
 					m_scene->m_sprites.at(c.noTalkAnim.string())->draw();
 					continue;
 				}
@@ -81,37 +82,67 @@ void Dialogue::draw() {
 			if (c.visible && !c.talkAnim.empty()) {
 				m_scene->m_sprites.at(c.talkAnim.string())->draw();
 			}
-		} else if (c.visible) {
+		} else if (c.visible && !c.noTalkAnim.empty()) {
 			m_scene->m_sprites.at(c.noTalkAnim.string())->draw();
 		}
 	}
 
 	if (m_displayed) {
 		m_scene->m_sprites.at("dialogue_text")->draw();
-		m_delayCounter++;
 
-		if (m_delayCounter == 2 && m_textProgression <= m_texts.at(m_currentText).length()) {
-			m_delayCounter = 0;
-			m_scene->m_sprites.at("dialogue_text")->setText(m_texts.at(m_currentText).substr(0, m_textProgression));
-			m_textProgression++;
-		} else if (m_textProgression > m_texts.at(m_currentText).length()) {
-			m_scene->m_sprites.at("dialogue_cursor")->draw();
-			m_waiting = true;
+		if (!fading()) {
+			if (m_textProgression == 0 && m_delayCounter == 0) {
+				if (!m_audioFilesPath.empty()) {
+					m_scene->playBGM(m_audioFilesPath.at(m_currentText), m_audioStreamIdx, false);
+				} else {
+					m_scene->playBGM("sound/sfx" / m_sfxSound, m_audioStreamIdx, true);
+				}
+			}
+			m_delayCounter++;
+
+			if (m_delayCounter == 1 && m_textProgression < m_texts.at(m_currentText).length()) {
+				m_delayCounter = 0;
+				m_writtenText += m_texts.at(m_currentText).at(m_textProgression);
+				m_scene->m_sprites.at("dialogue_text")->setText(m_writtenText);
+				m_textProgression++;
+				m_scene->m_game->m_bgmData.at(m_audioStreamIdx)->loop = true;
+			} else if (m_textProgression >= m_texts.at(m_currentText).length()) {
+				m_scene->m_sprites.at("dialogue_cursor")->draw();
+				m_waiting = true;
+				m_scene->m_game->m_bgmData.at(m_audioStreamIdx)->loop = false;
+			}
 		}
 	}
 }
 
 void Dialogue::setVisible(bool visible) {
 	m_displayed = visible;
+
+	if (visible) {
+		fade(Sprite::FadeInfo{ 250, 0, Sprite::FadingMode::IN });
+	} else {
+		fade(Sprite::FadeInfo{ 250, 0, Sprite::FadingMode::OUT });
+	}
 }
 
 bool Dialogue::waiting() const {
 	return m_waiting;
 }
 
+bool Dialogue::fading() {
+	return m_scene->m_sprites.at("dialogue_text")->m_fading;
+}
+
 void Dialogue::skip() {
-	m_textProgression = m_texts.at(m_currentText).length();
 	m_waiting = true;
+	while (m_textProgression < m_texts.at(m_currentText).length()) {
+		m_writtenText += m_texts.at(m_currentText).at(m_textProgression);
+		m_textProgression++;
+	}
+	m_scene->m_sprites.at("dialogue_text")->setText(m_writtenText);
+	if (m_scene->m_game->m_bgmData.size() > m_audioStreamIdx) {
+		m_scene->m_game->m_bgmData.at(m_audioStreamIdx)->loop = false;
+	}
 }
 
 bool Dialogue::next() {
@@ -121,11 +152,14 @@ bool Dialogue::next() {
 		m_delayCounter = 0;
 		m_waiting = false;
 
-		if (!m_audioFilesPath.empty()) {
-			if (m_scene->m_game->m_bgmStreams.size() > m_audioStreamIdx) {
-				clearAudioStream(m_scene->m_game->m_bgmStreams.at(m_audioStreamIdx), m_scene->m_game->m_bgmData.at(m_audioStreamIdx).get());
-			}
-			m_scene->playBGM(m_audioFilesPath.at(m_currentText), m_audioStreamIdx, false);
+		if (m_texts.at(m_currentText).substr(0, 3) == U"@c\n") {
+			m_writtenText = U"";
+			m_textProgression = 0;
+			m_texts.at(m_currentText) = m_texts.at(m_currentText).substr(3, m_texts.at(m_currentText).length() - 3);
+		}
+
+		if (m_scene->m_game->m_bgmStreams.size() > m_audioStreamIdx) {
+			clearAudioStream(m_scene->m_game->m_bgmStreams.at(m_audioStreamIdx), m_scene->m_game->m_bgmData.at(m_audioStreamIdx).get());
 		}
 
 		return true;
@@ -138,6 +172,35 @@ void Dialogue::setCharacterVisible(std::string name, bool visible) {
 		if (c.name == name) {
 			c.visible = visible;
 			return;
+		}
+	}
+}
+
+void Dialogue::fade(Sprite::FadeInfo fadeInfo) {
+	for (auto& c : m_characters) {
+		if (c.talking) {
+			if (m_displayed) {
+				m_scene->m_sprites.at(c.backgroundSprite.string())->fade(fadeInfo);
+				m_scene->m_sprites.at(c.nameSprite.string())->fade(fadeInfo);
+
+				if (m_scene->m_game->m_bgmData.size() > m_audioStreamIdx && m_scene->m_game->m_bgmData.at(m_audioStreamIdx)->finished && c.visible && !c.noTalkAnim.empty()) {
+					m_scene->m_sprites.at(c.noTalkAnim.string())->fade(fadeInfo);
+					continue;
+				}
+			}
+
+			if (c.visible && !c.talkAnim.empty()) {
+				m_scene->m_sprites.at(c.talkAnim.string())->fade(fadeInfo);
+			}
+		} else if (c.visible && !c.noTalkAnim.empty()) {
+			m_scene->m_sprites.at(c.noTalkAnim.string())->fade(fadeInfo);
+		}
+	}
+
+	if (m_displayed) {
+		m_scene->m_sprites.at("dialogue_text")->fade(fadeInfo);
+		if (m_texts.size() != 0 && m_textProgression >= m_texts.at(m_currentText).length()) {
+			m_scene->m_sprites.at("dialogue_cursor")->fade(fadeInfo);
 		}
 	}
 }

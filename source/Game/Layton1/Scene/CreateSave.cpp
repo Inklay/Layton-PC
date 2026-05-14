@@ -108,7 +108,7 @@ namespace Layton1Scene {
 			playSFX("keyboardOk");
 			m_game->addSave(m_name);
 #ifdef _DEBUG
-			fadeToNextScene("titleDrop");
+			fadeToNextScene("stMystereEntry");
 #else
 			fadeToNextScene("intro_letter");
 #endif
@@ -168,7 +168,7 @@ namespace Layton1Scene {
 	}
 
 	void CreateSave::addChar(const std::u32string& c) {
-		playSFX("keyboardChar");
+		playSFX("charBip3");
 		if (m_name.length() == 10 || c.length() > 1) {
 			return;
 		}

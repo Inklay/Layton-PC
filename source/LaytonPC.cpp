@@ -1,6 +1,7 @@
 #include "Game/Layton1/Layton1.h"
 #include <iostream>
 #include "Utils/sdlUtils.h"
+#include <SDL3/SDL_main.h>
 
 SDL_Window* initSdl() {
 	if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
@@ -16,7 +17,7 @@ SDL_Window* initSdl() {
 	return window;
 }
 
-int main()
+int main(int argc, char* argv[])
 {
 #ifdef _WIN32
 	system("chcp 65001 >nul");
@@ -33,4 +34,6 @@ int main()
 
 	SDL_DestroyWindow(window);
 	SDL_Quit();
+
+	return 0;
 }

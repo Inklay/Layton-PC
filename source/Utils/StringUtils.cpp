@@ -80,6 +80,8 @@ namespace stringUtils {
 		replace(str, "<2>",  "²");
 		replace(str, "<3>",  "³");
 		replace(str, "<9>",  "'");
+
+		replace(str, "@3",  "");
 	}
 
 	std::u32string toU32(const std::string& u8str)

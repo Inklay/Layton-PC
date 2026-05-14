@@ -20,6 +20,8 @@ void Layton1::init() {
 	m_scenes["intro_carDialogue1"] = std::make_unique<Layton1Scene::IntroCarDialogue1>(this);
 	m_scenes["intro_carDialogue2"] = std::make_unique<Layton1Scene::IntroCarDialogue2>(this);
 	m_scenes["titleDrop"] = std::make_unique<Layton1Scene::TitleDrop>(this);
+	m_scenes["arrivingAtStMystere_cinematic"] = std::make_unique<Cinematic>(this, "video/m2.mp4", std::vector<fileUtils::path>{ "stream/M2.wav" }, "stMystereEntry", 0.5f, 0.5f);
+	m_scenes["stMystereEntry"] = std::make_unique<Layton1Scene::StMystereEntry>(this);
 
 	m_scenes["puzzle1"] = std::make_unique<Layton1Scene::Puzzle1>(this, "intro_carDialogue2");
 
@@ -45,7 +47,9 @@ void Layton1::init() {
 		{ "introSmallBang", "39"},
 		{ "introBang", "43"},
 		{ "unlockHint", "83"},
-		{ "keyboardChar", "99"},
+		{ "charBip1", "97"},
+		{ "charBip2", "98"},
+		{ "charBip3", "99"},
 		{ "puzzlePicaratDecrease", "130"},
 		{ "switchHint", "131"},
 		{ "lukeAnswer1", "153"},

@@ -29,8 +29,16 @@ void AnimatedSprite::draw(int zIndex) {
 		}
 	}
 
+	if (m_fading) {
+		computeOpacity();
+	}
 
 	const SDL_FRect* subTexture = m_subTexture.h < 0 || m_subTexture.w < 0 ? nullptr : reinterpret_cast<const SDL_FRect*>(&m_subTexture);
+
+	for (const auto& texture : m_textures) {
+		SDL_SetTextureAlphaMod(texture.second, m_opacity);
+	}
+	
 	SDL_RenderTexture(m_scene->m_game->m_renderer, m_textures.at(m_anim.m_imageIdx.at(m_frameIndex)), subTexture, reinterpret_cast<const SDL_FRect*>(&m_transform));
 
 	m_frames++;

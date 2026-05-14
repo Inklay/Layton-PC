@@ -4,7 +4,7 @@
 
 namespace Layton1Scene {
 	IntroCarDialogue2::IntroCarDialogue2(Game* game) :
-		Scene(game, 0.5f, 0.5f)
+		Scene(game, 0.5f, 0.8f)
 	{
 	}
 
@@ -65,34 +65,34 @@ namespace Layton1Scene {
 				}
 
 				switch (m_dialogueProgression) {
-				case 1:
-					m_dialogue.setDialogue("itext/fr/t_22.txt", "layton", { "stream/SP_V_OP_138.wav" });
-					m_dialogueProgression++;
-					break;
-				case 2:
-					m_dialogue.setDialogue("itext/fr/t_23.txt", "luke2", { "stream/SP_V_OP_139.wav" });
-					m_bottomBackground = 1;
-					m_dialogue.setCharacterVisible("luke", false);
-					m_dialogue.setCharacterVisible("layton", false);
-					m_dialogue.setCharacterVisible("luke2", true);
-					m_dialogue.setCharacterVisible("layton2", true);
-					m_dialogueProgression++;
-					break;
-				case 3:
-					m_dialogue.setDialogue("itext/fr/t_24.txt", "layton2", { "stream/SP_V_OP_140.wav" });
-					m_dialogueProgression++;
-					break;
-				case 4:
-					m_dialogue.setDialogue("itext/fr/t_25.txt", "layton", { "stream/SP_V_OP_141.wav" });
-					m_bottomBackground = 0;
-					m_dialogue.setCharacterVisible("luke2", false);
-					m_dialogue.setCharacterVisible("layton2", false);
-					m_dialogue.setCharacterVisible("luke", true);
-					m_dialogue.setCharacterVisible("layton", true);
-					m_dialogueProgression++;
-					break;
-				case 5:
-					fadeToNextScene("titleDrop");
+					case 1:
+						m_dialogue.setDialogue("itext/fr/t_22.txt", "layton", { "stream/SP_V_OP_138.wav" });
+						m_dialogueProgression++;
+						break;
+					case 2:
+						m_dialogue.setDialogue("itext/fr/t_23.txt", "luke2", { "stream/SP_V_OP_139.wav" });
+						m_bottomBackground = 1;
+						m_dialogue.setCharacterVisible("luke", false);
+						m_dialogue.setCharacterVisible("layton", false);
+						m_dialogue.setCharacterVisible("luke2", true);
+						m_dialogue.setCharacterVisible("layton2", true);
+						m_dialogueProgression++;
+						break;
+					case 3:
+						m_dialogue.setDialogue("itext/fr/t_24.txt", "layton2", { "stream/SP_V_OP_140.wav" });
+						m_dialogueProgression++;
+						break;
+					case 4:
+						m_dialogue.setDialogue("itext/fr/t_25.txt", "layton", { "stream/SP_V_OP_141.wav" });
+						m_bottomBackground = 0;
+						m_dialogue.setCharacterVisible("luke2", false);
+						m_dialogue.setCharacterVisible("layton2", false);
+						m_dialogue.setCharacterVisible("luke", true);
+						m_dialogue.setCharacterVisible("layton", true);
+						m_dialogueProgression++;
+						break;
+					case 5:
+						fadeToNextScene("titleDrop");
 				}
 			} else {
 				m_dialogue.skip();

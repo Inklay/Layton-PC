@@ -70,6 +70,10 @@ void TextSprite::draw(int) {
 		computeTranslation();
 	}
 
+	if (m_fading) {
+		computeOpacity();
+	}
+
 	const SDL_FRect baseRect = m_transform;
 	m_transform.h = m_height * m_scene->m_game->m_windowMultiplier;
 	m_transform.w = m_width * m_scene->m_game->m_windowMultiplier;

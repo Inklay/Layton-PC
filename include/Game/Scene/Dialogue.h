@@ -2,6 +2,7 @@
 
 #include "utils/fileUtils.h"
 #include <SDL3/SDL.h>
+#include "Game/Sprite/Sprite.h"
 
 class Scene;
 
@@ -23,16 +24,20 @@ public:
 	void draw();
 	void skip();
 	bool next();
+	bool fading();
 	bool waiting() const;
 	void setVisible(bool visible);
-	void setDialogue(const fileUtils::path& textFilePath, const std::string& character, std::vector<fileUtils::path> audioFilesPath = {});
+	void setDialogue(const fileUtils::path& textFilePath, const std::string& character, std::vector<fileUtils::path> audioFilesPath = {}, const fileUtils::path& sfxSound = "99.wav");
 	void setCharacterVisible(std::string name, bool visible);
+	void fade(Sprite::FadeInfo fadeInfo);
 
 private:
 	Scene* m_scene;
 	std::vector<Character> m_characters;
 	std::vector<std::u32string> m_texts;
 	std::vector<fileUtils::path> m_audioFilesPath;
+	std::u32string m_writtenText;
+	fileUtils::path m_sfxSound = "99.wav";
 	size_t m_textProgression = 0;
 	size_t m_audioStreamIdx = -1;
 	int m_delayCounter = 0;

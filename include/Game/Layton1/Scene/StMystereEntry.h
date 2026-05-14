@@ -4,14 +4,16 @@
 
 namespace Layton1Scene {
 
-	class TitleScreen : public Scene {
+	class StMystereEntry : public Scene {
 	public:
-		TitleScreen(Game* game);
+		StMystereEntry(Game* game);
 		void load();
 		void render();
 		void handleClick(const std::string& spriteName, SDL_Event event);
 
 	private:
-		bool m_hasSave;
+		int m_dialogueProgression = 0;
+		int m_bottomBackground = 0;
+		int m_topBackground = 0;
 	};
 };

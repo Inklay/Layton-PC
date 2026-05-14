@@ -50,7 +50,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)dependencies\SDL3\include;$(ProjectDir)include;$(ProjectDir)dependencies\SDL3_image\include;$(ProjectDir)dependencies\FFmpeg_lgpl\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)dependencies\SDL3\lib\win_amd64;$(ProjectDir)dependencies\SDL3_image\lib\win_amd64;$(ProjectDir)dependencies\FFmpeg_lgpl\lib\win_amd64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)dependencies\SDL3\lib\win_x64;$(ProjectDir)dependencies\SDL3_image\lib\win_x64;$(ProjectDir)dependencies\FFmpeg_lgpl\lib\win_x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -86,7 +86,7 @@
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>avformat.lib;avutil.lib;avcodec.lib;swscale.lib;SDL3.lib;SDL3_image.lib</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
@@ -113,6 +113,7 @@
     <ClCompile Include="source\Game\Layton1\Scene\IntroCarDialogue2.cpp" />
     <ClCompile Include="source\Game\Layton1\Scene\Puzzle\Puzzle.cpp" />
     <ClCompile Include="source\Game\Layton1\Scene\Puzzle\Puzzle1.cpp" />
+    <ClCompile Include="source\Game\Layton1\Scene\StMystereEntry.cpp" />
     <ClCompile Include="source\Game\Layton1\Scene\TitleDrop.cpp" />
     <ClCompile Include="source\Game\Scene\Cinematic.cpp" />
     <ClCompile Include="source\Game\Layton1\Scene\IntroCarDialogue1.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="include\Game\Layton1\Scene\Puzzle\Puzzle.h" />
     <ClInclude Include="include\Game\Layton1\Scene\Puzzle\Puzzle1.h" />
     <ClInclude Include="include\Game\Layton1\Scene\Puzzle\Puzzles.h" />
+    <ClInclude Include="include\Game\Layton1\Scene\StMystereEntry.h" />
     <ClInclude Include="include\Game\Layton1\Scene\TitleDrop.h" />
     <ClInclude Include="include\Game\Layton1\Scene\Scenes.h" />
     <ClInclude Include="include\Game\Scene\Cinematic.h" />

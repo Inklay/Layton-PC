@@ -45,33 +45,36 @@ namespace Layton1Scene {
 				m_bottomOpacity = (uint8_t)(m_timer * 180 / 1500);
 				if (m_bottomOpacity >= 180) {
 					m_bottomOpacity = 180;
-					m_step = 1;
+					m_step++;
 					m_timer = 0;
 				}
 				break;
-			case 1: {
+			case 1:
 				m_sprites.at("firstText")->fade({ 1000, 0, Sprite::FadingMode::IN });
-				if (!m_sprites.at("firstText")->m_fading) {
-					m_step = 2;
-					m_timer = 0;
-				}
+				m_step++;
 				break;
-			}
 			case 2:
-				m_sprites.at("firstText")->fade({ 1000, -1500, Sprite::FadingMode::OUT });
 				if (!m_sprites.at("firstText")->m_fading) {
-					m_step = 3;
+					m_sprites.at("firstText")->fade({ 1000, -1500, Sprite::FadingMode::OUT });
+					m_step++;
+				}
+				m_sprites.at("firstText")->draw();
+				break;
+			case 3:
+				if (!m_sprites.at("firstText")->m_fading) {
+					m_step++;
 					m_timer = 0;
 					playBGM("stream/SP_V_EP_001.wav");
 				}
+				m_sprites.at("firstText")->draw();
 				break;
-			case 3:
+			case 4:
 				m_sprites.at("fadingText1")->draw();
 				m_sprites.at("fadingText2")->draw();
 				m_sprites.at("fadingText3")->draw();
 				m_sprites.at("fadingText4")->draw();
 				m_sprites.at("fadingText5")->draw();
-				if (m_timer >= 10500) {
+				if (m_timer >= 10450) {
 					pauseBGM();
 					fadeToNextScene("intro_cinematic");
 				}
