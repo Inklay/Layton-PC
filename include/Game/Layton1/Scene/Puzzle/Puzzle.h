@@ -43,13 +43,13 @@ namespace Layton1Scene {
 		void render();
 		void unload();
 		void handleClick(const std::string& spriteName, SDL_Event event);
-		void startValidation();
 
 	protected:
 		std::vector<fileUtils::path> getNumberSprites(int number, const std::string& font, int padding = 0);
 		void updateNumberSprite(const std::vector<fileUtils::path>& sprites, const std::string& name, SDL_FRect baseRect, float spacing);
 		void hideBottomUI();
 		void showBottomUI();
+		void startValidation();
 		virtual bool validate() = 0;
 		bool isClosedShape(std::vector<SDL_FPoint> points);
 		SDL_FPoint getShapeCenter(std::vector<SDL_FPoint> points);

@@ -2,6 +2,7 @@
 #include "Game/Layton1/Layton1Save.h"
 #include "Game/Layton1/Scene/Scenes.h"
 #include "Game/Layton1/Scene/Puzzle/Puzzles.h"
+#include "Game/Layton1/Scene/Map/Maps.h"
 #include "Game/Scene/Cinematic.h"
 
 Layton1::Layton1(const fileUtils::path& assetsPath, SDL_Window& window) :
@@ -24,6 +25,8 @@ void Layton1::init() {
 	m_scenes["stMystereEntry"] = std::make_unique<Layton1Scene::StMystereEntry>(this);
 
 	m_scenes["puzzle1"] = std::make_unique<Layton1Scene::Puzzle1>(this, "intro_carDialogue2");
+
+	m_scenes["map_drawBridge"] = std::make_unique<Layton1Scene::DrawBridge>(this);
 
 	m_sfx = {
 		{ "level5Logo", "0"},

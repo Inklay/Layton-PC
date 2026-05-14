@@ -100,7 +100,7 @@ namespace Layton1Scene {
 						m_dialogueProgression++;
 						break;
 					case 4:
-						fadeToNextScene("room1");
+						fadeToNextScene("map_outsideStMystere");
 						break;
 				}
 			} else {
