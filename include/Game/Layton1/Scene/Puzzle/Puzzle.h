@@ -45,7 +45,6 @@ namespace Layton1Scene {
 		void handleClick(const std::string& spriteName, SDL_Event event);
 
 	protected:
-		std::vector<fileUtils::path> getNumberSprites(int number, const std::string& font, int padding = 0);
 		void updateNumberSprite(const std::vector<fileUtils::path>& sprites, const std::string& name, SDL_FRect baseRect, float spacing);
 		void hideBottomUI();
 		void showBottomUI();

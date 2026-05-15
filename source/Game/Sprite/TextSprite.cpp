@@ -62,6 +62,23 @@ void TextSprite::draw(int) {
 		m_transform.x *= m_scene->m_game->m_windowMultiplier;
 	}
 
+	if (m_transform.x < -1 * m_scene->m_game->m_windowMultiplier) {
+		m_transform.x = (WIDTH + (m_transform.x * -1) / m_scene->m_game->m_windowMultiplier) / 2;
+
+		for (size_t i = 0; i < m_str.length(); i++) {
+			const std::vector<std::u32string>::iterator charIt = std::find(m_fontChars.begin(), m_fontChars.end(), std::u32string(1, m_str.at(i)));
+
+			if (charIt == m_fontChars.end()) {
+				return;
+			}
+
+			const uint64_t charIdx = charIt - m_fontChars.begin();
+			m_transform.x -= (m_glyphWidths.at(charIdx) + 2) / 2;
+		}
+
+		m_transform.x *= m_scene->m_game->m_windowMultiplier;
+	}
+
 	if (m_transform.y == -1 * m_scene->m_game->m_windowMultiplier) {
 		m_transform.y = (HALF_HEIGHT * 1.5f - m_height) * m_scene->m_game->m_windowMultiplier;
 	}

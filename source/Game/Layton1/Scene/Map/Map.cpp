@@ -1,15 +1,30 @@
 #include "Game/Layton1/Scene/Map/Map.h"
+#include "Game/Game.h"
+#include "Game/Sprite/TextSprite.h"
 
 namespace Layton1Scene {
-	Map::Map(Game* game, const std::string& bgm) :
+	Map::Map(Game* game, const std::string& bgm, const std::string& internalName) :
 		Scene(game),
-		m_bgm(bgm)
+		m_bgm(bgm),
+		m_internalName(internalName)
 	{
 	}
 
 	void Map::load() {
+#ifdef _DEBUG
+		m_game->m_save->m_chapterProgression = 1;
+		m_game->m_save->m_solvedPuzzles = 1;
+#endif
 		m_sprites.insert({ "bottomFading", std::make_unique<Sprite>("bg/custom/black_screen.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
 		m_sprites.insert({ "fading", std::make_unique<Sprite>("bg/custom/black_screen.png", this, SDL_FRect{ 0, 0, WIDTH, HEIGHT }) });
+
+		m_sprites.insert({ "solved", std::make_unique<Sprite>("ani/fr/puzzle_numbers.10.png", this, SDL_FRect{ 2, 3, 52, 22 }) });
+		m_sprites.insert({ "name", std::make_unique<TextSprite>("font/fontevent.png", "storytext/fr/map" + m_internalName + ".txt", this, SDL_FRect{ -85, 7, WIDTH, 12 }, SDL_Color{ 0, 0, 0 }) });
+
+		std::vector<fileUtils::path> numberSprites = getNumberSprites(m_game->m_save->m_solvedPuzzles, "fr/puzzle_numbers");
+		for (size_t i = numberSprites.size() - 1; i != SIZE_MAX; i--) {
+			m_sprites.insert({ "solvedNumber" + std::to_string(i), std::make_unique<Sprite>(numberSprites.at(i), this, SDL_FRect{ 58.0f + i * 10, 8, 8, 12}) });
+		}
 		
 		loadMap();
 		loadDialogue();
@@ -35,6 +50,17 @@ namespace Layton1Scene {
 
 		if (m_currentDialogueId == -1) {
 			renderMap();
+
+			m_sprites.at("name")->draw();
+			m_sprites.at("solved")->draw();
+			m_sprites.at("solvedNumber0")->draw();
+
+			if (m_sprites.count("solvedNumber1")) {
+				m_sprites.at("solvedNumber1")->draw();
+			}
+			if (m_sprites.count("solvedNumber2")) {
+				m_sprites.at("solvedNumber2")->draw();
+			}
 		} else {
 			renderDialogue();
 			m_dialogue.draw();

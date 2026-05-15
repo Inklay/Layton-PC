@@ -73,7 +73,7 @@ void Dialogue::draw() {
 				m_scene->m_sprites.at(c.backgroundSprite.string())->draw();
 				m_scene->m_sprites.at(c.nameSprite.string())->draw();
 
-				if (m_scene->m_game->m_bgmData.size() > m_audioStreamIdx && m_scene->m_game->m_bgmData.at(m_audioStreamIdx)->finished && c.visible && !c.noTalkAnim.empty()) {
+				if (m_scene->m_game->m_bgmData.size() > m_audioStreamIdx && ((m_scene->m_game->m_bgmData.at(m_audioStreamIdx)->finished && m_audioFilesPath.size() > 0) || (m_textProgression >= m_texts.at(m_currentText).length() && m_audioFilesPath.size() == 0)) && c.visible && !c.noTalkAnim.empty()) {
 					m_scene->m_sprites.at(c.noTalkAnim.string())->draw();
 					continue;
 				}

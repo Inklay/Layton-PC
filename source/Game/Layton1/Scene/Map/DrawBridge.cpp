@@ -4,10 +4,11 @@
 
 namespace Layton1Scene {
 	DrawBridge::DrawBridge(Game* game) :
-		Map(game, "sound/SEQ_BG_002.wav")
+		Map(game, "sound/SEQ_BG_002.wav", "1")
 	{}
 
 	void DrawBridge::loadMap() {
+		m_sprites.insert({ "topBackground", std::make_unique<Sprite>("bg/map_1.png", this, SDL_FRect{ 0, 0, WIDTH, HALF_HEIGHT }, true) });
 		m_sprites.insert({ "bottomBackground", std::make_unique<Sprite>("bg/room_1_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 		m_sprites.insert({ "anim1", std::make_unique<AnimatedSprite>("ani/r1_bgobj_1.gfx.anim", this, SDL_FRect{ 158, HALF_HEIGHT, 6, 30 }, true) });
 		m_sprites.insert({ "anim2", std::make_unique<AnimatedSprite>("ani/r1_bgobj_2.gfx.anim", this, SDL_FRect{ 65, HEIGHT - 28, 32, 32 }, true) });
@@ -31,8 +32,8 @@ namespace Layton1Scene {
 
 		m_dialogue.load({
 			{ "layton", "ani/fr/layton_n.png", "ani/event_window_1.1.png", "", "", SDL_FRect{ 0, 0, 0, 0 } },
-			{ "luke", "ani/fr/luke_n.png", "ani/event_window_1.1.png", "ani/luke_e_face.notalk.anim", "ani/luke_e_face.talk.anim", SDL_FRect{ (m_sprites.at("luke")->m_transform.x / m_game->m_windowMultiplier) + 17, HEIGHT - 100, 19, 13 } },
-			{ "luke2", "ani/fr/luke_n.png", "ani/event_window_1.1.png", "ani/luke_e_face.notalk.anim", "ani/luke_e_face.smile.anim", SDL_FRect{ (m_sprites.at("luke")->m_transform.x / m_game->m_windowMultiplier) + 17, HEIGHT - 100, 19, 13 } }
+			{ "luke", "ani/fr/luke_n.png", "ani/event_window_1.1.png", "ani/luke_e_face.notalk.anim", "ani/luke_e_face.talk.anim", SDL_FRect{ (m_sprites.at("luke")->m_transform.x / m_game->m_windowMultiplier) + 17, HEIGHT - 99, 19, 13 } },
+			{ "luke2", "ani/fr/luke_n.png", "ani/event_window_1.1.png", "ani/luke_e_face.notalk.anim", "ani/luke_e_face.smile.anim", SDL_FRect{ (m_sprites.at("luke")->m_transform.x / m_game->m_windowMultiplier) + 17, HEIGHT - 99, 19, 13 } }
 		});
 
 		if (m_game->m_save->m_chapter == 0 && m_game->m_save->m_chapterProgression == 0) {
@@ -43,6 +44,7 @@ namespace Layton1Scene {
 
 	void DrawBridge::renderMap() {
 		m_sprites.at("bottomBackground")->draw();
+		m_sprites.at("topBackground")->draw();
 		m_sprites.at("anim1")->draw();
 		m_sprites.at("anim2")->draw();
 		m_sprites.at("anim3")->draw();
@@ -68,10 +70,14 @@ namespace Layton1Scene {
 		} else if (m_currentDialogueId == 1) {
 			m_sprites.at("topBackgroundDialogue1")->draw();
 			m_sprites.at("bottomBackground")->draw();
-			m_sprites.at("layton")->draw();
-			m_sprites.at("layton2")->draw();
-			m_sprites.at("luke")->draw();
-			m_sprites.at("luke2")->draw();
+
+			if (m_dialogueProgression < 2) {
+				m_sprites.at("layton")->draw();
+				m_sprites.at("luke")->draw();
+			} else {
+				m_sprites.at("layton2")->draw();
+				m_sprites.at("luke2")->draw();
+			}
 
 			if (!isFadingToDialogue() && m_dialogueProgression == 0) {
 				m_dialogue.setCharacterVisible("luke", true);
@@ -96,12 +102,11 @@ namespace Layton1Scene {
 					m_dialogue.setCharacterVisible("luke", false);
 					m_dialogue.setCharacterVisible("luke2", true);
 					m_dialogue.setDialogue("etext/fr/e33_t2.txt", "luke2", {}, "charBip1");
-					switchSprites("luke", "luke2");
-					switchSprites("layton", "layton2");
 					break;
 				case 2:
 					m_dialogue.setCharacterVisible("luke2", false);
 					changeDialogue(-1);
+					m_game->m_save->m_chapterProgression++;
 					break;
 			}
 		}

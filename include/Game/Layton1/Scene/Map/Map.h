@@ -10,7 +10,7 @@ namespace Layton1Scene {
 		void handleClick(const std::string& spriteName, SDL_Event event);
 
 	protected:
-		Map(Game* game, const std::string& bgm);
+		Map(Game* game, const std::string& bgm, const std::string& internalName);
 		void findHintCoin();
 		void changeDialogue(int dialogueId);
 		bool isFadingToDialogue();
@@ -21,6 +21,7 @@ namespace Layton1Scene {
 		virtual void loadDialogue() = 0;
 
 		const std::string m_bgm;
+		const std::string m_internalName;
 		int m_currentDialogueId = -1;
 		int m_nextDialogueId = -1;
 		int m_dialogueProgression = 0;

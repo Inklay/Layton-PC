@@ -29,7 +29,7 @@ namespace Layton1Scene {
 		m_sprites.insert({ "introTitle", std::make_unique<Sprite>("bg/q_alt_sub_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
 		m_sprites.insert({ "introPicaratBackground", std::make_unique<Sprite>("bg/fr/picarat_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
 		m_sprites.insert({ "introPuzzleText", std::make_unique<Sprite>("ani/fr/pazzle_mes.png", this, SDL_FRect{ centerXPos(88), HALF_HEIGHT + 30, 88, 14})});
-		m_sprites.insert({ "introPuzzleName", std::make_unique<TextSprite>("font/fontevent.png", "qtext/fr/t_" + m_internalName + ".txt", this, SDL_FRect{-1, HALF_HEIGHT + 120, WIDTH, 12}, SDL_Color{0, 0, 0})});
+		m_sprites.insert({ "introPuzzleName", std::make_unique<TextSprite>("font/fontevent.png", "qtext/fr/t_" + m_internalName + ".txt", this, SDL_FRect{-1, HALF_HEIGHT + 120, WIDTH, 12}, SDL_Color{0, 0, 0}) });
 
 		std::vector<fileUtils::path> numberSprites = getNumberSprites(m_currentPicarat, "picarat_number_big");
 		for (size_t i = 0; i < numberSprites.size(); i++) {
@@ -273,28 +273,6 @@ namespace Layton1Scene {
 			m_state = END_PICARAT_FADING_OUT;
 			m_sprites.at("fading")->fade({ 300, 0, Sprite::FadingMode::IN });
 		}
-	}
-
-	std::vector<fileUtils::path> Puzzle::getNumberSprites(int number, const std::string& font, int padding) {
-		std::vector<fileUtils::path> vec;
-		int digit;
-
-		if (number == 0) {
-			vec.emplace_back("ani/" + font + ".0.png");
-			return vec;
-		}
-
-		while (number != 0) {
-			digit = number % 10;
-			vec.emplace_back("ani/" + font + "." + std::to_string(digit) + ".png");
-			number /= 10;
-		}
-
-		while (vec.size() < padding) {
-			vec.emplace_back("ani/" + font + ".0.png");
-		}
-
-		return vec;
 	}
 
 	void Puzzle::showBottomUI() {

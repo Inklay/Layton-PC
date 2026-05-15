@@ -195,6 +195,28 @@ void Scene::fadeBGM(float duration, size_t audioStreamIdx) {
 }
 
 void Scene::switchSprites(const std::string& out, const std::string& in) {
-	m_sprites.at(in)->fade(Sprite::FadeInfo{ 300, 0, Sprite::FadingMode::IN });
-	m_sprites.at(out)->fade(Sprite::FadeInfo{ 300, 0, Sprite::FadingMode::OUT });
+	m_sprites.at(in)->fade(Sprite::FadeInfo{ 100, 0, Sprite::FadingMode::IN });
+	m_sprites.at(out)->fade(Sprite::FadeInfo{ 100, 0, Sprite::FadingMode::OUT });
+}
+
+std::vector<fileUtils::path> Scene::getNumberSprites(int number, const std::string& font, int padding) {
+	std::vector<fileUtils::path> vec;
+	int digit;
+
+	if (number == 0) {
+		vec.emplace_back("ani/" + font + ".0.png");
+		return vec;
+	}
+
+	while (number != 0) {
+		digit = number % 10;
+		vec.emplace_back("ani/" + font + "." + std::to_string(digit) + ".png");
+		number /= 10;
+	}
+
+	while (vec.size() < padding) {
+		vec.emplace_back("ani/" + font + ".0.png");
+	}
+
+	return vec;
 }
