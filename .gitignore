@@ -1,13 +1,11 @@
 .vs/
-x64/
-ARM64/
-*.user
-Layton PC/
+build/
+out/
 NDS_UNPACK/
 saves/
 bin/*
-!bin/win_x64/
-!bin/win_arm64/
+!bin/windows_x64/
+!bin/windows_arm64/
 
 # LAYTON1 custom assets
 games/*
