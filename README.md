@@ -22,15 +22,15 @@ Remaining steps for Windows arm64 full support:
 - build vgmtrans-cli for arm
 
 Support is also planned for:
-- Linux x64
-- Linux arm64
-- MacOS arm64 (Apple M series)
+- Linux x64 (Cmake target existing but no dependencies is included/built yet)
+- Linux arm64 (Cmake target existing but no dependencies is included/built yet)
+- MacOS arm64 (Apple Silicon)
 
 ## Building
 
-You need to use C++20 or later to, build this project.
+This project can be built using and needs C++20 or later to build.
 
-The only dependencies needed for now are SDL3 (I'm specifically using SDL3-3.4.8) and SDL3_Image (3.4.4) and some FFmpeg libs
+All libs for currently supported platforms are in the repo but if you somehow need to add them yourself the only dependencies needed for now are SDL3 (I'm specifically using SDL3-3.4.8) and SDL3_Image (3.4.4) and some FFmpeg libs.
 
 ## Thanks and credits:
 
