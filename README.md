@@ -4,15 +4,34 @@ A C++ rewrite of the DS Layton game that can read DS roms assets to run on PC. T
 
 The project will only host the code C++ code that allows to convert the DS game assets and play the game, there will never be any assets hosted on this repository. To be able to use this project you will need a legally obtained dump of your Layton game.
 
-For now I'm working on adding the basics of the gameplay (puzzles, maps, dialogues, cinematics...) Since this is a full rewrite of the games, it will take some time.
+For now I'm working on adding the basics of the gameplay (I'm almost done writing the map class). Since this is a full rewrite of the games, it will take some time.
+
+## Usage
+
+For now no prebuilt binairies are posted since the project isn't really usable so you'll have to build it yourself.
+You'll also need to put the corresponding files in the bin/ folder.
+
+## Supported platforms
+
+Currently only Windows x64 is fully supported but I'm currently working on adding Windows arm64 support.
+
+Remaining steps for Windows arm64 full support:
+- add an arm build target in the solution (or maybe switch to cmake)
+- build fluidsynth for arm
+- build SDATxtract for arm
+- build vgmstream-cli for arm
+- build vgmtrans-cli for arm
+
+Support is also planned for:
+- Linux x64
+- Linux arm64
+- MacOS arm64 (Apple M series)
 
 ## Building
 
-You need to use C++17 or later to, build this project.
+You need to use C++20 or later to, build this project.
 
 The only dependencies needed for now are SDL3 (I'm specifically using SDL3-3.4.8) and SDL3_Image (3.4.4) and some FFmpeg libs
-
-You'll also need to put the corresponding files in the bin/ folder (for now i've only added binaries and libs for Windows x64, i'll add more later)
 
 ## Thanks and credits:
 
