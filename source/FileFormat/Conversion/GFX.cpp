@@ -60,13 +60,12 @@ void GFX::convertToPngs(const fileUtils::path& filePath, const fileUtils::path& 
 std::vector<GFX::Image> GFX::getImages(unsigned int imageCount, unsigned int colorDepth, const fileUtils::buffer& buffer, uint64_t& offset, bool isArj) {
 	std::vector<GFX::Image> images;
 	images.reserve(imageCount);
-	
+
 	for (unsigned int imageIdx = 0; imageIdx < imageCount; imageIdx++) {
 		uint16_t width = (buffer.at(offset + 1) << 8) | buffer.at(offset);
 		uint16_t height = (buffer.at(offset + 3) << 8) | buffer.at(offset + 2);
 		uint16_t partCount = (buffer.at(offset + 5) << 8) | buffer.at(offset + 4);
 		std::vector<GFX::Part> parts;
-
 		parts.reserve(partCount);
 		offset += 8;
 
@@ -74,6 +73,7 @@ std::vector<GFX::Image> GFX::getImages(unsigned int imageCount, unsigned int col
 			if (isArj) {
 				offset += 4;
 			}
+
 			uint16_t posX = (buffer.at(offset + 1) << 8) | buffer.at(offset);
 			uint16_t posY = (buffer.at(offset + 3) << 8) | buffer.at(offset + 2);
 			uint64_t hExpo = (uint64_t)((buffer.at(offset + 5) << 8) | buffer.at(offset + 4)) + 3;
@@ -84,6 +84,11 @@ std::vector<GFX::Image> GFX::getImages(unsigned int imageCount, unsigned int col
 
 			if (colorDepth == 4) {
 				size /= 2;
+			}
+
+			if (size > 0xffff) {
+				images.clear();
+				return images;
 			}
 
 			fileUtils::buffer data;
@@ -255,6 +260,10 @@ void GFX::createAnim(const fileUtils::buffer& buffer, uint64_t offset, const fil
 			offset += 4;
 		}
 		
+		if (animationNames.at(i) == ":") {
+			return;
+		}
+
 		std::string outputFile = filePath.filename().replace_extension(animationNames.at(i) + ".anim").string();
 		stringUtils::replace(outputFile, "*", "");
 		stringUtils::replace(outputFile, "?", "");

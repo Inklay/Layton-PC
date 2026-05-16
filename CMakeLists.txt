@@ -163,14 +163,14 @@ install(TARGETS LaytonPC
     RUNTIME DESTINATION .
 )
 
-# Docs (flat, next to executable)
+# Docs
 install(FILES
     ${CMAKE_SOURCE_DIR}/README.md
     ${CMAKE_SOURCE_DIR}/LICENSE
     DESTINATION .
 )
 
-# Third-party licenses folder (flat)
+# Third-party licenses folder
 install(DIRECTORY
     ${CMAKE_SOURCE_DIR}/licenses/
     DESTINATION licenses

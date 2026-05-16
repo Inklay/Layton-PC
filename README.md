@@ -13,14 +13,10 @@ You'll also need to put the corresponding files in the bin/ folder.
 
 ## Supported platforms
 
-Currently only Windows x64 is fully supported but I'm currently working on adding Windows arm64 support.
-
-Remaining steps for Windows arm64 full support:
-- somehow build fluidsynth for arm
-- build vgmstream-cli for arm
+Windows x64 and arm64 are fully supported.
 
 Support is also planned for:
-- Linux x64 (Cmake target existing but no dependencies is included/built yet)
+- Linux x64 (Cmake target existing but no dependencies is built yet)
 - Linux arm64 (Cmake target existing but no dependencies is included/built yet)
 - MacOS arm64 (Apple Silicon)
 
