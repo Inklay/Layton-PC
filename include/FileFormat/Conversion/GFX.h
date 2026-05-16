@@ -23,7 +23,7 @@ public:
 	};
 
 private:
-	static void convertToPngs(const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool isCompressed);
+	static void convertToPngs(const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool);
 	static std::vector<Image> getImages(unsigned int imageCount, unsigned int colorDepth, const fileUtils::buffer& buffer, uint64_t& offset, bool isArj);
 	static std::pair<uint64_t, uint64_t> fixImageSize(Image image);
 	static void createPngs(unsigned int imageCount, unsigned int colorDepth, const std::vector<uint16_t>& colors, std::vector<GFX::Image>& images, const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool isArj);

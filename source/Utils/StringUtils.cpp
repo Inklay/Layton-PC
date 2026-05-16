@@ -1,5 +1,6 @@
 #include "Utils/StringUtils.h"
 #include <cuchar>
+#include <climits>
 
 namespace stringUtils {
 	void replace(std::string& str, const std::string& toReplace, const std::string& replaceWith) {

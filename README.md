@@ -16,10 +16,8 @@ You'll also need to put the corresponding files in the bin/ folder.
 Currently only Windows x64 is fully supported but I'm currently working on adding Windows arm64 support.
 
 Remaining steps for Windows arm64 full support:
-- test fluidsynth for arm
-- build SDATxtract for arm
+- somehow build fluidsynth for arm
 - build vgmstream-cli for arm
-- test vgmtrans-cli for arm
 
 Support is also planned for:
 - Linux x64 (Cmake target existing but no dependencies is included/built yet)

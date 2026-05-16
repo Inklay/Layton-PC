@@ -9,7 +9,7 @@ void GFX::convert(const fileUtils::path& folderPath, const fileUtils::path& outp
 	convertFileFromFolder(folderPath, outputFolder, ".arj", convertToPngs);
 }
 
-void GFX::convertToPngs(const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool isCompressed) {
+void GFX::convertToPngs(const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool) {
 	bool isArj = filePath.extension() == ".arj";
 
 	if (isArj && (std::filesystem::exists(outputFolder / filePath.filename().replace_extension("png")) || std::filesystem::exists(outputFolder / filePath.filename().replace_extension("0.png")))) {
@@ -141,8 +141,8 @@ void GFX::createPngs(unsigned int imageCount, unsigned int colorDepth, const std
 }
 
 void GFX::createArcPng(GFX::Part& part, const std::vector<uint16_t>& colors, std::pair<uint64_t, uint64_t> size, fileUtils::buffer& pixelBuffer) {
-	for (int h = 0; h < part.m_height; h++) {
-		for (int w = 0; w < part.m_width; w++) {
+	for (uint64_t h = 0; h < part.m_height; h++) {
+		for (uint64_t w = 0; w < part.m_width; w++) {
 			uint16_t colorIdx = part.m_data.at(h * part.m_width + w);
 
 			if (colorIdx == 0) {
@@ -150,8 +150,8 @@ void GFX::createArcPng(GFX::Part& part, const std::vector<uint16_t>& colors, std
 			}
 
 			uint16_t color = colors[colorIdx];
-			int posX = part.m_posX + w;
-			int posY = part.m_posY + h;
+			uint64_t posX = part.m_posX + w;
+			uint64_t posY = part.m_posY + h;
 			size_t pixelOffset = posY * size.first + posX;
 
 			pixelBuffer[pixelOffset * 4 + 0] = (color & 0x001F) * 0x08;
@@ -165,8 +165,8 @@ void GFX::createArcPng(GFX::Part& part, const std::vector<uint16_t>& colors, std
 void GFX::createArjPng(GFX::Part& part, const std::vector<uint16_t>& colors, std::pair<uint64_t, uint64_t> size, fileUtils::buffer& pixelBuffer) {
 	int offset = 0;
 
-	for (int h = 0; h < part.m_height / 8; h++) {
-		for (int w = 0; w < part.m_width / 8; w++) {
+	for (uint64_t h = 0; h < part.m_height / 8; h++) {
+		for (uint64_t w = 0; w < part.m_width / 8; w++) {
 			for (int h1 = 0; h1 < 8; h1++) {
 				for (int w1 = 0; w1 < 8; w1++) {
 					uint16_t colorIdx = part.m_data.at(offset);
@@ -177,8 +177,8 @@ void GFX::createArjPng(GFX::Part& part, const std::vector<uint16_t>& colors, std
 					}
 
 					uint16_t color = colors[colorIdx];
-					int posX = part.m_posX + w * 8 + w1;
-					int posY = part.m_posY + h * 8 + h1;
+					uint64_t posX = part.m_posX + w * 8 + w1;
+					uint64_t posY = part.m_posY + h * 8 + h1;
 					size_t pixelOffset = posY * size.first + posX;
 
 					pixelBuffer[pixelOffset * 4 + 0] = (color & 0x001F) * 0x08;

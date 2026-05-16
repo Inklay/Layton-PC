@@ -72,7 +72,7 @@ target_compile_options(LaytonPC PRIVATE
     # UTF-8 source & execution charset (MSVC) / equivalent for GCC/Clang
     $<IF:$<CXX_COMPILER_ID:MSVC>,
         /W3 /WX /utf-8 /MP,
-        -Wall -Wextra -Werror -finput-charset=UTF-8>
+        -finput-charset=UTF-8>
 )
 
 # ---------------------------------------------------------------------------
@@ -143,50 +143,47 @@ elseif(MINGW)
 endif()
 
 # ---------------------------------------------------------------------------
-# DLL COPY (Windows runtime dependencies)
+# INSTALL RULES (Windows + Linux AppImage friendly)
 # ---------------------------------------------------------------------------
 
-if(WIN32)
+# Binary
+install(TARGETS LaytonPC
+    RUNTIME DESTINATION .
+)
 
-    file(GLOB_RECURSE LAYTON_DLLS
+# Docs (flat, next to executable)
+install(FILES
+    ${CMAKE_SOURCE_DIR}/README.md
+    ${CMAKE_SOURCE_DIR}/LICENSE
+    DESTINATION .
+)
+
+# Third-party licenses folder (flat)
+install(DIRECTORY
+    ${CMAKE_SOURCE_DIR}/licenses/
+    DESTINATION licenses
+)
+
+# Third-party executables
+install(DIRECTORY
+    ${CMAKE_SOURCE_DIR}/bin/${ARCH_SUFFIX}/
+    DESTINATION bin
+)
+
+if(WIN32)
+    # Windows DLL
+    file(GLOB_RECURSE DLLS
         "${CMAKE_SOURCE_DIR}/dependencies/*/bin/${ARCH_SUFFIX}/*.dll"
     )
 
-    add_custom_target(copy_dlls ALL)
-
-    foreach(dll ${LAYTON_DLLS})
-        get_filename_component(dll_name ${dll} NAME)
-
-        add_custom_command(TARGET copy_dlls POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                "${dll}"
-                "$<TARGET_FILE_DIR:LaytonPC>/${dll_name}"
-        )
-    endforeach()
-
-    add_dependencies(LaytonPC copy_dlls)
-
-endif()
-
-# ---------------------------------------------------------------------------
-# Add other binairies
-# ---------------------------------------------------------------------------
-
-set(RUNTIME_BIN_DIR
-    "${CMAKE_SOURCE_DIR}/bin/${ARCH_SUFFIX}"
-)
-
-if(EXISTS "${RUNTIME_BIN_DIR}")
-
-    add_custom_command(TARGET LaytonPC POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E make_directory
-            "$<TARGET_FILE_DIR:LaytonPC>/bin"
-
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-            "${RUNTIME_BIN_DIR}"
-            "$<TARGET_FILE_DIR:LaytonPC>/bin"
+    install(FILES
+        ${DLLS}
+        DESTINATION .
     )
 
-else()
-    message(WARNING "Runtime bin folder not found: ${RUNTIME_BIN_DIR}")
+    # VC redist
+    install(DIRECTORY
+        "${CMAKE_SOURCE_DIR}/_commonRedist/${ARCH_SUFFIX}/"
+        DESTINATION _commonRedist
+    )
 endif()

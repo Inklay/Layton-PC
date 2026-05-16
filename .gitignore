@@ -3,6 +3,7 @@ build/
 out/
 NDS_UNPACK/
 saves/
+install/
 bin/*
 !bin/windows_x64/
 !bin/windows_arm64/

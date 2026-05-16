@@ -3,6 +3,7 @@
 #include "Game/Sprite/TextSprite.h"
 #include "Game/Sprite/AnimatedSprite.h"
 #include "Game/Sprite/ClickableSprite.h"
+#include <cmath>
 
 namespace Layton1Scene {
 	Puzzle::Puzzle(Game* game, int picarat, int number, const std::string& internalName, Character character, int picaratLost, const std::string& nextScene) :
