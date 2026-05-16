@@ -37,8 +37,8 @@ public:
 	static void write3Byte(buffer& buffer, uint32_t data);
 	static void write4Byte(buffer& buffer, uint32_t data);
 
-	static std::string readNullTerminatedString(const buffer& buffer, size_t& offset, int maxLenght = -1);
-	static std::string readNullTerminatedString(const buffer& buffer, const size_t&& offset, int maxLenght = -1);
+	static std::string readNullTerminatedString(const buffer& buffer, size_t& offset, size_t maxLenght = -1);
+	static std::string readNullTerminatedString(const buffer& buffer, const size_t&& offset, size_t maxLenght = -1);
 
 private:
 	static CompressionMethod getCompressionMethod(const path& inputFile, size_t offset = 0);

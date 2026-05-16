@@ -34,7 +34,7 @@ namespace sdlUtils {
 	float scaleWindow(SDL_Window* window);
 	void multiply(SDL_FRect& rect, float multiplier);
 	void clearAudioStream(SDL_AudioStream* stream, sdlUtils::AudioData* audioData);
-	void SDLCALL bgmCallback(void* userData, SDL_AudioStream* stream, int additionalAmount, int totalAmount);
+	void SDLCALL bgmCallback(void* userData, SDL_AudioStream* stream, int additionalAmount, int);
 	void renderLine(SDL_Renderer* renderer, float x1, float y1, float x2, float y2, float thickness, SDL_FColor color);
 	void renderFilledCircle(SDL_Renderer* renderer, float cx, float cy, float radius, SDL_FColor color);
 }

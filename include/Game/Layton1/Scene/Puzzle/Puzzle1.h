@@ -19,7 +19,7 @@ namespace Layton1Scene {
 	private:
 		std::vector<SDL_FPoint> m_points;
 		int m_tutoState = 0;
-		int m_targetedVillaged = -1;
+		int m_targetedVillage = -1;
 		SDL_Texture* m_drawTexture;
 		SDL_FRect m_drawTextureRect;
 		std::vector<SDL_FPoint> m_villages;

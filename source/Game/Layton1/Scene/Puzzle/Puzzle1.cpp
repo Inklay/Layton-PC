@@ -51,7 +51,7 @@ namespace Layton1Scene {
 
 			SDL_SetRenderTarget(m_game->m_renderer, m_drawTexture);
 
-			for (int i = 1; i < m_points.size(); i++) {
+			for (size_t i = 1; i < m_points.size(); i++) {
 				renderLine(m_game->m_renderer, m_points.at(i - 1).x, m_points.at(i - 1).y, m_points.at(i).x, m_points.at(i).y, 3, { 1.0f, 0.0f, 0.0f, 1.0f });
 				renderFilledCircle(m_game->m_renderer, m_points.at(i - 1).x, m_points.at(i - 1).y, 1, { 1.0f, 0.0f, 0.0f, 1.0f });
 			}
@@ -61,18 +61,18 @@ namespace Layton1Scene {
 
 			if (m_points.size() > 0 && !m_drawing) {
 				SDL_FPoint center = getShapeCenter(m_points);
-				m_targetedVillaged = -1;
+				m_targetedVillage = -1;
 
-				for (int i = 0; i < m_villages.size(); i++) {
+				for (size_t i = 0; i < m_villages.size(); i++) {
 					if (center.x > m_villages.at(i).x - 20 && center.x < m_villages.at(i).x + 20 && center.y > m_villages.at(i).y - 20 && center.y < m_villages.at(i).y + 20) {
-						m_targetedVillaged = i;
+						m_targetedVillage = (int)i;
 						break;
 					}
 				}
 
-				if (isClosedShape(m_points) && m_targetedVillaged != -1) {
-					m_sprites.at("pointer")->m_transform.y = (m_villages.at(m_targetedVillaged).y - 24 + HALF_HEIGHT) * m_game->m_windowMultiplier;
-					m_sprites.at("pointer")->m_transform.x = m_villages.at(m_targetedVillaged).x * m_game->m_windowMultiplier;
+				if (isClosedShape(m_points) && m_targetedVillage != -1) {
+					m_sprites.at("pointer")->m_transform.y = (m_villages.at(m_targetedVillage).y - 24 + HALF_HEIGHT) * m_game->m_windowMultiplier;
+					m_sprites.at("pointer")->m_transform.x = m_villages.at(m_targetedVillage).x * m_game->m_windowMultiplier;
 					m_sprites.at("pointer")->draw();
 				} else {
 					m_sprites.at("redrawCircle")->draw();
@@ -101,7 +101,7 @@ namespace Layton1Scene {
 				SDL_RenderClear(m_game->m_renderer);
 				SDL_SetRenderTarget(m_game->m_renderer, NULL);
 				playSFX("clear");
-			} else if (spriteName == "validateButton" && m_targetedVillaged != -1) {
+			} else if (spriteName == "validateButton" && m_targetedVillage != -1) {
 				m_points.clear();
 				SDL_SetRenderTarget(m_game->m_renderer, m_drawTexture);
 				SDL_SetRenderDrawColor(m_game->m_renderer, 0, 0, 0, 0);
@@ -143,6 +143,6 @@ namespace Layton1Scene {
 	}
 
 	bool Puzzle1::validate() {
-		return m_targetedVillaged == 0;
+		return m_targetedVillage == 0;
 	}
 };

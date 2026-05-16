@@ -25,7 +25,7 @@ void Dialogue::load(std::vector<Character> characters) {
 	}
 
 	m_scene->m_sprites.insert({ "dialogue_cursor", std::make_unique<AnimatedSprite>("ani/cursor_wait.touch.anim", m_scene, SDL_FRect{ WIDTH - 23, HEIGHT - 20, 16, 16 }, true) });
-	m_scene->m_sprites.insert({ "dialogue_text", std::make_unique<TextSprite>("font/fontevent.png", std::u32string(U""), m_scene, SDL_FRect{ 14, HEIGHT - 51, 234, 60 }, SDL_Color{0, 0, 0}) });
+	m_scene->m_sprites.insert({ "dialogue_text", std::make_unique<TextSprite>("font/fontevent.png", std::u32string(U""), m_scene, SDL_FRect{ 14, HEIGHT - 51, 234, 60 }, SDL_Color{ 0, 0, 0, 255 }) });
 	m_audioStreamIdx = m_scene->m_game->m_bgmStreams.size();
 }
 

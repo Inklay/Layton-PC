@@ -171,8 +171,7 @@ uint32_t fileUtils::read4Byte(const buffer& buffer, const size_t&& offset) {
 	return data;
 }
 
-std::string fileUtils::readNullTerminatedString(const buffer& buffer, size_t& offset, int maxLenght) {
-	int count = 0;
+std::string fileUtils::readNullTerminatedString(const buffer& buffer, size_t& offset, size_t maxLenght) {
 	uint8_t c = buffer.at(offset);
 	std::string string;
 
@@ -190,8 +189,7 @@ std::string fileUtils::readNullTerminatedString(const buffer& buffer, size_t& of
 	return string;
 }
 
-std::string fileUtils::readNullTerminatedString(const buffer& buffer, const size_t&& offset, int maxLenght) {
-	int count = 0;
+std::string fileUtils::readNullTerminatedString(const buffer& buffer, const size_t&& offset, size_t maxLenght) {
 	uint8_t c = buffer.at(offset);
 	std::string string;
 	size_t stringOffset = offset;

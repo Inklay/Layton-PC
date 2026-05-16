@@ -75,7 +75,7 @@ namespace Layton1Scene {
 		Scene::render();
 	}
 
-	void CreateSave::handleClick(const std::string& spriteName, SDL_Event event) {
+	void CreateSave::handleClick(const std::string& spriteName, SDL_Event) {
 		if (spriteName == "specialButton") {
 			playSFX("keyboardSwitch");
 			m_keyboardState = SPECIAL;

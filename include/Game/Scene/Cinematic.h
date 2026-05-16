@@ -14,7 +14,7 @@ public:
 	Cinematic(Game* game, const fileUtils::path& videoFile, const std::vector<fileUtils::path> audioFiles, const std::string& nextScene, float fadeIn = 0.0f, float fadeOut = 0.0f);
 	void load();
 	void render();
-	void handleClick(const std::string& spriteName, SDL_Event event) {};
+	void handleClick(const std::string&, SDL_Event) {};
 	void unload();
 	
 private:

@@ -8,14 +8,14 @@
 namespace Layton1Scene {
 	Puzzle::Puzzle(Game* game, int picarat, int number, const std::string& internalName, Character character, int picaratLost, const std::string& nextScene) :
 		Scene(game, 0.5f, 0.5f),
+		m_internalName(internalName),
+		m_character(character),
+		m_nextSceneName(nextScene),
 		m_picarat(picarat),
 		m_currentPicarat(picarat),
 		m_newPicarat(picarat),
 		m_number(number),
-		m_internalName(internalName),
-		m_character(character),
-		m_picaratLost(picaratLost),
-		m_nextSceneName(nextScene)
+		m_picaratLost(picaratLost)
 	{
 	}
 
@@ -29,12 +29,12 @@ namespace Layton1Scene {
 		// intro
 		m_sprites.insert({ "introTitle", std::make_unique<Sprite>("bg/q_alt_sub_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
 		m_sprites.insert({ "introPicaratBackground", std::make_unique<Sprite>("bg/fr/picarat_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
-		m_sprites.insert({ "introPuzzleText", std::make_unique<Sprite>("ani/fr/pazzle_mes.png", this, SDL_FRect{ centerXPos(88), HALF_HEIGHT + 30, 88, 14})});
-		m_sprites.insert({ "introPuzzleName", std::make_unique<TextSprite>("font/fontevent.png", "qtext/fr/t_" + m_internalName + ".txt", this, SDL_FRect{-1, HALF_HEIGHT + 120, WIDTH, 12}, SDL_Color{0, 0, 0}) });
+		m_sprites.insert({ "introPuzzleText", std::make_unique<Sprite>("ani/fr/pazzle_mes.png", this, SDL_FRect{ centerXPos(88), HALF_HEIGHT + 30, 88, 14}) });
+		m_sprites.insert({ "introPuzzleName", std::make_unique<TextSprite>("font/fontevent.png", "qtext/fr/t_" + m_internalName + ".txt", this, SDL_FRect{-1, HALF_HEIGHT + 120, WIDTH, 12}, SDL_Color{ 0, 0, 0, 255 }) });
 
 		std::vector<fileUtils::path> numberSprites = getNumberSprites(m_currentPicarat, "picarat_number_big");
 		for (size_t i = 0; i < numberSprites.size(); i++) {
-			m_sprites.insert({ "introCurrentPicarat" + std::to_string(i), std::make_unique<Sprite>(numberSprites.at(i), this, SDL_FRect{ 92.0f - i * 40, HALF_HEIGHT + 55, 36, 58})});
+			m_sprites.insert({ "introCurrentPicarat" + std::to_string(i), std::make_unique<Sprite>(numberSprites.at(i), this, SDL_FRect{ 92.0f - i * 40, HALF_HEIGHT + 55, 36, 58}) });
 		}
 
 		numberSprites = getNumberSprites(m_picarat, "picarat_get_number_small");
@@ -54,7 +54,7 @@ namespace Layton1Scene {
 
 		// puzzle
 		m_sprites.insert({ "topBackground", std::make_unique<Sprite>("bg/fr/q_bg.png", this, SDL_FRect{ 0, 0, WIDTH, HALF_HEIGHT }) });
-		m_sprites.insert({ "puzzleText", std::make_unique<TextSprite>("font/fontq.png", std::u32string(U""), this, SDL_FRect{5, 23, WIDTH - 10, HALF_HEIGHT - 30}, SDL_Color{0, 0, 0})});
+		m_sprites.insert({ "puzzleText", std::make_unique<TextSprite>("font/fontq.png", std::u32string(U""), this, SDL_FRect{5, 23, WIDTH - 10, HALF_HEIGHT - 30}, SDL_Color{ 0, 0, 0, 255 }) });
 
 		numberSprites = getNumberSprites(m_number, "q_numbers", 3);
 		for (size_t i = 0; i < numberSprites.size(); i++) {
@@ -102,9 +102,9 @@ namespace Layton1Scene {
 		m_sprites.insert({ "hint3LockedButton", std::make_unique<Sprite>("ani/fr/buttons.10.png", this, SDL_FRect{ 112, HALF_HEIGHT, 56, 16 }, true) });
 		m_sprites.insert({ "hintUnlockYesButton", std::make_unique<ClickableSprite>("ani/fr/yesnobuttons.0.png", "ani/fr/yesnobuttons.1.png", this, SDL_FRect{ 53, HALF_HEIGHT + 140, 64, 24 }) });
 		m_sprites.insert({ "hintUnlockNoButton", std::make_unique<ClickableSprite>("ani/fr/yesnobuttons.2.png", "ani/fr/yesnobuttons.3.png", this, SDL_FRect{ 137, HALF_HEIGHT + 140, 64, 24 }) });
-		m_sprites.insert({ "hint1Text", std::make_unique<TextSprite>("font/fontq.png", "qtext/fr/h_" + m_internalName + "_1.txt", this, SDL_FRect{ 4, HALF_HEIGHT + 20, WIDTH - 8, HALF_HEIGHT - 23 }, SDL_Color{0, 0, 0}) });
-		m_sprites.insert({ "hint2Text", std::make_unique<TextSprite>("font/fontq.png", "qtext/fr/h_" + m_internalName + "_2.txt", this, SDL_FRect{ 4, HALF_HEIGHT + 20, WIDTH - 8, HALF_HEIGHT - 23 }, SDL_Color{0, 0, 0}) });
-		m_sprites.insert({ "hint3Text", std::make_unique<TextSprite>("font/fontq.png", "qtext/fr/h_" + m_internalName + "_3.txt", this, SDL_FRect{ 4, HALF_HEIGHT + 20, WIDTH - 8, HALF_HEIGHT - 23 }, SDL_Color{0, 0, 0}) });
+		m_sprites.insert({ "hint1Text", std::make_unique<TextSprite>("font/fontq.png", "qtext/fr/h_" + m_internalName + "_1.txt", this, SDL_FRect{ 4, HALF_HEIGHT + 20, WIDTH - 8, HALF_HEIGHT - 23 }, SDL_Color{ 0, 0, 0, 255 }) });
+		m_sprites.insert({ "hint2Text", std::make_unique<TextSprite>("font/fontq.png", "qtext/fr/h_" + m_internalName + "_2.txt", this, SDL_FRect{ 4, HALF_HEIGHT + 20, WIDTH - 8, HALF_HEIGHT - 23 }, SDL_Color{ 0, 0, 0, 255 }) });
+		m_sprites.insert({ "hint3Text", std::make_unique<TextSprite>("font/fontq.png", "qtext/fr/h_" + m_internalName + "_3.txt", this, SDL_FRect{ 4, HALF_HEIGHT + 20, WIDTH - 8, HALF_HEIGHT - 23 }, SDL_Color{ 0, 0, 0, 255 }) });
 
 		// validation
 		if (m_character == LUKE) {
@@ -133,7 +133,7 @@ namespace Layton1Scene {
 		}
 
 		// end
-		m_sprites.insert({ "endText", std::make_unique<TextSprite>("font/fontq.png", std::u32string(U""), this, SDL_FRect{5, HALF_HEIGHT + 21, WIDTH - 10, HALF_HEIGHT - 30}, SDL_Color{0, 0, 0}) });
+		m_sprites.insert({ "endText", std::make_unique<TextSprite>("font/fontq.png", std::u32string(U""), this, SDL_FRect{5, HALF_HEIGHT + 21, WIDTH - 10, HALF_HEIGHT - 30}, SDL_Color{ 0, 0, 0, 255 }) });
 
 		m_sprites.insert({ "failTitle", std::make_unique<Sprite>("bg/fr/judge_l114_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
 		m_sprites.insert({ "failTextBackground", std::make_unique<Sprite>("bg/qend_awrong.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
@@ -177,7 +177,7 @@ namespace Layton1Scene {
 		Scene::render();
 	}
 
-	void Puzzle::handleClick(const std::string& spriteName, SDL_Event event) {
+	void Puzzle::handleClick(const std::string& spriteName, SDL_Event) {
 		if (m_state == INTRO_FULL) {
 			m_sprites.at("fading")->fade({ 300, 0, Sprite::FadingMode::IN });
 			m_state = INTRO_FADING_OUT;
@@ -294,7 +294,7 @@ namespace Layton1Scene {
 		float distEndToStart = sqrtf(dx * dx + dy * dy);
 		float totalLength = 0;
 
-		for (int i = 1; i < points.size(); i++) {
+		for (size_t i = 1; i < points.size(); i++) {
 			float ldx = points.at(i).x - points.at(i - 1).x;
 			float ldy = points.at(i).y - points.at(i - 1).y;
 			totalLength += sqrtf(ldx * ldx + ldy * ldy);

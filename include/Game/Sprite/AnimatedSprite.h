@@ -15,6 +15,6 @@ protected:
 	std::map<int, SDL_Texture*> m_textures;
 
 	Anim m_anim;
-	int m_frameIndex;
-	int m_frames;
+	unsigned int m_frameIndex;
+	unsigned int m_frames;
 };

@@ -41,8 +41,8 @@ private:
 	std::string m_sfxSound = "charBip3";
 	size_t m_textProgression = 0;
 	size_t m_audioStreamIdx = -1;
+	size_t m_currentText = 0;
 	int m_delayCounter = 0;
-	int m_currentText = 0;
 	bool m_displayed = false;
 	bool m_waiting = false;
 };

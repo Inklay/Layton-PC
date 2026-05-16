@@ -7,5 +7,5 @@ public:
 	static void convert(const fileUtils::path& folderPath, const fileUtils::path& outputFolder);
 
 protected:
-	static void convertToMdi(const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool isCompressed);
+	static void convertToMdi(const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool);
 };

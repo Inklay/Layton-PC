@@ -19,7 +19,7 @@ namespace Layton1Scene {
 		m_sprites.insert({ "fading", std::make_unique<Sprite>("bg/custom/black_screen.png", this, SDL_FRect{ 0, 0, WIDTH, HEIGHT }) });
 
 		m_sprites.insert({ "solved", std::make_unique<Sprite>("ani/fr/puzzle_numbers.10.png", this, SDL_FRect{ 2, 3, 52, 22 }) });
-		m_sprites.insert({ "name", std::make_unique<TextSprite>("font/fontevent.png", "storytext/fr/map" + m_internalName + ".txt", this, SDL_FRect{ -85, 7, WIDTH, 12 }, SDL_Color{ 0, 0, 0 }) });
+		m_sprites.insert({ "name", std::make_unique<TextSprite>("font/fontevent.png", "storytext/fr/map" + m_internalName + ".txt", this, SDL_FRect{ -85, 7, WIDTH, 12 }, SDL_Color{ 0, 0, 0, 255 }) });
 
 		std::vector<fileUtils::path> numberSprites = getNumberSprites(m_game->m_save->m_solvedPuzzles, "fr/puzzle_numbers");
 		for (size_t i = numberSprites.size() - 1; i != SIZE_MAX; i--) {
@@ -72,7 +72,7 @@ namespace Layton1Scene {
 		Scene::render();
 	}
 
-	void Map::handleClick(const std::string& spriteName, SDL_Event event) {
+	void Map::handleClick(const std::string&, SDL_Event) {
 		if (m_currentDialogueId != -1 && m_dialogueProgression >= 1 && m_currentDialogueId == m_nextDialogueId) {
 			if (m_dialogue.waiting()) {
 				if (m_dialogue.next()) {

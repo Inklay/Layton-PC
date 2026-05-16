@@ -16,7 +16,7 @@ namespace Layton1Scene {
 		CreateSave(Game* game);
 		void load();
 		void render();
-		void handleClick(const std::string& spriteName, SDL_Event event);
+		void handleClick(const std::string& spriteName, SDL_Event);
 
 	private:
 		bool isLetterClicked(SDL_FRect);

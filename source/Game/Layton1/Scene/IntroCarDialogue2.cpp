@@ -57,7 +57,7 @@ namespace Layton1Scene {
 		Scene::render();
 	}
 
-	void IntroCarDialogue2::handleClick(const std::string& spriteName, SDL_Event event) {
+	void IntroCarDialogue2::handleClick(const std::string&, SDL_Event) {
 		if (m_dialogueProgression >= 1) {
 			if (m_dialogue.waiting()) {
 				if (m_dialogue.next()) {

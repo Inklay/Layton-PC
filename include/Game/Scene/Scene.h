@@ -34,7 +34,7 @@ protected:
 	void fadeToNextScene(const std::string& name);
 	void fade();
 	void switchSprites(const std::string& out, const std::string& in);
-	std::vector<fileUtils::path> getNumberSprites(int number, const std::string& font, int padding = 0);
+	std::vector<fileUtils::path> getNumberSprites(int number, const std::string& font, size_t padding = 0);
 
 	std::pair<std::string, Sprite*> m_clickedSprite;
 	std::map<std::string, std::unique_ptr<Sprite>> m_sprites;

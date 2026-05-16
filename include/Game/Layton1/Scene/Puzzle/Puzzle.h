@@ -42,7 +42,7 @@ namespace Layton1Scene {
 		void load();
 		void render();
 		void unload();
-		void handleClick(const std::string& spriteName, SDL_Event event);
+		void handleClick(const std::string& spriteName, SDL_Event);
 
 	protected:
 		void updateNumberSprite(const std::vector<fileUtils::path>& sprites, const std::string& name, SDL_FRect baseRect, float spacing);
@@ -60,17 +60,17 @@ namespace Layton1Scene {
 		Character m_character;
 		State m_state = INTRO;
 		const std::string m_nextSceneName;
+		size_t m_textProgression = 0;
 		int m_picarat;
 		int m_currentPicarat;
+		int m_newPicarat;
 		int m_number;
 		int m_picaratChangeTimer = 0;
-		int m_textProgression = 0;
 		int m_currentHint = 0;
 		int m_validationTimer = 0;
 		int m_touchTextState = 0;
 		int m_touchTextTimer = 0;
 		int m_picaratLost;
-		int m_newPicarat;
 		bool m_canClear = false;
 		bool m_canValidate = false;
 		bool m_bottomUIHidden = false;

@@ -16,6 +16,10 @@ ParallaxSprite::ParallaxSprite(const fileUtils::path& file, Scene* scene, SDL_FR
 		case sdlUtils::RIGHT:
 			m_transform2.x -= m_transform2.w;
 			break;
+		case TOP:
+		case BOTTOM:
+		default:
+			break;
 	}
 }
 

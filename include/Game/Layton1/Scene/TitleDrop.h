@@ -15,7 +15,7 @@ namespace Layton1Scene {
 		TitleDrop(Game* game);
 		void load();
 		void render();
-		void handleClick(const std::string& spriteName, SDL_Event event);
+		void handleClick(const std::string&, SDL_Event);
 
 	private:
 		LogoState m_logoState = FADING;

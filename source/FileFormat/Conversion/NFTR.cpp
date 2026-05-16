@@ -7,7 +7,6 @@ void NFTR::convert(const fileUtils::path& folderPath, const fileUtils::path& out
 
 void NFTR::convertToPng(const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool isCompressed) {
 	fileUtils::buffer buffer;
-	size_t offset = 0;
 
 	if (isCompressed) {
 		buffer = fileUtils::decompress(filePath, 4);
@@ -46,7 +45,7 @@ fileUtils::buffer NFTR::getGlyphWidths(const fileUtils::buffer& buffer) {
 
     uint16_t firstChar = fileUtils::read2Byte(buffer, offset);
     uint16_t lastChar = fileUtils::read2Byte(buffer, offset);
-    uint32_t nextCWDH = fileUtils::read4Byte(buffer, offset);
+    offset += 4;
 
     for (uint16_t i = firstChar; i <= lastChar; i++) {
         offset += 1;
@@ -129,8 +128,8 @@ void NFTR::savePNG(const std::vector<Glyph>& glyphs, const fileUtils::path& file
     }
 
     int cols = 16;
-    int w = glyphs.at(0).w;
-    int h = glyphs.at(0).h;
+    unsigned int w = glyphs.at(0).w;
+    unsigned int h = glyphs.at(0).h;
     size_t rows = (glyphs.size() + cols - 1) / cols;
     size_t imgW = cols * w;
     size_t imgH = rows * h;

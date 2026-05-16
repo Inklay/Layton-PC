@@ -8,10 +8,10 @@ Scene::Scene(Game* game, float fadeIn, float fadeOut) :
 	m_faded(false),
 	m_fadeProgress(0),
 	m_nextScene("Unknown"),
-	m_fadeInSeconds(fadeIn),
-	m_fadeOutSeconds(fadeOut),
 	m_dialogue(this),
-	m_timeElapsed(0)
+	m_timeElapsed(0),
+	m_fadeOutSeconds(fadeOut),
+	m_fadeInSeconds(fadeIn)
 {
 	m_sfxBuffers.emplace_back(nullptr);
 }
@@ -199,7 +199,7 @@ void Scene::switchSprites(const std::string& out, const std::string& in) {
 	m_sprites.at(out)->fade(Sprite::FadeInfo{ 100, 0, Sprite::FadingMode::OUT });
 }
 
-std::vector<fileUtils::path> Scene::getNumberSprites(int number, const std::string& font, int padding) {
+std::vector<fileUtils::path> Scene::getNumberSprites(int number, const std::string& font, size_t padding) {
 	std::vector<fileUtils::path> vec;
 	int digit;
 

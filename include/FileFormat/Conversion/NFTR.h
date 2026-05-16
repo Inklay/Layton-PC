@@ -8,8 +8,8 @@ public:
 
 private:
 	struct Glyph {
-		int w = 0;
-		int h = 0;
+		unsigned int w = 0;
+		unsigned int h = 0;
 		fileUtils::buffer pixels;
 	};
 

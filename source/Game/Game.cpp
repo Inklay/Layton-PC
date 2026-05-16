@@ -14,9 +14,9 @@
 #include <execution>
 
 Game::Game(const fileUtils::path& assetsPath, const std::string& name, SDL_Window& window) :
-	m_assetsPath(assetsPath),
 	m_name(name),
-	m_window(window)
+	m_window(window),
+	m_assetsPath(assetsPath)
 {
 	m_renderer = SDL_CreateRenderer(&m_window, nullptr);
 	m_gameFolder = std::filesystem::current_path() / "games" / m_name;

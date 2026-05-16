@@ -7,7 +7,7 @@ namespace Layton1Scene {
 	public:
 		void load();
 		void render();
-		void handleClick(const std::string& spriteName, SDL_Event event);
+		void handleClick(const std::string&, SDL_Event);
 
 	protected:
 		Map(Game* game, const std::string& bgm, const std::string& internalName);

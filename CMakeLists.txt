@@ -128,6 +128,18 @@ target_link_libraries(LaytonPC PRIVATE
 )
 
 # ---------------------------------------------------------------------------
+# Add symlink for UNIX systems
+# ---------------------------------------------------------------------------
+if(UNIX)
+    add_custom_target(prebuild_deps
+        COMMAND bash ${CMAKE_SOURCE_DIR}/dependencies/createSymLink.sh ${ARCH_SUFFIX}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/dependencies/
+    )
+
+    add_dependencies(LaytonPC prebuild_deps)
+endif()
+
+# ---------------------------------------------------------------------------
 # Subsystem: Console in Debug, Windows in Release (MSVC / MinGW)
 # ---------------------------------------------------------------------------
 if(MSVC)

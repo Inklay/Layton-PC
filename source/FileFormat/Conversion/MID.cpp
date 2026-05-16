@@ -5,7 +5,7 @@ void MID::convert(const fileUtils::path& folderPath, const fileUtils::path& outp
 	convertFileFromFolder(folderPath, outputFolder, ".mid", convertToWav);
 }
 
-void MID::convertToWav(const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool isCompressed) {
+void MID::convertToWav(const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool) {
 	std::stringstream stream;
 
 #ifdef _WIN32

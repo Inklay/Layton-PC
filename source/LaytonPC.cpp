@@ -17,7 +17,7 @@ SDL_Window* initSdl() {
 	return window;
 }
 
-int main(int argc, char* argv[])
+int main(int, char**)
 {
 #ifdef _WIN32
 	system("chcp 65001 >nul");

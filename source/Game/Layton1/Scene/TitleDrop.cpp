@@ -50,7 +50,7 @@ namespace Layton1Scene {
 		Scene::render();
 	}
 
-	void TitleDrop::handleClick(const std::string& spriteName, SDL_Event event) {
+	void TitleDrop::handleClick(const std::string&, SDL_Event) {
 		if (m_logoState == DONE && !m_fading) {
 			playSFX("titleScreenClick");
 			fadeToNextScene("arrivingAtStMystere_cinematic");

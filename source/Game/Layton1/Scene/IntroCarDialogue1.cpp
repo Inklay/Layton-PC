@@ -30,13 +30,13 @@ namespace Layton1Scene {
 
 		m_dialogue.load({
 			{ "luke", "ani/fr/luke_n.png", "ani/event_window_1.1.png", "ani/luke_face_new.bg2notalk.anim", "ani/luke_face_new.bg2talk.anim", SDL_FRect{ 167, HALF_HEIGHT + 38, 40, 32 } },
-			{ "luke2", "ani/fr/luke_n.png", "ani/event_window_1.2.png", "", "", SDL_FRect{ 0, 0, 0 } },
+			{ "luke2", "ani/fr/luke_n.png", "ani/event_window_1.2.png", "", "", SDL_FRect{} },
 			{ "luke3", "ani/fr/luke_n.png", "ani/event_window_1.1.png", "ani/luke_face_new.bg1notalk.anim", "ani/luke_face_new.bg1notalk.anim", SDL_FRect{ 175, HALF_HEIGHT + 71, 32, 20 } },
-			{ "luke_offscreen", "ani/fr/luke_n.png", "ani/event_window_1.0.png", "", "", SDL_FRect{ 0, 0, 0, 0 } },
+			{ "luke_offscreen", "ani/fr/luke_n.png", "ani/event_window_1.0.png", "", "", SDL_FRect{} },
 			{ "layton", "ani/fr/layton_n.png", "ani/event_window_1.2.png", "ani/layton_face_new.bg2notalk.anim", "ani/layton_face_new.bg2talk.anim", SDL_FRect{ 43, HALF_HEIGHT + 25, 40, 48 } },
 			{ "layton2", "ani/fr/layton_n.png", "ani/event_window_1.1.png", "ani/layton_face_new.bg4notalk.anim", "ani/layton_face_new.bg4talk.anim", SDL_FRect{ 169, HALF_HEIGHT + 64, 30, 24 } },
 			{ "layton3", "ani/fr/layton_n.png", "ani/event_window_1.2.png", "ani/layton_face_new.bg1notalk.anim", "ani/layton_face_new.bg1talk.anim", SDL_FRect{ 58, HALF_HEIGHT + 43, 32, 32 } },
-			{ "layton_offscreen", "ani/fr/layton_n.png", "ani/event_window_1.0.png", "", "", SDL_FRect{ 0, 0, 0, 0 } },
+			{ "layton_offscreen", "ani/fr/layton_n.png", "ani/event_window_1.0.png", "", "", SDL_FRect{} },
 		});
 
 		m_sprites.at("topBackground")->fade({ 500, -1000, Sprite::FadingMode::IN });
@@ -100,7 +100,7 @@ namespace Layton1Scene {
 		Scene::render();
 	}
 
-	void IntroCarDialogue1::handleClick(const std::string& spriteName, SDL_Event event) {
+	void IntroCarDialogue1::handleClick(const std::string&, SDL_Event) {
 		if (m_dialogueProgression >= 1) {
 			if (m_dialogue.waiting()) {
 				if (m_dialogue.next()) {

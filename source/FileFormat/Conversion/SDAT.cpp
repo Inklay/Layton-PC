@@ -6,7 +6,7 @@ void SDAT::convert(const fileUtils::path& folderPath, const fileUtils::path& out
     convertFileFromFolder(folderPath, outputFolder, ".sdat", convertToMdi);
 }
 
-void SDAT::convertToMdi(const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool isCompressed) {
+void SDAT::convertToMdi(const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool) {
 	std::stringstream stream;
 
 #ifdef _WIN32

@@ -56,7 +56,7 @@ namespace sdlUtils {
 		SDL_ClearAudioStream(stream);
 	}
 
-	void SDLCALL bgmCallback(void* userData, SDL_AudioStream* stream, int additionalAmount, int totalAmount) {
+	void SDLCALL bgmCallback(void* userData, SDL_AudioStream* stream, int additionalAmount, int) {
 		AudioData* audioData = (AudioData*)userData;
 
 		if (audioData->buffer == nullptr) {
@@ -115,10 +115,10 @@ namespace sdlUtils {
 		float ny = (dx / len) * (thickness * 0.5f);
 
 		SDL_Vertex verts[4] = {
-			{ {x1 + nx, y1 + ny}, color },
-			{ {x1 - nx, y1 - ny}, color },
-			{ {x2 + nx, y2 + ny}, color },
-			{ {x2 - nx, y2 - ny}, color },
+			{ {x1 + nx, y1 + ny}, color, {} },
+			{ {x1 - nx, y1 - ny}, color, {} },
+			{ {x2 + nx, y2 + ny}, color, {} },
+			{ {x2 - nx, y2 - ny}, color, {} }
 		};
 
 		int indices[] = { 0, 1, 2,  1, 2, 3 };

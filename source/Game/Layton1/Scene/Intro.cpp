@@ -12,7 +12,7 @@ namespace Layton1Scene {
 	void Intro::load() {
 		m_sprites.insert({ "topBackground", std::make_unique<Sprite>("bg/fr/ara_top.png", this, SDL_FRect{ 0, 0, WIDTH, HALF_HEIGHT }) });
 		m_sprites.insert({ "bottomBackground", std::make_unique<Sprite>("bg/ibg_20.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
-		m_sprites.insert({ "firstText", std::make_unique<TextSprite>("font/fontevent.png", "itext/fr/t_0.txt", this, SDL_FRect{ -1, -1, WIDTH, HALF_HEIGHT }, SDL_Color{255, 255, 255}, U"%s", m_game->m_save->m_name) });
+		m_sprites.insert({ "firstText", std::make_unique<TextSprite>("font/fontevent.png", "itext/fr/t_0.txt", this, SDL_FRect{ -1, -1, WIDTH, HALF_HEIGHT }, SDL_Color{255, 255, 255, 255}, U"%s", m_game->m_save->m_name) });
 		m_sprites.insert({ "fadingText1", std::make_unique<Sprite>("ani/fr/op_message.0.png", this, SDL_FRect{ centerXPos(226), HALF_HEIGHT + 30, 226, 12}) });
 		m_sprites.insert({ "fadingText2", std::make_unique<Sprite>("ani/fr/op_message.1.png", this, SDL_FRect{ centerXPos(226), HALF_HEIGHT + 55, 226, 12}) });
 		m_sprites.insert({ "fadingText3", std::make_unique<Sprite>("ani/fr/op_message.2.png", this, SDL_FRect{ centerXPos(226), HALF_HEIGHT + 80, 226, 12}) });

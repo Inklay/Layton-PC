@@ -5,7 +5,7 @@ void MODS::convert(const fileUtils::path& folderPath, const fileUtils::path& out
 	convertFileFromFolder(folderPath, outputFolder, ".mods", convertToMP4);
 }
 
-void MODS::convertToMP4(const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool isCompressed) {
+void MODS::convertToMP4(const fileUtils::path& filePath, const fileUtils::path& outputFolder, bool) {
 	std::stringstream stream;
 
 #ifdef _WIN32

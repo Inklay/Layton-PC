@@ -38,7 +38,7 @@ public:
 	Sprite(const fileUtils::path& file, Scene* scene, SDL_FRect transform, bool isInteractive = false, SDL_FRect subTexture = { -1, -1, -1, -1 });
 	virtual void draw(int zIndex = 0);
 	virtual void unload();
-	virtual void setText(const std::u32string& str) {};
+	virtual void setText(const std::u32string&) {};
 	virtual void fade(FadeInfo fadeInfo);
 	virtual void shake(int duration);
 	virtual void translate(TranslationInfo translationInfo);
