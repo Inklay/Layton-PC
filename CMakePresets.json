@@ -19,7 +19,7 @@
     {
       "name": "windows-x64-release",
       "displayName": "Windows x64 — Release",
-      "generator": "Visual Studio 18 2026",
+      "generator": "Visual Studio 17 2022",
       "toolchainFile": "${sourceDir}/cmake/toolchains/windows-x64.cmake",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "architecture": { "value": "x64", "strategy": "set" },
@@ -45,7 +45,7 @@
     {
       "name": "windows-arm64-release",
       "displayName": "Windows ARM64 — Release",
-      "generator": "Visual Studio 18 2026",
+      "generator": "Visual Studio 17 2022",
       "toolchainFile": "${sourceDir}/cmake/toolchains/windows-arm64.cmake",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "architecture": { "value": "ARM64", "strategy": "set" },
