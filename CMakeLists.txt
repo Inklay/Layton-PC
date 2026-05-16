@@ -72,7 +72,7 @@ target_compile_options(LaytonPC PRIVATE
     # UTF-8 source & execution charset (MSVC) / equivalent for GCC/Clang
     $<IF:$<CXX_COMPILER_ID:MSVC>,
         /W3 /WX /utf-8 /MP,
-        -finput-charset=UTF-8>
+        -Wall -Wextra -Werror -finput-charset=UTF-8>
 )
 
 # ---------------------------------------------------------------------------
