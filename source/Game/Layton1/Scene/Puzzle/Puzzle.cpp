@@ -71,6 +71,10 @@ namespace Layton1Scene {
 			m_sprites.insert({ "hintCoins" + std::to_string(i), std::make_unique<Sprite>(numberSprites.at(i), this, SDL_FRect{ 241.0f - i * 8, 6, 8, 10}) });
 		}
 
+		if (m_canQuit) {
+			m_sprites.insert({ "quitButton", std::make_unique<Sprite>("ani/fr/pass_button.png", this, SDL_FRect{ WIDTH - 72, HALF_HEIGHT + 24, 72, 18}, true) });
+		}
+
 		if (m_canClear) {
 			m_sprites.insert({ "clearButton", std::make_unique<Sprite>("ani/fr/clear_btn.png", this, SDL_FRect{ WIDTH - 64, HALF_HEIGHT + 45, 64, 18}, true) });
 		}
@@ -468,6 +472,10 @@ namespace Layton1Scene {
 		}
 			
 		if (m_state >= PUZZLE_FADING_IN && m_state <= PUZZLE_FADING_OUT) {
+			if (m_canQuit && !m_bottomUIHidden) {
+				m_sprites.at("quitButton")->draw(1);
+			}
+
 			if (m_canClear && !m_bottomUIHidden) {
 				m_sprites.at("clearButton")->draw(1);
 			}

@@ -15,7 +15,7 @@ namespace Layton1Scene {
 		m_sprites.insert({ "button", std::make_unique<Sprite>("ani/q23_button.png", this, SDL_FRect{ 0, 0, 16, 16}, true) });
 
 		m_sprites.at("button")->m_opacity = 0;
-		m_canQuite = true;
+		m_canQuit = true;
 		m_gears = {
 			{ 39, 138 + HALF_HEIGHT, 16, 16 },
 			{ 121, 116 + HALF_HEIGHT, 16, 16 },

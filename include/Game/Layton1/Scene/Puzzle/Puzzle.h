@@ -71,7 +71,7 @@ namespace Layton1Scene {
 		int m_touchTextState = 0;
 		int m_touchTextTimer = 0;
 		int m_picaratLost;
-		bool m_canQuite = false;
+		bool m_canQuit = false;
 		bool m_canClear = false;
 		bool m_canValidate = false;
 		bool m_bottomUIHidden = false;
