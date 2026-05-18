@@ -19,7 +19,7 @@ namespace Layton1Scene {
 		m_gears = {
 			{ 39, 138 + HALF_HEIGHT, 16, 16 },
 			{ 121, 116 + HALF_HEIGHT, 16, 16 },
-			{ 202, 126 + HALF_HEIGHT, 16, 16 }
+			{ 205, 126 + HALF_HEIGHT, 16, 16 }
 		};
 
 		Puzzle::load();
@@ -83,6 +83,7 @@ namespace Layton1Scene {
 				for (int i = 0; i < m_gears.size(); i++) {
 					if (coord.x >= m_gears.at(i).x && coord.x < m_gears.at(i).x + m_gears.at(i).w && coord.y >= m_gears.at(i).y && coord.y < m_gears.at(i).y + m_gears.at(i).h) {
 						m_valid = i == 0;
+						playSFX("keyboardOk");
 						startValidation();
 					}
 				}

@@ -13,7 +13,6 @@ namespace Layton1Scene {
 	void Map::load() {
 #ifdef _DEBUG
 		m_game->m_save->m_storyProgression = 1;
-		m_game->m_save->m_solvedPuzzles = 1;
 #endif
 		m_sprites.insert({ "bottomFading", std::make_unique<Sprite>("bg/custom/black_screen.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
 		m_sprites.insert({ "fading", std::make_unique<Sprite>("bg/custom/black_screen.png", this, SDL_FRect{ 0, 0, WIDTH, HEIGHT }) });
@@ -36,6 +35,23 @@ namespace Layton1Scene {
 		loadMap();
 		loadDialogue();
 
+		if (m_currentDialogueId == -1) {
+			for (const auto& dialogue : m_afterPuzzleDialogues) {
+				if (m_game->hasTriedPuzzle(dialogue.puzzleNumber) && m_game->m_previousSceneName == "puzzle" + std::to_string(dialogue.puzzleNumber)) {
+					if (m_game->hasDonePuzzle(dialogue.puzzleNumber)) {
+						m_nextDialogueId = dialogue.successDialogueId;
+						m_currentDialogueId = dialogue.successDialogueId;
+						m_lastPuzzle = dialogue.puzzleNumber;
+					} else {
+						m_nextDialogueId = dialogue.failDialogueId;
+						m_currentDialogueId = dialogue.failDialogueId;
+					}
+
+					break;
+				}
+			}
+		}
+		
 		m_sprites.at("fading")->m_opacity = 0;
 		m_sprites.at("bottomFading")->m_opacity = 0;
 		m_fading = true;
@@ -175,6 +191,7 @@ namespace Layton1Scene {
 		m_dialogues.clear();
 		m_hints.clear();
 		m_puzzles.clear();
+		m_afterPuzzleDialogues.clear();
 
 		Scene::unload();
 	}

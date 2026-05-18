@@ -16,6 +16,8 @@ public:
 	virtual void addSave(const std::u32string name) = 0;
 	void setFrameDuration(int duration);
 	virtual std::u32string getQuestText() = 0;
+	bool hasDonePuzzle(int puzzleNumber);
+	bool hasTriedPuzzle(int puzzleNumber);
 	
 	const std::string m_name;
 	std::string m_previousSceneName;

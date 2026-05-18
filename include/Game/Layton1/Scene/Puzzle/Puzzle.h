@@ -22,6 +22,7 @@ namespace Layton1Scene {
 			PUZZLE_TOUCH,
 			PUZZLE,
 			PUZZLE_FADING_OUT,
+			PUZZLE_QUIT,
 			HINT,
 			VALIDATING_FADING_IN,
 			VALIDATING,
@@ -33,9 +34,16 @@ namespace Layton1Scene {
 			END_PICARAT_ADDING,
 			END_PICARAT,
 			END_PICARAT_FADING_OUT,
-			END_TEXT_FADING,
+			END_TEXT_FADING_IN,
 			END_FULL,
-			END_FADING_OUT
+			END_TEXT_FADING_OUT,
+			END_QUIT_FADING_IN,
+			END_QUIT,
+			END_QUIT_FADING_OUT,
+			END_HINT_FADING_IN,
+			END_HINT,
+			END_FADING_OUT,
+			QUIT
 		};
 
 		Puzzle(Game* game, int picarat, int number, const std::string& internalName, Character character, int picaratLost, const std::string& nextScene);
@@ -86,5 +94,6 @@ namespace Layton1Scene {
 		void renderValidation();
 		void renderSuccess();
 		void renderFail();
+		void enableHintButtons();
 	};
 };

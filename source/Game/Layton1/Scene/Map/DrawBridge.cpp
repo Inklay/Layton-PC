@@ -18,12 +18,6 @@ namespace Layton1Scene {
 			m_sprites.insert({ "car", std::make_unique<Sprite>("ani/obj_2.png", this, SDL_FRect{ 49, HALF_HEIGHT + 109, 48, 40 }, true) });
 			m_sprites.insert({ "laytonAndLuke", std::make_unique<AnimatedSprite>("ani/obj_1.gfx.anim", this, SDL_FRect{ 20, HALF_HEIGHT + 111, 30, 48 }, true) });
 			m_sprites.insert({ "franco", std::make_unique<AnimatedSprite>("ani/obj_3.gfx.anim", this, SDL_FRect{ 158, HALF_HEIGHT + 109, 26, 42 }, true) });
-
-			m_dialogues = {
-				{ "laytonAndLuke", 2 },
-				{ "car", 3 },
-				{ "franco", 4 }
-			};
 		}
 	}
 
@@ -48,6 +42,18 @@ namespace Layton1Scene {
 		if (m_game->m_save->m_storyProgression == 0) {
 			m_nextDialogueId = 0;
 			m_currentDialogueId = 0;
+		}
+
+		if (m_game->m_save->m_chapter == 0) {
+			m_dialogues = {
+				{ "laytonAndLuke", 2 },
+				{ "car", 3 },
+				{ "franco", 4 }
+			};
+
+			m_afterPuzzleDialogues = {
+				{ 2, 5, 6 }
+			};
 		}
 	}
 
@@ -131,6 +137,28 @@ namespace Layton1Scene {
 				m_dialogue.setVisible(true);
 				m_dialogueProgression++;
 			}
+		} else if (m_currentDialogueId == 5) {
+			m_sprites.at("d_topBackground1")->draw();
+			m_sprites.at("bottomBackground")->draw();
+			m_sprites.at("d_franco")->draw();
+
+			if (!isFadingToDialogue() && m_dialogueProgression == 0) {
+				m_dialogue.setCharacterVisible("franco", true);
+				m_dialogue.setDialogue("etext/fr/e1_t4.txt", "franco", {}, "charBip2");
+				m_dialogue.setVisible(true);
+				m_dialogueProgression++;
+			}
+		} else if (m_currentDialogueId == 6) {
+			m_sprites.at("d_topBackground1")->draw();
+			m_sprites.at("bottomBackground")->draw();
+			m_sprites.at("d_franco")->draw();
+
+			if (!isFadingToDialogue() && m_dialogueProgression == 0) {
+				m_dialogue.setCharacterVisible("franco", true);
+				m_dialogue.setDialogue("etext/fr/e1_t6.txt", "franco", {}, "charBip2");
+				m_dialogue.setVisible(true);
+				m_dialogueProgression++;
+			}
 		}
 	}
 
@@ -182,6 +210,18 @@ namespace Layton1Scene {
 					fadeToNextScene("puzzle2");
 					break;
 			}
+		} else if (m_currentDialogueId == 5) {
+			switch (m_dialogueProgression) {
+				case 1:
+					m_dialogue.setDialogue("etext/fr/e1_t5.txt", "franco", {}, "charBip2");
+					break;
+				case 2:
+					changeDialogue(-1);
+					break;
+			}
+		} else if (m_currentDialogueId == 2 && m_dialogueProgression == 1) {
+			m_dialogue.setCharacterVisible("franco", false);
+			changeDialogue(-1);
 		}
 	}
 };

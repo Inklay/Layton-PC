@@ -135,8 +135,8 @@ void Game::run() {
 void Game::changeScene(const std::string& newScene) {
 	currentScene()->unload();
 	Scene* scene = m_scenes.at(newScene).get();
-	scene->load();
 	m_previousSceneName = m_sceneName;
+	scene->load();
 	m_sceneName = newScene;
 }
 
@@ -156,4 +156,12 @@ bool Game::hasSave() {
 
 void Game::setFrameDuration(int duration) {
 	m_frameDuration = duration;
+}
+
+bool Game::hasDonePuzzle(int puzzleNumber) {
+	return m_save->m_puzzles.at(puzzleNumber) & 1;
+}
+
+bool Game::hasTriedPuzzle(int puzzleNumber) {
+	return m_save->m_puzzles.at(puzzleNumber) & 16;
 }

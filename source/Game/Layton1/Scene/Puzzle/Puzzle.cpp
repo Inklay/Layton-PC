@@ -20,6 +20,8 @@ namespace Layton1Scene {
 	}
 
 	void Puzzle::load() {
+		m_game->m_save->m_puzzles.at(m_number) += 16;
+
 		m_sprites.insert({ "bottomFading", std::make_unique<Sprite>("bg/custom/black_screen.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 		m_sprites.insert({ "fading", std::make_unique<Sprite>("bg/custom/black_screen.png", this, SDL_FRect{ 0, 0, WIDTH, HEIGHT }, true) });
 		m_sprites.insert({ "touch", std::make_unique<Sprite>("ani/fr/qend_touch.png", this, SDL_FRect{ centerXPos(128), centerBottomPos(64), 128, 64}) });
@@ -73,6 +75,11 @@ namespace Layton1Scene {
 
 		if (m_canQuit) {
 			m_sprites.insert({ "quitButton", std::make_unique<Sprite>("ani/fr/pass_button.png", this, SDL_FRect{ WIDTH - 72, HALF_HEIGHT + 24, 72, 18}, true) });
+			m_sprites.insert({ "quitButtonYes", std::make_unique<Sprite>("ani/fr/yesnobuttons.1.png", this, SDL_FRect{ 53, HALF_HEIGHT + 120, 64, 24 }) });
+			m_sprites.insert({ "quitButtonNo", std::make_unique<Sprite>("ani/fr/yesnobuttons.3.png", this, SDL_FRect{ 137, HALF_HEIGHT + 120, 64, 24 }) });
+			m_sprites.insert({ "quitBackground", std::make_unique<Sprite>("bg/later_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT}) });
+			m_sprites.insert({ "quitText", std::make_unique<Sprite>("ani/fr/later_mes.png", this, SDL_FRect{ centerXPos(208), HALF_HEIGHT + 78, 208, 16})});
+			m_sprites.insert({ "quitName", std::make_unique<TextSprite>("font/fontevent.png", "qtext/fr/t_" + m_internalName + ".txt", this, SDL_FRect{-1, HALF_HEIGHT + 55, WIDTH, 12}, SDL_Color{ 0, 0, 0, 255 }) });
 		}
 
 		if (m_canClear) {
@@ -174,6 +181,13 @@ namespace Layton1Scene {
 		m_sprites.insert({ "successPicaratBackground", std::make_unique<Sprite>("bg/fr/picarat_get_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
 		m_sprites.insert({ "successTopBackground", std::make_unique<Sprite>("bg/q" + m_internalName + "a_bg.png", this, SDL_FRect{ 0, 0, WIDTH, HALF_HEIGHT }) });
 
+		if (m_canQuit) {
+			m_sprites.insert({ "endQuitBackground", std::make_unique<Sprite>("bg/qend_retry.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
+			m_sprites.insert({ "endRetryButton", std::make_unique<ClickableSprite>("ani/fr/ato_btn.0.png", this, SDL_FRect{ centerXPos(152), 27 + HALF_HEIGHT, 152, 36}) });
+			m_sprites.insert({ "endHintButton", std::make_unique<ClickableSprite>("ani/fr/ato_btn.1.png", this, SDL_FRect{ centerXPos(152), 78 + HALF_HEIGHT, 152, 36 }) });
+			m_sprites.insert({ "endQuitButton", std::make_unique<ClickableSprite>("ani/fr/ato_btn.2.png", this, SDL_FRect{ centerXPos(152), 129 + HALF_HEIGHT, 152, 36 }) });
+		}
+
 		m_text = fileUtils::readText(m_game->m_gameFolder / "qtext/fr" / ("q_" + m_internalName + ".txt"));
 		m_failText = fileUtils::readText(m_game->m_gameFolder / "qtext/fr" / ("f_" + m_internalName + ".txt"));
 		m_successText = fileUtils::readText(m_game->m_gameFolder / "qtext/fr" / ("c_" + m_internalName + ".txt"));
@@ -218,29 +232,31 @@ namespace Layton1Scene {
 			m_state = PUZZLE;
 
 			playSFX("puzzleClicked");
-		} else if (m_state == PUZZLE && (spriteName == "hint0" || spriteName == "hint1" || spriteName == "hint2" || spriteName == "hint3")) {
-			m_sprites.at("bottomBackgroundHint1")->m_interactive = true;
-			m_sprites.at("bottomBackgroundHint2")->m_interactive = true;
-			m_sprites.at("bottomBackgroundHint3")->m_interactive = true;
-			m_sprites.at("bottomBackgroundHint1Locked")->m_interactive = true;
-			m_sprites.at("bottomBackgroundHint2Locked")->m_interactive = true;
-			m_sprites.at("bottomBackgroundHint3Locked")->m_interactive = true;
-			m_sprites.at("bottomBackgroundHint1NoCoin")->m_interactive = true;
-			m_sprites.at("bottomBackgroundHint2NoCoin")->m_interactive = true;
-			m_sprites.at("bottomBackgroundHint3NoCoin")->m_interactive = true;
-			m_sprites.at("hintBackButton")->m_interactive = true;
-			m_sprites.at("hint1Button")->m_interactive = true;
-			m_sprites.at("hint2Button")->m_interactive = true;
-			m_sprites.at("hint3Button")->m_interactive = true;
-			m_sprites.at("hint1LockedButton")->m_interactive = true;
-			m_sprites.at("hint2LockedButton")->m_interactive = true;
-			m_sprites.at("hint3LockedButton")->m_interactive = true;
-			m_sprites.at("hintUnlockYesButton")->m_interactive = true;
-			m_sprites.at("hintUnlockNoButton")->m_interactive = true;
-			m_state = HINT;
+		} else if (m_state == PUZZLE) {
+			if (spriteName == "hint0" || spriteName == "hint1" || spriteName == "hint2" || spriteName == "hint3") {
+				enableHintButtons();
+				m_state = HINT;
 
-			playSFX("showHints");
-		} else if (m_state == HINT) {
+				playSFX("showHints");
+			} else if (spriteName == "quitButton") {
+				m_sprites.at("quitButtonYes")->m_interactive = true;
+				m_sprites.at("quitButtonNo")->m_interactive = true;
+				m_state = PUZZLE_QUIT;
+
+				playSFX("keyboardSwitch");
+			}
+		} else if (m_state == PUZZLE_QUIT) {
+			if (spriteName == "quitButtonNo") {
+				m_sprites.at("quitButtonYes")->m_interactive = false;
+				m_sprites.at("quitButtonNo")->m_interactive = false;
+				m_state = PUZZLE;
+
+				playSFX("hideHints");
+			} else if (spriteName == "quitButtonYes") {
+				fadeToNextScene(m_nextSceneName);
+				playSFX("keyboardSwitch");
+			}
+		} else if (m_state == HINT || m_state == END_HINT) {
 			if ((spriteName == "hintBackButton" || spriteName == "hintUnlockNoButton")) {
 				m_sprites.at("bottomBackgroundHint1")->m_interactive = false;
 				m_sprites.at("bottomBackgroundHint2")->m_interactive = false;
@@ -260,7 +276,14 @@ namespace Layton1Scene {
 				m_sprites.at("hint3LockedButton")->m_interactive = false;
 				m_sprites.at("hintUnlockYesButton")->m_interactive = false;
 				m_sprites.at("hintUnlockNoButton")->m_interactive = false;
-				m_state = PUZZLE;
+
+				if (m_state == PUZZLE) {
+					m_state = PUZZLE;
+				} else {
+					m_state = END_FADING_OUT;
+					m_sprites.at("fading")->fade({ 400, 0, Sprite::FadingMode::IN });
+					fadeBGM(400);
+				}
 
 				playSFX("hideHints");
 			} else if (spriteName == "hintUnlockYesButton") {
@@ -292,19 +315,64 @@ namespace Layton1Scene {
 				playSFX("keyboardSwitch");
 				fadeToNextScene(m_nextSceneName);
 			} else {
-				m_state = END_FADING_OUT;
-				m_sprites.at("fading")->fade({ 400, 0, Sprite::FadingMode::IN });
-				fadeBGM(400);
-				playSFX("keyboardSwitch");
+				if (m_canQuit) {
+					m_sprites.at("fading")->fade({ 400, 0, Sprite::FadingMode::IN });
+					m_state = END_TEXT_FADING_OUT;
+					m_game->m_bgmData.at(1)->loop = false;
+					playSFX("keyboardSwitch");
+				} else {
+					m_state = END_FADING_OUT;
+					m_sprites.at("fading")->fade({ 400, 0, Sprite::FadingMode::IN });
+					fadeBGM(400);
+					playSFX("keyboardSwitch");
+				}
 			}
 		} else if (m_state == END_PICARAT) {
-			if (!m_game->m_save->m_puzzles.at(m_number) & 1) {
+			if (!(m_game->m_save->m_puzzles.at(m_number) & 1)) {
 				m_game->m_save->m_puzzles.at(m_number) += 1;
 				m_game->m_save->m_solvedPuzzles++;
 			}
 			m_state = END_PICARAT_FADING_OUT;
 			m_sprites.at("fading")->fade({ 300, 0, Sprite::FadingMode::IN });
+		} else if (m_state == END_QUIT) {
+			m_sprites.at("endRetryButton")->m_interactive = false;
+			m_sprites.at("endHintButton")->m_interactive = false;
+			m_sprites.at("endQuitButton")->m_interactive = false;
+
+			if (spriteName == "endRetryButton") {
+				m_state = END_FADING_OUT;
+				fadeBGM(400);
+				playSFX("keyboardSwitch");
+			} else if (spriteName == "endQuitButton") {
+				playSFX("keyboardSwitch");
+				fadeToNextScene(m_nextSceneName);
+			} else if (spriteName == "endHintButton") {
+				m_state = END_QUIT_FADING_OUT;
+				m_sprites.at("fading")->fade({ 400, 0, Sprite::FadingMode::IN });
+				playSFX("keyboardSwitch");
+			}
 		}
+	}
+
+	void Puzzle::enableHintButtons() {
+		m_sprites.at("bottomBackgroundHint1")->m_interactive = true;
+		m_sprites.at("bottomBackgroundHint2")->m_interactive = true;
+		m_sprites.at("bottomBackgroundHint3")->m_interactive = true;
+		m_sprites.at("bottomBackgroundHint1Locked")->m_interactive = true;
+		m_sprites.at("bottomBackgroundHint2Locked")->m_interactive = true;
+		m_sprites.at("bottomBackgroundHint3Locked")->m_interactive = true;
+		m_sprites.at("bottomBackgroundHint1NoCoin")->m_interactive = true;
+		m_sprites.at("bottomBackgroundHint2NoCoin")->m_interactive = true;
+		m_sprites.at("bottomBackgroundHint3NoCoin")->m_interactive = true;
+		m_sprites.at("hintBackButton")->m_interactive = true;
+		m_sprites.at("hint1Button")->m_interactive = true;
+		m_sprites.at("hint2Button")->m_interactive = true;
+		m_sprites.at("hint3Button")->m_interactive = true;
+		m_sprites.at("hint1LockedButton")->m_interactive = true;
+		m_sprites.at("hint2LockedButton")->m_interactive = true;
+		m_sprites.at("hint3LockedButton")->m_interactive = true;
+		m_sprites.at("hintUnlockYesButton")->m_interactive = true;
+		m_sprites.at("hintUnlockNoButton")->m_interactive = true;
 	}
 
 	void Puzzle::showBottomUI() {
@@ -503,6 +571,12 @@ namespace Layton1Scene {
 			}
 		} else if (m_state == HINT) {
 			renderHint();
+		} else if (m_state == PUZZLE_QUIT) {
+			m_sprites.at("quitBackground")->draw();
+			m_sprites.at("quitButtonYes")->draw(1);
+			m_sprites.at("quitButtonNo")->draw(1);
+			m_sprites.at("quitName")->draw();
+			m_sprites.at("quitText")->draw();
 		}
 
 		m_sprites.at("topBackground")->draw();
@@ -679,7 +753,7 @@ namespace Layton1Scene {
 	}
 
 	void Puzzle::renderSuccess() {
-		if (m_state >= END_PICARAT_FADING_IN && m_state < END_TEXT_FADING) {
+		if (m_state >= END_PICARAT_FADING_IN && m_state < END_TEXT_FADING_IN) {
 			m_sprites.at("successPicaratBackground")->draw();
 
 			if (m_sprites.count("endTotalPicarat0")) {
@@ -709,7 +783,7 @@ namespace Layton1Scene {
 			if (m_sprites.count("endCurrentPicarat2")) {
 				m_sprites.at("endCurrentPicarat2")->draw();
 			}
-		} else if (m_state >= END_TEXT_FADING) {
+		} else if (m_state >= END_TEXT_FADING_IN) {
 			m_sprites.at("successTextBackground")->draw();
 			m_sprites.at("successTopBackground")->draw();
 			m_sprites.at("puzzleNumber0")->draw();
@@ -722,7 +796,7 @@ namespace Layton1Scene {
 			}
 		}
 
-		if (m_state < END_TEXT_FADING) {
+		if (m_state < END_TEXT_FADING_IN) {
 			m_sprites.at("successTitle")->draw();
 		}
 
@@ -762,7 +836,7 @@ namespace Layton1Scene {
 				}
 			}
 		} else if (m_state == END_PICARAT_FADING_OUT && !m_sprites.at("fading")->m_fading) {
-			m_state = END_TEXT_FADING;
+			m_state = END_TEXT_FADING_IN;
 			m_sprites.at("fading")->fade({ 300, 0, Sprite::FadingMode::OUT });
 			m_sprites.at("puzzleNumber0")->m_transform.y += HALF_HEIGHT * m_game->m_windowMultiplier;
 			m_sprites.at("puzzleNumber1")->m_transform.y += HALF_HEIGHT * m_game->m_windowMultiplier;
@@ -773,7 +847,7 @@ namespace Layton1Scene {
 			if (m_game->m_save->m_currentHintCoins >= 10) {
 				m_sprites.at("hintCoins1")->m_transform.y += HALF_HEIGHT * m_game->m_windowMultiplier;
 			}
-		} else if (m_state == END_TEXT_FADING && !m_sprites.at("bottomFading")->m_fading) {
+		} else if (m_state == END_TEXT_FADING_IN && !m_sprites.at("bottomFading")->m_fading) {
 			m_state = END_FULL;
 			m_textProgression = 0;
 			m_game->m_bgmData.at(1)->loop = true;
@@ -829,7 +903,7 @@ namespace Layton1Scene {
 			m_sprites.at("introPuzzleNumber2")->m_transform.y += HALF_HEIGHT * m_game->m_windowMultiplier;
 			m_sprites.at("failTitle")->m_transform.y += HALF_HEIGHT * m_game->m_windowMultiplier;
 			return;
-		} else if (m_state >= END_TEXT_FADING) {
+		} else if (m_state >= END_TEXT_FADING_IN) {
 			m_sprites.at("failTextBackground")->draw();
 		}
 
@@ -837,7 +911,7 @@ namespace Layton1Scene {
 			m_state = END_CARD_MOVING;
 			m_sprites.at("failTitle")->translate(Sprite::TranslationInfo{ 400, 0.0f, -HALF_HEIGHT });
 		} else if (m_state == END_CARD_MOVING && !m_sprites.at("failTitle")->m_translating) {
-			m_state = END_TEXT_FADING;
+			m_state = END_TEXT_FADING_IN;
 			m_sprites.at("bottomFading")->fade({ 300, 0, Sprite::FadingMode::OUT });
 			int voiceLine = 1 + (rand() % 3);
 
@@ -846,13 +920,38 @@ namespace Layton1Scene {
 			} else {
 				playSFX("laytonWrong" + std::to_string(voiceLine), 1);
 			}
-		} else if (m_state == END_TEXT_FADING && !m_sprites.at("bottomFading")->m_fading) {
+		} else if (m_state == END_TEXT_FADING_IN && !m_sprites.at("bottomFading")->m_fading) {
 			m_state = END_FULL;
 			m_textProgression = 0;
 			m_game->m_bgmData.at(1)->loop = true;
 			m_game->m_bgmData.at(0)->position = 0;
 			m_game->m_bgmData.at(0)->fading = false;
 			m_game->m_bgmData.at(0)->volume = 1.0f;
+		} else if (m_state == END_TEXT_FADING_OUT && !m_sprites.at("bottomFading")->m_fading) {
+			m_sprites.at("endRetryButton")->m_interactive = true;
+			m_sprites.at("endHintButton")->m_interactive = true;
+			m_sprites.at("endQuitButton")->m_interactive = true;
+			m_sprites.at("fading")->fade({ 400, 0, Sprite::FadingMode::OUT });
+			m_state = END_QUIT_FADING_IN;
+		} else if (m_state >= END_QUIT_FADING_IN && m_state <= END_QUIT_FADING_OUT) {
+			m_sprites.at("endQuitBackground")->draw();
+			m_sprites.at("endRetryButton")->draw(1);
+			m_sprites.at("endHintButton")->draw(1);
+			m_sprites.at("endQuitButton")->draw(1);
+
+			if (m_state == END_QUIT_FADING_IN && !m_sprites.at("bottomFading")->m_fading) {
+				m_state = END_QUIT;
+			} else if (m_state == END_QUIT_FADING_OUT && !m_sprites.at("bottomFading")->m_fading) {
+				m_state = END_HINT_FADING_IN;
+				m_sprites.at("fading")->fade({ 400, 0, Sprite::FadingMode::OUT });
+			}
+		} else if (m_state >= END_HINT_FADING_IN && m_state <= END_HINT) {
+			if (m_state == END_HINT_FADING_IN && !m_sprites.at("bottomFading")->m_fading) {
+				m_state = END_HINT;
+				enableHintButtons();
+			}
+
+			renderHint();
 		} else if (m_state == END_FULL) {
 			m_sprites.at("endText")->draw();
 			m_sprites.at("touch")->draw();
