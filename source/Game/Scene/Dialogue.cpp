@@ -3,6 +3,7 @@
 #include "Game/Game.h"
 #include "Game/Sprite/AnimatedSprite.h"
 #include "Game/Sprite/TextSprite.h"
+#include "Utils/StringUtils.h"
 
 Dialogue::Dialogue(Scene* scene) :
 	m_scene(scene)
@@ -46,6 +47,11 @@ void Dialogue::setDialogue(const fileUtils::path& textFilePath, const std::strin
 
 		m_scene->m_sprites.at(c.nameSprite.string())->m_interactive = true;
 		m_scene->m_sprites.at(c.backgroundSprite.string())->m_interactive = true;
+
+		if (!fading()) {
+			m_scene->m_sprites.at(c.nameSprite.string())->m_opacity = 255;
+			m_scene->m_sprites.at(c.backgroundSprite.string())->m_opacity = 255;
+		}
 	}
 	m_scene->m_sprites.at("dialogue_cursor")->m_interactive = true;
 
@@ -79,16 +85,20 @@ void Dialogue::draw() {
 	for (auto& c : m_characters) {
 		if (c.talking) {
 			if (m_displayed || fading()) {
+				if (m_scene->m_sprites.count("dialogue_animation") != 0) {
+					m_scene->m_sprites.at("dialogue_animation")->draw();
+				}
+
 				m_scene->m_sprites.at(c.backgroundSprite.string())->draw();
 				m_scene->m_sprites.at(c.nameSprite.string())->draw();
 
-				if (m_scene->m_game->m_bgmData.size() > m_audioStreamIdx && ((m_scene->m_game->m_bgmData.at(m_audioStreamIdx)->finished && m_audioFilesPath.size() > 0) || (m_textProgression >= m_texts.at(m_currentText).length() && m_audioFilesPath.size() == 0)) && c.visible && !c.noTalkAnim.empty()) {
+				if (m_scene->m_game->m_bgmData.size() > m_audioStreamIdx && ((m_scene->m_game->m_bgmData.at(m_audioStreamIdx)->finished && m_audioFilesPath.size() > 0) || (m_textProgression >= m_texts.at(m_currentText).length() && m_audioFilesPath.size() == 0)) && c.visible && !c.noTalkAnim.empty() && m_scene->m_sprites.count("dialogue_animation") == 0) {
 					m_scene->m_sprites.at(c.noTalkAnim.string())->draw();
 					continue;
 				}
 			}
 
-			if (c.visible && !c.talkAnim.empty()) {
+			if (c.visible && !c.talkAnim.empty() && m_scene->m_sprites.count("dialogue_animation") == 0) {
 				m_scene->m_sprites.at(c.talkAnim.string())->draw();
 			}
 		} else if (c.visible && !c.noTalkAnim.empty()) {
@@ -175,6 +185,17 @@ void Dialogue::skip() {
 }
 
 bool Dialogue::next() {
+	if (m_scene->m_sprites.count("dialogue_animation") != 0) {
+		m_scene->m_sprites.at("dialogue_animation")->unload();
+		m_scene->m_sprites.erase("dialogue_animation");
+
+		for (auto& c : m_characters) {
+			if (c.talking) {
+				m_scene->m_sprites.at(c.mapSpriteName)->m_opacity = 255;
+			}
+		}
+	}
+
 	if (m_currentText < m_texts.size() - 1) {
 		m_currentText++;
 		m_textProgression = 0;
@@ -186,11 +207,11 @@ bool Dialogue::next() {
 			m_textProgression = 0;
 			m_texts.at(m_currentText) = m_texts.at(m_currentText).substr(3, m_texts.at(m_currentText).length() - 3);
 		}
+		setAnimation();
 
 		if (m_scene->m_game->m_bgmStreams.size() > m_audioStreamIdx) {
 			clearAudioStream(m_scene->m_game->m_bgmStreams.at(m_audioStreamIdx), m_scene->m_game->m_bgmData.at(m_audioStreamIdx).get());
 		}
-
 		return true;
 	}
 	return false;
@@ -233,5 +254,43 @@ void Dialogue::fade(Sprite::FadeInfo fadeInfo) {
 void Dialogue::hideAllCharacters() {
 	for (auto& c : m_characters) {
 		c.visible = false;
+	}
+}
+
+void Dialogue::setAnimation() {
+	if (m_texts.at(m_currentText).substr(0, 8) == U"&SetAni ") {
+		std::u32string newStr = m_texts.at(m_currentText).substr(10, m_texts.at(m_currentText).length() - 10);
+		std::u32string::size_type pos = newStr.find(U"&");
+		std::string animationName = stringUtils::toU8(newStr.substr(0, pos));
+
+		m_texts.at(m_currentText) = newStr.substr(pos + 1, m_texts.at(m_currentText).length() - pos + 1);
+		int talkingCharIdx = -1;
+
+		for (int i = 0; i < m_characters.size(); i++) {
+			if (m_characters.at(i).talking) {
+				talkingCharIdx = i;
+				break;
+			}
+		}
+
+		if (talkingCharIdx == -1) {
+			return;
+		}
+
+		Character& talkingCharacter = m_characters.at(talkingCharIdx);
+		std::string::size_type pos2 = talkingCharacter.noTalkAnim.string().find("_f");
+
+		if (pos2 == std::string::npos) {
+			pos2 = talkingCharacter.noTalkAnim.string().find("_e");
+		}
+
+		if (pos2 == std::string::npos) {
+			return;
+		}
+
+		std::string fileName = talkingCharacter.noTalkAnim.string().substr(0, pos2 - 2) + "." + animationName + ".anim";
+		m_scene->m_sprites.insert({ "dialogue_animation", std::make_unique<AnimatedSprite>(fileName, m_scene, SDL_FRect{ 0, 0, 0, 0 }, true) });
+		m_scene->m_sprites.at("dialogue_animation")->m_transform = m_scene->m_sprites.at(talkingCharacter.mapSpriteName)->m_transform;
+		m_scene->m_sprites.at(talkingCharacter.mapSpriteName)->m_opacity = 0;
 	}
 }

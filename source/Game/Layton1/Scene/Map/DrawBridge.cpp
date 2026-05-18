@@ -21,25 +21,28 @@ namespace Layton1Scene {
 
 			m_dialogues = {
 				{ "laytonAndLuke", 2 },
-				{ "car", 3 }
+				{ "car", 3 },
+				{ "franco", 4 }
 			};
 		}
 	}
 
 	void DrawBridge::loadDialogue() {
-		m_sprites.insert({ "topBackgroundDialogue1", std::make_unique<Sprite>("bg/ebgs_1.png", this, SDL_FRect{ 0, 0, WIDTH, HALF_HEIGHT }) });
-		m_sprites.insert({ "bottomBackgroundDialogue1", std::make_unique<Sprite>("bg/ara_1_1.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+		m_sprites.insert({ "d_topBackground1", std::make_unique<Sprite>("bg/ebgs_1.png", this, SDL_FRect{ 0, 0, WIDTH, HALF_HEIGHT }) });
+		m_sprites.insert({ "d_bottomBackground1", std::make_unique<Sprite>("bg/ara_1_1.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 
-		m_sprites.insert({ "layton", std::make_unique<Sprite>("ani/layton.5.png", this, SDL_FRect{ 20, HEIGHT - 176, 105, 176}, true) });
-		m_sprites.insert({ "layton2", std::make_unique<Sprite>("ani/layton.2.png", this, SDL_FRect{ 20, HEIGHT - 176, 105, 176}, true) });
-		m_sprites.insert({ "luke", std::make_unique<Sprite>("ani/luke.1.png", this, SDL_FRect{ 160, HEIGHT - 142, 68, 142 }, true) });
-		m_sprites.insert({ "luke2", std::make_unique<Sprite>("ani/luke.3.png", this, SDL_FRect{ 160, HEIGHT - 142, 68, 142 }, true) });
+		m_sprites.insert({ "d_layton", std::make_unique<Sprite>("ani/layton.5.png", this, SDL_FRect{ 20, HEIGHT - 176, 105, 176}, true) });
+		m_sprites.insert({ "d_layton2", std::make_unique<Sprite>("ani/layton.2.png", this, SDL_FRect{ 20, HEIGHT - 176, 105, 176}, true) });
+		m_sprites.insert({ "d_luke", std::make_unique<Sprite>("ani/luke.1.png", this, SDL_FRect{ 160, HEIGHT - 142, 68, 142 }, true) });
+		m_sprites.insert({ "d_luke2", std::make_unique<Sprite>("ani/luke.3.png", this, SDL_FRect{ 160, HEIGHT - 142, 68, 142 }, true) });
+		m_sprites.insert({ "d_franco", std::make_unique<Sprite>("ani/bridgeman.1.png", this, SDL_FRect{ 160, HEIGHT - 142, 94, 128 }, true) });
 
 		m_dialogue.load({
 			{ "layton", "ani/fr/layton_n.png", "ani/event_window_1.1.png", "", "", SDL_FRect{ 0, 0, 0, 0 } },
-			{ "layton2", "ani/fr/luke_n.png", "ani/event_window_1.2.png", "ani/layton_e_face.notalk.anim", "ani/layton_e_face.talk.anim", SDL_FRect{ (m_sprites.at("layton")->m_transform.x / m_game->m_windowMultiplier) + 38, HEIGHT - 119, 21, 13 } },
-			{ "luke", "ani/fr/luke_n.png", "ani/event_window_1.1.png", "ani/luke_e_face.notalk.anim", "ani/luke_e_face.talk.anim", SDL_FRect{ (m_sprites.at("luke")->m_transform.x / m_game->m_windowMultiplier) + 17, HEIGHT - 99, 19, 13 } },
-			{ "luke2", "ani/fr/luke_n.png", "ani/event_window_1.1.png", "ani/luke_e_face.notalk.anim", "ani/luke_e_face.smile.anim", SDL_FRect{ (m_sprites.at("luke")->m_transform.x / m_game->m_windowMultiplier) + 17, HEIGHT - 99, 19, 13 } }
+			{ "layton2", "ani/fr/layton_n.png", "ani/event_window_1.2.png", "ani/layton_e_face.notalk.anim", "ani/layton_e_face.talk.anim", SDL_FRect{ (m_sprites.at("d_layton")->m_transform.x / m_game->m_windowMultiplier) + 38, HEIGHT - 119, 21, 13 } },
+			{ "luke", "ani/fr/luke_n.png", "ani/event_window_1.1.png", "ani/luke_e_face.notalk.anim", "ani/luke_e_face.talk.anim", SDL_FRect{ (m_sprites.at("d_luke")->m_transform.x / m_game->m_windowMultiplier) + 17, HEIGHT - 99, 19, 13 } },
+			{ "luke2", "ani/fr/luke_n.png", "ani/event_window_1.1.png", "ani/luke_e_face.notalk.anim", "ani/luke_e_face.smile.anim", SDL_FRect{ (m_sprites.at("d_luke")->m_transform.x / m_game->m_windowMultiplier) + 17, HEIGHT - 99, 19, 13 } },
+			{ "franco", "ani/fr/bridgeman_n.png", "ani/event_window_1.1.png", "ani/bridgeman_e_face.notalk.anim", "ani/bridgeman_e_face.talk.anim", SDL_FRect{ (m_sprites.at("d_franco")->m_transform.x / m_game->m_windowMultiplier) + 24, HEIGHT - 128, 43, 43 }, "d_franco" }
 		});
 
 		if (m_game->m_save->m_storyProgression == 0) {
@@ -49,8 +52,6 @@ namespace Layton1Scene {
 	}
 
 	void DrawBridge::renderMap() {
-		m_sprites.at("bottomBackground")->draw();
-		m_sprites.at("topBackground")->draw();
 		m_sprites.at("anim1")->draw();
 		m_sprites.at("anim2")->draw();
 		m_sprites.at("anim3")->draw();
@@ -64,8 +65,8 @@ namespace Layton1Scene {
 
 	void DrawBridge::renderDialogue() {
 		if (m_currentDialogueId == 0) {
-			m_sprites.at("topBackgroundDialogue1")->draw();
-			m_sprites.at("bottomBackgroundDialogue1")->draw();
+			m_sprites.at("d_topBackground1")->draw();
+			m_sprites.at("d_bottomBackground1")->draw();
 
 			if (!m_fading && m_dialogueProgression == 0) {
 				m_dialogue.setCharacterVisible("layton", true);
@@ -74,15 +75,15 @@ namespace Layton1Scene {
 				m_dialogueProgression++;
 			}
 		} else if (m_currentDialogueId == 1) {
-			m_sprites.at("topBackgroundDialogue1")->draw();
+			m_sprites.at("d_topBackground1")->draw();
 			m_sprites.at("bottomBackground")->draw();
 
 			if (m_dialogueProgression < 2) {
-				m_sprites.at("layton")->draw();
-				m_sprites.at("luke")->draw();
+				m_sprites.at("d_layton")->draw();
+				m_sprites.at("d_luke")->draw();
 			} else {
-				m_sprites.at("layton2")->draw();
-				m_sprites.at("luke2")->draw();
+				m_sprites.at("d_layton2")->draw();
+				m_sprites.at("d_luke2")->draw();
 			}
 
 			if (!isFadingToDialogue() && m_dialogueProgression == 0) {
@@ -92,9 +93,9 @@ namespace Layton1Scene {
 				m_dialogueProgression++;
 			}
 		} else if (m_currentDialogueId == 2) {
-			m_sprites.at("topBackgroundDialogue1")->draw();
+			m_sprites.at("d_topBackground1")->draw();
 			m_sprites.at("bottomBackground")->draw();
-			m_sprites.at("layton")->draw();
+			m_sprites.at("d_layton")->draw();
 
 			if (!isFadingToDialogue() && m_dialogueProgression == 0) {
 				m_dialogue.setCharacterVisible("layton2", true);
@@ -103,15 +104,30 @@ namespace Layton1Scene {
 				m_dialogueProgression++;
 			}
 		} else if (m_currentDialogueId == 3) {
-			m_sprites.at("topBackgroundDialogue1")->draw();
+			m_sprites.at("d_topBackground1")->draw();
 			m_sprites.at("bottomBackground")->draw();
-			m_sprites.at("layton")->draw();
-			m_sprites.at("luke")->draw();
+			m_sprites.at("d_layton")->draw();
+			m_sprites.at("d_luke")->draw();
 
 			if (!isFadingToDialogue() && m_dialogueProgression == 0) {
 				m_dialogue.setCharacterVisible("luke", true);
 				m_dialogue.setCharacterVisible("layton2", true);
 				m_dialogue.setDialogue("etext/fr/e3_t0.txt", "luke", {}, "charBip1");
+				m_dialogue.setVisible(true);
+				m_dialogueProgression++;
+			}
+		} else if (m_currentDialogueId == 4) {
+			m_sprites.at("d_topBackground1")->draw();
+			m_sprites.at("bottomBackground")->draw();
+			m_sprites.at("d_layton")->draw();
+
+			if (m_dialogueProgression > 1) {
+				m_sprites.at("d_franco")->draw();
+			}
+
+			if (!isFadingToDialogue() && m_dialogueProgression == 0) {
+				m_dialogue.setCharacterVisible("layton2", true);
+				m_dialogue.setDialogue("etext/fr/e1_t0.txt", "layton2", {}, "charBip1");
 				m_dialogue.setVisible(true);
 				m_dialogueProgression++;
 			}
@@ -148,6 +164,13 @@ namespace Layton1Scene {
 					break;
 				case 2:
 					changeDialogue(-1);
+					break;
+			}
+		} else if (m_currentDialogueId == 4) {
+			switch (m_dialogueProgression) {
+				case 1:
+					m_dialogue.setCharacterVisible("franco", true);
+					m_dialogue.setDialogue("etext/fr/e1_t1.txt", "franco", {}, "charBip2");
 					break;
 			}
 		}

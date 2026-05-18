@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Game/Scene/Scene.h"
+#include <functional>
 
 namespace Layton1Scene {
 	class Map : public Scene {
@@ -31,5 +32,7 @@ namespace Layton1Scene {
 		std::vector<std::pair<std::string, int>> m_dialogues;
 		std::vector<std::pair<SDL_FRect, fileUtils::path>> m_hints;
 		std::vector<std::pair<SDL_FRect, std::string>> m_puzzles;
+		std::function<void()> m_interactionCallBack;
+		bool m_interaction = false;
 	};
 };

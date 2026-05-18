@@ -18,6 +18,8 @@ namespace Layton1Scene {
 		m_sprites.insert({ "bottomFading", std::make_unique<Sprite>("bg/custom/black_screen.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
 		m_sprites.insert({ "fading", std::make_unique<Sprite>("bg/custom/black_screen.png", this, SDL_FRect{ 0, 0, WIDTH, HEIGHT }) });
 
+		m_sprites.insert({ "interaction", std::make_unique<Sprite>("ani/icon_buttons.0.png", this, SDL_FRect{ 0, 0, 24, 24 }) });
+
 		m_sprites.insert({ "solved", std::make_unique<Sprite>("ani/fr/puzzle_numbers.10.png", this, SDL_FRect{ 2, 3, 52, 22 }) });
 		m_sprites.insert({ "name", std::make_unique<TextSprite>("font/fontevent.png", "storytext/fr/map" + m_internalName + ".txt", this, SDL_FRect{ -85, 7, WIDTH, 12 }, SDL_Color{ 0, 0, 0, 255 }) });
 		
@@ -54,6 +56,9 @@ namespace Layton1Scene {
 		}
 
 		if (m_currentDialogueId == -1) {
+			m_sprites.at("bottomBackground")->draw();
+			m_sprites.at("topBackground")->draw();
+
 			renderMap();
 
 			m_sprites.at("name")->draw();
@@ -70,6 +75,21 @@ namespace Layton1Scene {
 			if (m_sprites.count("solvedNumber2")) {
 				m_sprites.at("solvedNumber2")->draw();
 			}
+
+			if (m_interaction) {
+				Sprite* sprite = m_sprites.at("interaction").get();
+				sprite->draw();
+
+				if (!sprite->m_translating) {
+					if (sprite->m_translationInfo.y < 0) {
+						m_sprites.at("interaction")->translate(Sprite::TranslationInfo{ 150, 0, 24 });
+					} else {
+						playSFX("puzzleClicked");
+						m_interaction = false;
+						m_interactionCallBack();
+					}
+				}
+			}
 		} else {
 			renderDialogue();
 			m_dialogue.draw();
@@ -82,6 +102,10 @@ namespace Layton1Scene {
 	}
 
 	void Map::handleClick(const std::string& spriteName, SDL_Event event) {
+		if (m_interaction || isFadingToDialogue()) {
+			return;
+		}
+
 		if (m_currentDialogueId != -1 && m_dialogueProgression >= 1 && m_currentDialogueId == m_nextDialogueId) {
 			if (m_dialogue.waiting()) {
 				if (m_dialogue.next()) {
@@ -96,7 +120,12 @@ namespace Layton1Scene {
 		} else {
 			for (const auto& dialogue : m_dialogues) {
 				if (spriteName == dialogue.first) {
-					changeDialogue(dialogue.second);
+					playSFX("keyboardOk");
+					m_sprites.at("interaction")->m_transform.x = event.button.x - 12 * m_game->m_windowMultiplier;
+					m_sprites.at("interaction")->m_transform.y = event.button.y - 24 * m_game->m_windowMultiplier;
+					m_sprites.at("interaction")->translate(Sprite::TranslationInfo{ 150, 0, -24 });
+					m_interaction = true;
+					m_interactionCallBack = [this, dialogue]() { changeDialogue(dialogue.second); };
 					return;
 				}
 			}

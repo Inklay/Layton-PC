@@ -15,6 +15,7 @@ public:
 		fileUtils::path noTalkAnim;
 		fileUtils::path talkAnim;
 		SDL_FRect rect;
+		std::string mapSpriteName = "";
 		bool talking = false;
 		bool visible = false;
 	};
@@ -34,6 +35,8 @@ public:
 	void hideAllCharacters();
 
 private:
+	void setAnimation();
+	
 	Scene* m_scene;
 	std::vector<Character> m_characters;
 	std::vector<std::u32string> m_texts;

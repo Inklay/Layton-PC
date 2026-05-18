@@ -82,6 +82,8 @@ namespace stringUtils {
 		replace(str, "<3>",  "³");
 		replace(str, "<9>",  "'");
 
+		replace(str, "@1",  "");
+		replace(str, "@2",  "");
 		replace(str, "@3",  "");
 	}
 
