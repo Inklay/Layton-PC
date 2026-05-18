@@ -31,6 +31,7 @@ public:
 	void setDialogue(const fileUtils::path& textFilePath, const std::string& character, std::vector<fileUtils::path> audioFilesPath = {}, const std::string& sfxSound = "charBip3");
 	void setCharacterVisible(std::string name, bool visible);
 	void fade(Sprite::FadeInfo fadeInfo);
+	void hideAllCharacters();
 
 private:
 	Scene* m_scene;

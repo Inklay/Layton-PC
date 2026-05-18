@@ -19,7 +19,7 @@ public:
 	uint16_t m_picarats = 0;
 	uint16_t m_currentHintCoins = 0;
 	uint8_t m_chapter = 0;
-	uint8_t m_chapterProgression = 0;
+	uint8_t m_storyProgression = 0;
 	std::vector<uint8_t> m_puzzles;
 	std::vector<uint8_t> m_hintCoins;
 	GameId m_id = UNKNOWN;

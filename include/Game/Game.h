@@ -15,6 +15,7 @@ public:
 	void changeScene(const std::string& newScene);
 	virtual void addSave(const std::u32string name) = 0;
 	void setFrameDuration(int duration);
+	virtual std::u32string getQuestText() = 0;
 	
 	const std::string m_name;
 	std::vector<std::unique_ptr<Save>> m_saves;

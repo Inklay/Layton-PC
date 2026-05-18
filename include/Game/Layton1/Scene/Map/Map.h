@@ -7,7 +7,8 @@ namespace Layton1Scene {
 	public:
 		void load();
 		void render();
-		void handleClick(const std::string&, SDL_Event);
+		void handleClick(const std::string& spriteName, SDL_Event event);
+		void unload();
 
 	protected:
 		Map(Game* game, const std::string& bgm, const std::string& internalName);
@@ -26,5 +27,9 @@ namespace Layton1Scene {
 		int m_nextDialogueId = -1;
 		int m_dialogueProgression = 0;
 		std::vector<std::vector<bool>> m_hintCoins;
+		std::u32string m_questText;
+		std::vector<std::pair<std::string, int>> m_dialogues;
+		std::vector<std::pair<SDL_FRect, fileUtils::path>> m_hints;
+		std::vector<std::pair<SDL_FRect, std::string>> m_puzzles;
 	};
 };

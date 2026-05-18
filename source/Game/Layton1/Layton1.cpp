@@ -101,3 +101,7 @@ void Layton1::addSave(const std::u32string name) {
 	m_saves.at(idx) = std::make_unique<Layton1Save>(name, path);
 	m_save = m_saves.at(idx).get();
 }
+
+std::u32string Layton1::getQuestText() {
+	return fileUtils::readText(m_gameFolder / "storytext/fr" / ("mt_" + std::to_string(m_save->m_storyProgression) + ".txt"));
+}

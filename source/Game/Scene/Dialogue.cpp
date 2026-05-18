@@ -14,17 +14,17 @@ void Dialogue::load(std::vector<Character> characters) {
 
 	for (const auto& c : characters) {
 		if (!c.talkAnim.empty()) {
-			m_scene->m_sprites.insert({ c.talkAnim.string(), std::make_unique<AnimatedSprite>(c.talkAnim, m_scene, c.rect, true) });
-			m_scene->m_sprites.insert({ c.noTalkAnim.string(), std::make_unique<AnimatedSprite>(c.noTalkAnim, m_scene, c.rect, true) });
+			m_scene->m_sprites.insert({ c.talkAnim.string(), std::make_unique<AnimatedSprite>(c.talkAnim, m_scene, c.rect) });
+			m_scene->m_sprites.insert({ c.noTalkAnim.string(), std::make_unique<AnimatedSprite>(c.noTalkAnim, m_scene, c.rect) });
 		}
-		m_scene->m_sprites.insert({ c.nameSprite.string(), std::make_unique<Sprite>(c.nameSprite, m_scene, SDL_FRect{ 3, HEIGHT - 68, 62, 14 }, true) });
+		m_scene->m_sprites.insert({ c.nameSprite.string(), std::make_unique<Sprite>(c.nameSprite, m_scene, SDL_FRect{ 3, HEIGHT - 68, 62, 14 }) });
 
 		if (m_scene->m_sprites.count(c.backgroundSprite.string()) == 0) {
-			m_scene->m_sprites.insert({ c.backgroundSprite.string(), std::make_unique<Sprite>(c.backgroundSprite, m_scene, SDL_FRect{ 2, HEIGHT - 66, 252, 64 }, true) });
+			m_scene->m_sprites.insert({ c.backgroundSprite.string(), std::make_unique<Sprite>(c.backgroundSprite, m_scene, SDL_FRect{ 2, HEIGHT - 66, 252, 64 }) });
 		}
 	}
 
-	m_scene->m_sprites.insert({ "dialogue_cursor", std::make_unique<AnimatedSprite>("ani/cursor_wait.touch.anim", m_scene, SDL_FRect{ WIDTH - 23, HEIGHT - 20, 16, 16 }, true) });
+	m_scene->m_sprites.insert({ "dialogue_cursor", std::make_unique<AnimatedSprite>("ani/cursor_wait.touch.anim", m_scene, SDL_FRect{ WIDTH - 23, HEIGHT - 20, 16, 16 }) });
 	m_scene->m_sprites.insert({ "dialogue_text", std::make_unique<TextSprite>("font/fontevent.png", std::u32string(U""), m_scene, SDL_FRect{ 14, HEIGHT - 51, 234, 60 }, SDL_Color{ 0, 0, 0, 255 }) });
 	m_audioStreamIdx = m_scene->m_game->m_bgmStreams.size();
 }
@@ -38,7 +38,16 @@ void Dialogue::setDialogue(const fileUtils::path& textFilePath, const std::strin
 		if (c.name == character) {
 			c.talking = true;
 		}
+
+		if (!c.talkAnim.empty()) {
+			m_scene->m_sprites.at(c.talkAnim.string())->m_interactive = true;
+			m_scene->m_sprites.at(c.noTalkAnim.string())->m_interactive = true;
+		}
+
+		m_scene->m_sprites.at(c.nameSprite.string())->m_interactive = true;
+		m_scene->m_sprites.at(c.backgroundSprite.string())->m_interactive = true;
 	}
+	m_scene->m_sprites.at("dialogue_cursor")->m_interactive = true;
 
 	std::u32string texts = fileUtils::readText(m_scene->m_game->m_gameFolder / textFilePath);
 	std::u32string::size_type pos = texts.find(U"@p");
@@ -125,6 +134,17 @@ void Dialogue::setVisible(bool visible) {
 		fade(Sprite::FadeInfo{ 250, 0, Sprite::FadingMode::IN });
 	} else {
 		fade(Sprite::FadeInfo{ 250, 0, Sprite::FadingMode::OUT });
+
+		for (auto& c : m_characters) {
+			if (!c.talkAnim.empty()) {
+				m_scene->m_sprites.at(c.talkAnim.string())->m_interactive = false;
+				m_scene->m_sprites.at(c.noTalkAnim.string())->m_interactive = false;
+			}
+
+			m_scene->m_sprites.at(c.nameSprite.string())->m_interactive = false;
+			m_scene->m_sprites.at(c.backgroundSprite.string())->m_interactive = false;
+		}
+		m_scene->m_sprites.at("dialogue_cursor")->m_interactive = false;
 	}
 
 	m_displayed = visible;
@@ -207,5 +227,11 @@ void Dialogue::fade(Sprite::FadeInfo fadeInfo) {
 	m_scene->m_sprites.at("dialogue_text")->fade(fadeInfo);
 	if (m_texts.size() != 0 && m_textProgression >= m_texts.at(m_currentText).length()) {
 		m_scene->m_sprites.at("dialogue_cursor")->fade(fadeInfo);
+	}
+}
+
+void Dialogue::hideAllCharacters() {
+	for (auto& c : m_characters) {
+		c.visible = false;
 	}
 }
