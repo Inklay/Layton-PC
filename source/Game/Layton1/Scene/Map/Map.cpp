@@ -4,7 +4,7 @@
 
 namespace Layton1Scene {
 	Map::Map(Game* game, const std::string& bgm, const std::string& internalName) :
-		Scene(game),
+		Scene(game, 0.5f, 0.5f),
 		m_bgm(bgm),
 		m_internalName(internalName)
 	{

@@ -18,6 +18,7 @@ public:
 	virtual std::u32string getQuestText() = 0;
 	
 	const std::string m_name;
+	std::string m_previousSceneName;
 	std::vector<std::unique_ptr<Save>> m_saves;
 	float m_windowMultiplier;
 	std::vector<SDL_AudioStream*> m_bgmStreams;

@@ -36,6 +36,7 @@ set(SOURCES
     source/Game/Layton1/Scene/Map/DrawBridge.cpp
     source/Game/Layton1/Scene/Puzzle/Puzzle.cpp
     source/Game/Layton1/Scene/Puzzle/Puzzle1.cpp
+    source/Game/Layton1/Scene/Puzzle/Puzzle2.cpp
     source/Game/Scene/Cinematic.cpp
     source/Game/Scene/Dialogue.cpp
     source/Game/Scene/Scene.cpp

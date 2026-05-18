@@ -108,7 +108,7 @@ namespace Layton1Scene {
 			playSFX("keyboardOk");
 			m_game->addSave(m_name);
 #ifdef _DEBUG
-			fadeToNextScene("map_drawBridge");
+			fadeToNextScene("puzzle2");
 #else
 			fadeToNextScene("intro_letter");
 #endif

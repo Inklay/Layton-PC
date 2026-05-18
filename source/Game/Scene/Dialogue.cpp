@@ -258,12 +258,13 @@ void Dialogue::hideAllCharacters() {
 }
 
 void Dialogue::setAnimation() {
-	if (m_texts.at(m_currentText).substr(0, 8) == U"&SetAni ") {
-		std::u32string newStr = m_texts.at(m_currentText).substr(10, m_texts.at(m_currentText).length() - 10);
-		std::u32string::size_type pos = newStr.find(U"&");
-		std::string animationName = stringUtils::toU8(newStr.substr(0, pos));
+	std::u32string::size_type pos = m_texts.at(m_currentText).find(U"&SetAni ");
 
-		m_texts.at(m_currentText) = newStr.substr(pos + 1, m_texts.at(m_currentText).length() - pos + 1);
+	if (pos != std::u32string::npos) {
+		std::u32string newStr = m_texts.at(m_currentText).substr(pos + 10, m_texts.at(m_currentText).length() - (pos + 10));
+		std::u32string::size_type pos2 = newStr.find(U"&");
+		std::string animationName = stringUtils::toU8(newStr.substr(0, pos2));
+		m_texts.at(m_currentText) = m_texts.at(m_currentText).substr(0, pos) + newStr.substr(pos2 + 1, m_texts.at(m_currentText).length() - pos2 + 1);
 		int talkingCharIdx = -1;
 
 		for (int i = 0; i < m_characters.size(); i++) {
@@ -278,17 +279,17 @@ void Dialogue::setAnimation() {
 		}
 
 		Character& talkingCharacter = m_characters.at(talkingCharIdx);
-		std::string::size_type pos2 = talkingCharacter.noTalkAnim.string().find("_f");
+		std::string::size_type pos3 = talkingCharacter.noTalkAnim.string().find("_f");
 
-		if (pos2 == std::string::npos) {
-			pos2 = talkingCharacter.noTalkAnim.string().find("_e");
+		if (pos3 == std::string::npos) {
+			pos3 = talkingCharacter.noTalkAnim.string().find("_e");
 		}
 
-		if (pos2 == std::string::npos) {
+		if (pos3 == std::string::npos) {
 			return;
 		}
 
-		std::string fileName = talkingCharacter.noTalkAnim.string().substr(0, pos2 - 2) + "." + animationName + ".anim";
+		std::string fileName = talkingCharacter.noTalkAnim.string().substr(0, pos3 - 2) + "." + animationName + ".anim";
 		m_scene->m_sprites.insert({ "dialogue_animation", std::make_unique<AnimatedSprite>(fileName, m_scene, SDL_FRect{ 0, 0, 0, 0 }, true) });
 		m_scene->m_sprites.at("dialogue_animation")->m_transform = m_scene->m_sprites.at(talkingCharacter.mapSpriteName)->m_transform;
 		m_scene->m_sprites.at(talkingCharacter.mapSpriteName)->m_opacity = 0;

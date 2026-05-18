@@ -49,7 +49,7 @@ namespace Layton1Scene {
 		void hideBottomUI();
 		void showBottomUI();
 		void startValidation();
-		virtual bool validate() = 0;
+		virtual bool validate();
 		bool isClosedShape(std::vector<SDL_FPoint> points);
 		SDL_FPoint getShapeCenter(std::vector<SDL_FPoint> points);
 
@@ -71,6 +71,7 @@ namespace Layton1Scene {
 		int m_touchTextState = 0;
 		int m_touchTextTimer = 0;
 		int m_picaratLost;
+		bool m_canQuite = false;
 		bool m_canClear = false;
 		bool m_canValidate = false;
 		bool m_bottomUIHidden = false;

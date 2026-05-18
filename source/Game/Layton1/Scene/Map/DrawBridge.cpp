@@ -172,6 +172,15 @@ namespace Layton1Scene {
 					m_dialogue.setCharacterVisible("franco", true);
 					m_dialogue.setDialogue("etext/fr/e1_t1.txt", "franco", {}, "charBip2");
 					break;
+				case 2:
+					m_dialogue.setDialogue("etext/fr/e1_t2.txt", "layton2", {}, "charBip3");
+					break;
+				case 3:
+					m_dialogue.setDialogue("etext/fr/e1_t3.txt", "franco", {}, "charBip2");
+					break;
+				case 4:
+					fadeToNextScene("puzzle2");
+					break;
 			}
 		}
 	}

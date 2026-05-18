@@ -79,27 +79,31 @@ namespace Layton1Scene {
 			m_sprites.insert({ "validateButton", std::make_unique<Sprite>("ani/fr/submit.png", this, SDL_FRect{ WIDTH - 70, HEIGHT - 36, 66, 26}, true) });
 		}
 
+		if (m_sprites.count("bottomBackground") == 0) {
+			m_sprites.insert({ "bottomBackground", std::make_unique<Sprite>("bg/q" + m_internalName + "_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
+		}
+
 		// hints
-		m_sprites.insert({ "hint0", std::make_unique<AnimatedSprite>("ani/fr/hint_buttons.hintb4.anim", this, SDL_FRect{ WIDTH - 72 ,HALF_HEIGHT, 72, 18}, true) });
-		m_sprites.insert({ "hint1", std::make_unique<AnimatedSprite>("ani/fr/hint_buttons.hintb3.anim", this, SDL_FRect{ WIDTH - 72 ,HALF_HEIGHT, 72, 18}, true) });
-		m_sprites.insert({ "hint2", std::make_unique<AnimatedSprite>("ani/fr/hint_buttons.hintb2.anim", this, SDL_FRect{ WIDTH - 72 ,HALF_HEIGHT, 72, 18}, true) });
-		m_sprites.insert({ "hint3", std::make_unique<AnimatedSprite>("ani/fr/hint_buttons.hintb1.anim", this, SDL_FRect{ WIDTH - 72 ,HALF_HEIGHT, 72, 18}, true) });
-		m_sprites.insert({ "bottomBackgroundHint1", std::make_unique<Sprite>("bg/hint_1.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
-		m_sprites.insert({ "bottomBackgroundHint2", std::make_unique<Sprite>("bg/hint_2.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
-		m_sprites.insert({ "bottomBackgroundHint3", std::make_unique<Sprite>("bg/hint_3.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
-		m_sprites.insert({ "bottomBackgroundHint1Locked", std::make_unique<Sprite>("bg/fr/hint_1_2.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
-		m_sprites.insert({ "bottomBackgroundHint2Locked", std::make_unique<Sprite>("bg/fr/hint_2_2.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
-		m_sprites.insert({ "bottomBackgroundHint3Locked", std::make_unique<Sprite>("bg/fr/hint_3_2.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
-		m_sprites.insert({ "bottomBackgroundHint1NoCoin", std::make_unique<Sprite>("bg/fr/hint_1_3.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
-		m_sprites.insert({ "bottomBackgroundHint2NoCoin", std::make_unique<Sprite>("bg/fr/hint_2_3.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
-		m_sprites.insert({ "bottomBackgroundHint3NoCoin", std::make_unique<Sprite>("bg/fr/hint_3_3.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
-		m_sprites.insert({ "hintBackButton", std::make_unique<Sprite>("ani/fr/buttons.12.png", this, SDL_FRect{ WIDTH - 56, HALF_HEIGHT, 56, 20 }, true) });
-		m_sprites.insert({ "hint1Button", std::make_unique<Sprite>("ani/fr/buttons.5.png", this, SDL_FRect{ 0, HALF_HEIGHT, 56, 16 }, true) });
-		m_sprites.insert({ "hint2Button", std::make_unique<Sprite>("ani/fr/buttons.6.png", this, SDL_FRect{ 56, HALF_HEIGHT, 56, 16 }, true) });
-		m_sprites.insert({ "hint3Button", std::make_unique<Sprite>("ani/fr/buttons.7.png", this, SDL_FRect{ 112, HALF_HEIGHT, 56, 16 }, true) });
-		m_sprites.insert({ "hint1LockedButton", std::make_unique<Sprite>("ani/fr/buttons.8.png", this, SDL_FRect{ 0, HALF_HEIGHT, 56, 16 }, true) });
-		m_sprites.insert({ "hint2LockedButton", std::make_unique<Sprite>("ani/fr/buttons.9.png", this, SDL_FRect{ 56, HALF_HEIGHT, 56, 16 }, true) });
-		m_sprites.insert({ "hint3LockedButton", std::make_unique<Sprite>("ani/fr/buttons.10.png", this, SDL_FRect{ 112, HALF_HEIGHT, 56, 16 }, true) });
+		m_sprites.insert({ "hint0", std::make_unique<AnimatedSprite>("ani/fr/hint_buttons.hintb4.anim", this, SDL_FRect{ WIDTH - 72 ,HALF_HEIGHT, 72, 18}) });
+		m_sprites.insert({ "hint1", std::make_unique<AnimatedSprite>("ani/fr/hint_buttons.hintb3.anim", this, SDL_FRect{ WIDTH - 72 ,HALF_HEIGHT, 72, 18}) });
+		m_sprites.insert({ "hint2", std::make_unique<AnimatedSprite>("ani/fr/hint_buttons.hintb2.anim", this, SDL_FRect{ WIDTH - 72 ,HALF_HEIGHT, 72, 18}) });
+		m_sprites.insert({ "hint3", std::make_unique<AnimatedSprite>("ani/fr/hint_buttons.hintb1.anim", this, SDL_FRect{ WIDTH - 72 ,HALF_HEIGHT, 72, 18}) });
+		m_sprites.insert({ "bottomBackgroundHint1", std::make_unique<Sprite>("bg/hint_1.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
+		m_sprites.insert({ "bottomBackgroundHint2", std::make_unique<Sprite>("bg/hint_2.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
+		m_sprites.insert({ "bottomBackgroundHint3", std::make_unique<Sprite>("bg/hint_3.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
+		m_sprites.insert({ "bottomBackgroundHint1Locked", std::make_unique<Sprite>("bg/fr/hint_1_2.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
+		m_sprites.insert({ "bottomBackgroundHint2Locked", std::make_unique<Sprite>("bg/fr/hint_2_2.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
+		m_sprites.insert({ "bottomBackgroundHint3Locked", std::make_unique<Sprite>("bg/fr/hint_3_2.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
+		m_sprites.insert({ "bottomBackgroundHint1NoCoin", std::make_unique<Sprite>("bg/fr/hint_1_3.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
+		m_sprites.insert({ "bottomBackgroundHint2NoCoin", std::make_unique<Sprite>("bg/fr/hint_2_3.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
+		m_sprites.insert({ "bottomBackgroundHint3NoCoin", std::make_unique<Sprite>("bg/fr/hint_3_3.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }) });
+		m_sprites.insert({ "hintBackButton", std::make_unique<Sprite>("ani/fr/buttons.12.png", this, SDL_FRect{ WIDTH - 56, HALF_HEIGHT, 56, 20 }) });
+		m_sprites.insert({ "hint1Button", std::make_unique<Sprite>("ani/fr/buttons.5.png", this, SDL_FRect{ 0, HALF_HEIGHT, 56, 16 }) });
+		m_sprites.insert({ "hint2Button", std::make_unique<Sprite>("ani/fr/buttons.6.png", this, SDL_FRect{ 56, HALF_HEIGHT, 56, 16 }) });
+		m_sprites.insert({ "hint3Button", std::make_unique<Sprite>("ani/fr/buttons.7.png", this, SDL_FRect{ 112, HALF_HEIGHT, 56, 16 }) });
+		m_sprites.insert({ "hint1LockedButton", std::make_unique<Sprite>("ani/fr/buttons.8.png", this, SDL_FRect{ 0, HALF_HEIGHT, 56, 16 }) });
+		m_sprites.insert({ "hint2LockedButton", std::make_unique<Sprite>("ani/fr/buttons.9.png", this, SDL_FRect{ 56, HALF_HEIGHT, 56, 16 }) });
+		m_sprites.insert({ "hint3LockedButton", std::make_unique<Sprite>("ani/fr/buttons.10.png", this, SDL_FRect{ 112, HALF_HEIGHT, 56, 16 }) });
 		m_sprites.insert({ "hintUnlockYesButton", std::make_unique<ClickableSprite>("ani/fr/yesnobuttons.0.png", "ani/fr/yesnobuttons.1.png", this, SDL_FRect{ 53, HALF_HEIGHT + 140, 64, 24 }) });
 		m_sprites.insert({ "hintUnlockNoButton", std::make_unique<ClickableSprite>("ani/fr/yesnobuttons.2.png", "ani/fr/yesnobuttons.3.png", this, SDL_FRect{ 137, HALF_HEIGHT + 140, 64, 24 }) });
 		m_sprites.insert({ "hint1Text", std::make_unique<TextSprite>("font/fontq.png", "qtext/fr/h_" + m_internalName + "_1.txt", this, SDL_FRect{ 4, HALF_HEIGHT + 20, WIDTH - 8, HALF_HEIGHT - 23 }, SDL_Color{ 0, 0, 0, 255 }) });
@@ -130,6 +134,29 @@ namespace Layton1Scene {
 			m_sprites.insert({ "validateFail5", std::make_unique<Sprite>("bg/judge_r111_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 			m_sprites.insert({ "validateFail6", std::make_unique<Sprite>("bg/judge_r112_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 			m_sprites.insert({ "validateFail7", std::make_unique<Sprite>("bg/judge_r113_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+		} else {
+			m_sprites.insert({ "validate1", std::make_unique<Sprite>("bg/judge_l1_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validate2", std::make_unique<Sprite>("bg/judge_l2_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validate3", std::make_unique<Sprite>("bg/judge_l3_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validate4", std::make_unique<Sprite>("bg/judge_l4_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validate5", std::make_unique<Sprite>("bg/judge_l5_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validate6", std::make_unique<Sprite>("bg/judge_l6_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+
+			m_sprites.insert({ "validateSuccess1", std::make_unique<Sprite>("bg/judge_l7_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateSuccess2", std::make_unique<Sprite>("bg/judge_l8_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateSuccess3", std::make_unique<Sprite>("bg/judge_l9_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateSuccess4", std::make_unique<Sprite>("bg/judge_l10_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateSuccess5", std::make_unique<Sprite>("bg/judge_l11.bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateSuccess6", std::make_unique<Sprite>("bg/judge_l12_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateSuccess7", std::make_unique<Sprite>("bg/judge_l13_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+
+			m_sprites.insert({ "validateFail1", std::make_unique<Sprite>("bg/judge_l107_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateFail2", std::make_unique<Sprite>("bg/judge_l108_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateFail3", std::make_unique<Sprite>("bg/judge_l109_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateFail4", std::make_unique<Sprite>("bg/judge_l110_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateFail5", std::make_unique<Sprite>("bg/judge_l111_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateFail6", std::make_unique<Sprite>("bg/judge_l112_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
+			m_sprites.insert({ "validateFail7", std::make_unique<Sprite>("bg/judge_l113_bg.png", this, SDL_FRect{ 0, HALF_HEIGHT, WIDTH, HALF_HEIGHT }, true) });
 		}
 
 		// end
@@ -167,11 +194,11 @@ namespace Layton1Scene {
 		}
 
 		if (m_sprites.at("fading")->m_fading) {
-			m_sprites.at("fading")->draw();
+			m_sprites.at("fading")->draw(-1);
 		}
 
 		if (m_sprites.at("bottomFading")->m_fading) {
-			m_sprites.at("bottomFading")->draw();
+			m_sprites.at("bottomFading")->draw(-1);
 		}
 
 		Scene::render();
@@ -888,5 +915,9 @@ namespace Layton1Scene {
 			baseRect.x -= i * spacing;
 			m_sprites.insert({ name + std::to_string(i), std::make_unique<Sprite>(sprites.at(i), this, baseRect) });
 		}
+	}
+
+	bool Puzzle::validate() {
+		return m_valid;
 	}
 };

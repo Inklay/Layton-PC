@@ -136,6 +136,7 @@ void Game::changeScene(const std::string& newScene) {
 	currentScene()->unload();
 	Scene* scene = m_scenes.at(newScene).get();
 	scene->load();
+	m_previousSceneName = m_sceneName;
 	m_sceneName = newScene;
 }
 
